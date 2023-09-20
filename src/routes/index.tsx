@@ -43,11 +43,11 @@ export function Router(){
         <BrowserRouter>
             <Routes>
                 <Route path="/login" element={<Login/>}/>
-                <Route element={<RequireAuth/>}>
+                {/* <Route element={<RequireAuth/>}> */}
                     <Route path="/" element={<Home/>}/>
                     <Route path="/modal2" element={<ModalSolicitaEvidencia />}/>
                     <Route path="/process/:id" element={<ShowProcess/>}/>
-                </Route>
+                {/* </Route> */}
                 {/* <Route path="*" element={<ErrorPage/>}/> */}
             </Routes>
       </BrowserRouter>
