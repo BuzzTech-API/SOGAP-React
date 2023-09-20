@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ChakraProvider } from '@chakra-ui/react'
-
-// layouts e paginas
-import { Router } from './routes';
+import App from './App';
 
 
 const root = ReactDOM.createRoot(
@@ -14,7 +12,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ChakraProvider>
-      <Router/>
+      <App/>
     </ChakraProvider>
   </React.StrictMode>
 );

@@ -1,14 +1,14 @@
-import React from "react"
 import SideBar from "../components/SideBar"
 import { Flex } from "@chakra-ui/react"
+import { Outlet } from "react-router-dom"
 
-function Home(){
+function DefaultLayout(){
     return(
         <Flex flexDirection="row">
             <SideBar/>
-            <Flex></Flex>
+            <Outlet/>
         </Flex>
     )
 }
 
-export default Home
+export default DefaultLayout
