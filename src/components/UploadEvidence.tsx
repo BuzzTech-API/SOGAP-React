@@ -20,7 +20,7 @@ export const ModalUploadEvidence = ({idRequestForEvidence, idProcess}:ModalUploa
 
 
             
-            const response = await fetch(`http://localhost:8000/processes/${idProcess}`, {
+            const response = await fetch(`http://localhost:8000/users_processes/process_id/${idProcess}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

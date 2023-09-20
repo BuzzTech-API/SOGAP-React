@@ -1,9 +1,8 @@
 import { Outlet } from 'react-router-dom'
 
 // layouts e paginas
-import SideBar from './components/SideBar/SideBar'
+import SideBar from './components/SideBar'
 import { Box, Flex } from '@chakra-ui/react'
-import React from 'react'; //Importação do React
 import { ChakraProvider, CSSReset, extendTheme} from '@chakra-ui/react'; //Importação da Biblioteca do Chakra
 
 const theme = extendTheme({
