@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from "react";
 import { loginToken } from "./../services/token";
+import { Link, Navigate } from 'react-router-dom';
 
 export const Login = () => {
     const [show, setShow] = useState(false)
@@ -24,6 +25,7 @@ export const Login = () => {
         e.preventDefault();
 
         loginToken(email, senha)
+        
 
     }
 
@@ -60,7 +62,9 @@ export const Login = () => {
                     </InputGroup>
                 </FormControl>
                 <Center>
+                <Link to={'/'}>
                     <Button type='submit' textColor={'white'} backgroundColor={'#4fb3bb'}>Logar</Button>
+                </Link>
                 </Center>
             </Box>
         </form>
