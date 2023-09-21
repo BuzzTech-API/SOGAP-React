@@ -4,6 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 
 // layouts e paginas
 import { Router } from './routes';
+import App from './App';
 
 
 const root = ReactDOM.createRoot(
