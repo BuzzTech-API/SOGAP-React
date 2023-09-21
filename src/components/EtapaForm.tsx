@@ -14,7 +14,7 @@ import {
   Grid,
 } from '@chakra-ui/react';
 import User from '../models/User';
-import { getAllUsers } from '../services/users';
+import { createUserStep, getAllUsers } from '../services/users';
 import Step from '../models/Steps';
 import { CloseIcon } from '@chakra-ui/icons';
 import { createStep } from '../services/steps';
@@ -52,11 +52,8 @@ function EtapaForm({steps, setSteps, processId}:EtapaFormI) {
     setPriority(event.target.value);
   };
   
-  const submit = async ()=>{
-    
 
-    
-  }
+
   //Função para submeter os dados ao servidor BackEnd
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,8 +61,11 @@ function EtapaForm({steps, setSteps, processId}:EtapaFormI) {
     const newStep = await createStep(name,endingDate,endingDate,processId,objective,priority,1)
     if (newStep!== null) {
       console.log(newStep);
-      
-      setSteps(steps.concat(newStep))
+      responsibleList.forEach((user:User)=>{
+        createUserStep(user.id,newStep.id)
+      })
+      steps.push(newStep)
+      setSteps(steps)
     }
     //window.location.reload();
     //Fetch backEnd
