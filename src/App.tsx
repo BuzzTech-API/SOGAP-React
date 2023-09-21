@@ -1,9 +1,5 @@
-import { Outlet } from 'react-router-dom'
-
-// layouts e paginas
-import SideBar from './components/SideBar/SideBar'
-import { Box, Flex } from '@chakra-ui/react'
-import { ChakraProvider, CSSReset, extendTheme} from '@chakra-ui/react'; //Importação da Biblioteca do Chakra
+import { ChakraProvider, CSSReset, extendTheme} from '@chakra-ui/react';
+import { Router } from './routes';
 
 const theme = extendTheme({
   fonts: {
@@ -21,24 +17,11 @@ const theme = extendTheme({
 function App() {
   return (
       <ChakraProvider theme={theme}>
-        <CSSReset />
-        <div>
-            <Flex>
-                <SideBar></SideBar>
-                <Box p='2'>
-                    <Outlet />
-                </Box>
-            </Flex>
-        </div>
+        <CSSReset/>
+        <Router/>
       </ChakraProvider>
     )
 
   }
-
-      
-     // <div className="App">
-      //  <FormP/>
-     // </div>
-
 
 export default App;
