@@ -15,7 +15,7 @@ const theme = extendTheme({
 
 
 function App() {
-  return (
+    return (
       <ChakraProvider theme={theme}>
         <CSSReset/>
         <Router/>
