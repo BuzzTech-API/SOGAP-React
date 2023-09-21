@@ -11,7 +11,7 @@ export default class Step {
     private _endDate: Date
     private _priority: string
     private _is_active: boolean
-    private _users: Array<User>
+    private _users: Array<User> =[]
     private _requestsForEvidence: Array<RequestForEvidence>
     
     

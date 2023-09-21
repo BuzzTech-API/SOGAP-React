@@ -14,20 +14,62 @@ import {
   Grid,
 } from '@chakra-ui/react';
 import User from '../models/User';
-import { getAllUsers } from '../services/users';
+import { createUserStep, getAllUsers } from '../services/users';
 import Step from '../models/Steps';
 import { CloseIcon } from '@chakra-ui/icons';
+import { createStep } from '../services/steps';
 
-interface EtapaForm{
-  steps: Array<Step>
+interface EtapaFormI{
+  steps:Array<Step>;
+  setSteps: React.Dispatch<React.SetStateAction<Step[]>>;
+  processId: number
 }
 
-function EtapaForm() {
+function EtapaForm({steps, setSteps, processId}:EtapaFormI) {
   const [name, setName] = useState('')
   const [objective, setObjective] = useState('')
-  const [endingDate, setEndingDate] = useState(null)
+  const [endingDate, setEndingDate] = useState(new Date())
+  const [priority,setPriority] = useState('Alta')
   const [usersList, setUsersList] = useState(new Array<User>())
   const [responsibleList, setResponsibleList] = useState(new Array<User>())
+
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Atualizar o estado com o novo valor do input
+    setName(event.target.value);
+  };
+  const handleObjectiveChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // Atualizar o estado com o novo valor do input
+    setObjective(event.target.value);
+  };
+  const handleEndingDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Atualizar o estado com o novo valor do input
+    let endingDateChange = new Date(event.target.value)
+    setEndingDate(endingDateChange);
+  };
+  const handlePriorityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    // Atualizar o estado com o novo valor do input
+    setPriority(event.target.value);
+  };
+  
+
+
+  //Função para submeter os dados ao servidor BackEnd
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    const newStep = await createStep(name,endingDate,endingDate,processId,objective,priority,1)
+    if (newStep!== null) {
+      console.log(newStep);
+      responsibleList.forEach((user:User)=>{
+        createUserStep(user.id,newStep.id)
+      })
+      steps.push(newStep)
+      setSteps(steps)
+    }
+    //window.location.reload();
+    //Fetch backEnd
+  };
 
   useEffect(() => {
     (async () => {
@@ -45,26 +87,35 @@ function EtapaForm() {
 
     
     
-      <form>
+      <form onSubmit={handleSubmit}>
         <FormControl id="nomeEtapa" mb={4}>
           <FormLabel className="Subtitulo" color="#ffff">
             Nome da Etapa
           </FormLabel>
-          <Input type="text" background="white" color="#333" />
+          <Input type="text" background="white" color="#333" onChange={handleNameChange} borderRadius={'2rem'} />
         </FormControl>
 
         <FormControl id="objetivo" mb={4}>
           <FormLabel className="Subtitulo" color="#ffff">
             Objetivo
           </FormLabel>
-          <Textarea background="white" color="#333" />
+          <Textarea background="white" color="#333" onChange={handleObjectiveChange} borderRadius={'2rem'} />
         </FormControl>
 
         <FormControl className="Subtitulo" color="#ffff" id="previsaoTermino" mb={4}>
           <FormLabel>Previsão de Término</FormLabel>
-          <Input type="date" background="white" color="#333" />
+          <Input type="date" background="white" color="#333" borderRadius={'2rem'} onChange={handleEndingDateChange}/>
         </FormControl>
-
+        <FormControl id="priority" mb={5}>
+                          <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={210}>Prioridade</FormLabel>
+                            <Select  style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
+                            value={priority}
+                            onChange={handlePriorityChange}>
+                              <option value="Alta">Alta</option>
+                              <option value="Média">Média</option>
+                              <option value="Baixa">Baixa</option>
+                            </Select>
+                        </FormControl>
         <FormControl id="responsaveis" color="#ffff" mb={4}>
           <FormLabel className="Subtitulo">Responsáveis</FormLabel>
           <Select  style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
@@ -115,6 +166,7 @@ function EtapaForm() {
 
         <Button
           marginTop= "20px"
+          borderRadius='2rem'
           type="submit"
           colorScheme="teal"
           backgroundColor="#53c4cd" // Define a cor de fundo para #53c4cd

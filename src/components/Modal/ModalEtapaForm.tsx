@@ -11,9 +11,10 @@ interface ModalEtapaFormI {
     heightIcon: string;
     steps:Array<Step>;
     setSteps: React.Dispatch<React.SetStateAction<Step[]>>;
+    processId: number
 }
 
-export const ModalEtapaForm = ({widthIcon,sizeIcon,heightIcon,steps, setSteps}:ModalEtapaFormI) => {
+export const ModalEtapaForm = ({widthIcon,sizeIcon,heightIcon,steps, setSteps, processId}:ModalEtapaFormI) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -38,7 +39,7 @@ export const ModalEtapaForm = ({widthIcon,sizeIcon,heightIcon,steps, setSteps}:M
         header={<Heading as="h2" size="lg" mb={4} className="Titulo" color="#54c5ce" textAlign="center">
         Nova etapa
       </Heading>}>
-            <EtapaForm />
+            <EtapaForm steps={steps} setSteps={setSteps} processId={processId} />
         </ModalGeneric>
     </>
 

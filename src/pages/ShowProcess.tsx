@@ -9,6 +9,7 @@ import { CardBase } from "../components/Card/cardBase";
 import FormP from "../components/FormProcess";
 import { ModalEtapaForm } from "../components/Modal/ModalEtapaForm";
 import EtapaForm from "../components/EtapaForm";
+import SideBar from "../components/SideBar/SideBar";
 
 interface ShowProcessProps{
     id:number
@@ -33,7 +34,9 @@ export const ShowProcess = ()=>{
     }, [id])
     
     
-    return(<Flex textColor='white' flexDirection='column'>
+    return(
+    
+    <Flex textColor='white' flexDirection='column'>
     <Box 
     width='92rem'
     height='8rem'
@@ -75,7 +78,7 @@ export const ShowProcess = ()=>{
                 <Box padding='0' width='100%' height='100%'>
                     <Center margin='45% auto'>
                         
-                        <ModalEtapaForm sizeIcon="4rem" heightIcon={'14'} widthIcon={'14'} setSteps={setSteps} steps={steps} />
+                        <ModalEtapaForm sizeIcon="4rem" heightIcon={'14'} widthIcon={'14'} processId={process.id} setSteps={setSteps} steps={steps} />
 
                     </Center>
                     
@@ -86,6 +89,8 @@ export const ShowProcess = ()=>{
         </Grid>
     </Flex>
     
-    </Flex>)
+    </Flex>
+
+    )
 
 }
