@@ -18,7 +18,7 @@ interface ShowProcessProps{
 export const ShowProcess = ()=>{
     const { id } = useParams();
     const [process, setProcess] = useState(new Process())
-    const [steps, setSteps] = useState(process.steps)
+    const [steps, setSteps] = useState(new Array<Step>())
     useEffect(() => {
         (async () => {
             if (id) {
@@ -26,6 +26,9 @@ export const ShowProcess = ()=>{
                 if(process){
                     
                     setProcess(process)
+                    if (process.steps!==undefined) {
+                        setSteps(process.steps)
+                    }
                 }
             }
         })();
@@ -69,10 +72,10 @@ export const ShowProcess = ()=>{
 
         
     <Grid padding='0.9rem' templateColumns='repeat(4, 1fr)' gap='0.9rem' flex='1' >
-        {process.steps===undefined? <div></div>: process.steps.map((step:Step)=> {
+        {steps.map((step:Step)=> {
             
             
-            return(<CardStep step={step} />)
+            return(<CardStep key={step.id} step={step} />)
         })}
             <CardBase width="18rem" height="21rem" bgColor="#1d1e20">
                 <Box padding='0' width='100%' height='100%'>

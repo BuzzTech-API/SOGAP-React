@@ -13,8 +13,6 @@ export const createStep = async (name: string,
   priority: string,
   order: number
 ) => {
-  const stringEndDate = `${endDate.getFullYear()}-${endDate.getMonth() < 10 ? '0' + endDate.getMonth() : endDate.getMonth()}-${endDate.getDay() < 10 ? '0' + endDate.getDay() : endDate.getDay()}`
-  const stringEndingDate = `${endingDate.getFullYear()}-${endingDate.getMonth() < 10 ? '0' + endingDate.getMonth() : endingDate.getMonth()}-${endingDate.getDay() < 10 ? '0' + endingDate.getDay() : endingDate.getDay()}`
   const bodyJson = {
     "name": name,
     "endDate": endDate,

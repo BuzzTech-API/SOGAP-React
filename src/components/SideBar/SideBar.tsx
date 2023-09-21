@@ -1,16 +1,18 @@
 import { Image, Flex, Center, Text, IconButton, Input } from "@chakra-ui/react"
 import { Search2Icon, AddIcon, ChevronRightIcon } from '@chakra-ui/icons'
 
-import Logo from "../../assets/images/logo-ionichealth-1.png"
+//import Logo from "../../assets/images/logo-ionichealth-1.png"
 import { useEffect, useState } from "react"
 import Process from "../../models/Process"
 import { ProcessInterface } from "../../interfaces/processInterface"
 import User from "../../models/User"
 import FormP from "../FormProcess"
 import { getAllProcess } from "../../services/process"
+import { Link, Navigate, redirect } from "react-router-dom"
 
 
 function SideBar() {
+    
     const [processes, setProcesses] = useState(new Array<Process>())
     useEffect(() => {
         (async () => {
@@ -35,7 +37,7 @@ function SideBar() {
             <Center
                 mt="80px"
                 mb="50px">
-                <Image src={Logo} alt="Logo Ionic Health"></Image>
+                <Image src={"../../assets/images/logo-ionichealth-1.png"} alt="Logo Ionic Health"></Image>
             </Center>
 
 
@@ -87,18 +89,19 @@ function SideBar() {
                     return <Flex
                     align="center"
                     key={process.id}
-                    marginBottom='1rem' onClick={()=>{console.log('clicado no'+process.title)}}
-                    >
-                    <ChevronRightIcon
-                        color="white"
-                        boxSize="30px">
-                    </ChevronRightIcon>
-                    <Text
-                        color="#53C4CD"
-                        fontFamily="Poppins, sans-serif"
-                        fontSize="25px">
-                        {process.title}
-                    </Text>
+                    marginBottom='1rem'
+                    ><Link to={`/process/${process.id}`}>
+                        <ChevronRightIcon
+                            color="white"
+                            boxSize="30px">
+                        </ChevronRightIcon>
+                        <Text
+                            color="#53C4CD"
+                            fontFamily="Poppins, sans-serif"
+                            fontSize="25px">
+                            {process.title}
+                        </Text>
+                    </Link>
                 </Flex>
                 })}
 

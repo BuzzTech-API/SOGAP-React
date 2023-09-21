@@ -18,18 +18,20 @@ import { createUserStep, getAllUsers } from '../services/users';
 import Step from '../models/Steps';
 import { CloseIcon } from '@chakra-ui/icons';
 import { createStep } from '../services/steps';
+import { verifyTokenFetch } from '../services/token';
 
-interface EtapaFormI{
-  steps:Array<Step>;
+interface EtapaFormI {
+  steps: Array<Step>;
   setSteps: React.Dispatch<React.SetStateAction<Step[]>>;
   processId: number
+  onClose: () => void
 }
 
-function EtapaForm({steps, setSteps, processId}:EtapaFormI) {
+function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
   const [name, setName] = useState('')
   const [objective, setObjective] = useState('')
   const [endingDate, setEndingDate] = useState(new Date())
-  const [priority,setPriority] = useState('Alta')
+  const [priority, setPriority] = useState('Alta')
   const [usersList, setUsersList] = useState(new Array<User>())
   const [responsibleList, setResponsibleList] = useState(new Array<User>())
 
@@ -51,23 +53,24 @@ function EtapaForm({steps, setSteps, processId}:EtapaFormI) {
     // Atualizar o estado com o novo valor do input
     setPriority(event.target.value);
   };
-  
+
 
 
   //Função para submeter os dados ao servidor BackEnd
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    const newStep = await createStep(name,endingDate,endingDate,processId,objective,priority,1)
-    if (newStep!== null) {
-      console.log(newStep);
-      responsibleList.forEach((user:User)=>{
-        createUserStep(user.id,newStep.id)
+    verifyTokenFetch()
+    const newStep = await createStep(name, endingDate, endingDate, processId, objective, priority, steps.length + 1)
+    if (newStep !== null) {
+      responsibleList.forEach(async (user: User) => {
+        await createUserStep(user.id, newStep.id)
       })
-      steps.push(newStep)
-      setSteps(steps)
+
+
+      setSteps(steps.concat(newStep))
+
+      //window.location.reload();
     }
-    //window.location.reload();
     //Fetch backEnd
   };
 
@@ -77,105 +80,106 @@ function EtapaForm({steps, setSteps, processId}:EtapaFormI) {
       if (listOfUsers) {
         setUsersList(listOfUsers)
       }
-          
-        })();
-    }, [])
+
+    })();
+  }, [])
 
 
   return (
-    
 
-    
-    
-      <form onSubmit={handleSubmit}>
-        <FormControl id="nomeEtapa" mb={4}>
-          <FormLabel className="Subtitulo" color="#ffff">
-            Nome da Etapa
-          </FormLabel>
-          <Input type="text" background="white" color="#333" onChange={handleNameChange} borderRadius={'2rem'} />
-        </FormControl>
 
-        <FormControl id="objetivo" mb={4}>
-          <FormLabel className="Subtitulo" color="#ffff">
-            Objetivo
-          </FormLabel>
-          <Textarea background="white" color="#333" onChange={handleObjectiveChange} borderRadius={'2rem'} />
-        </FormControl>
 
-        <FormControl className="Subtitulo" color="#ffff" id="previsaoTermino" mb={4}>
-          <FormLabel>Previsão de Término</FormLabel>
-          <Input type="date" background="white" color="#333" borderRadius={'2rem'} onChange={handleEndingDateChange}/>
-        </FormControl>
-        <FormControl id="priority" mb={5}>
-                          <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={210}>Prioridade</FormLabel>
-                            <Select  style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
-                            value={priority}
-                            onChange={handlePriorityChange}>
-                              <option value="Alta">Alta</option>
-                              <option value="Média">Média</option>
-                              <option value="Baixa">Baixa</option>
-                            </Select>
-                        </FormControl>
-        <FormControl id="responsaveis" color="#ffff" mb={4}>
-          <FormLabel className="Subtitulo">Responsáveis</FormLabel>
-          <Select  style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
-                            value={''}
-                            >
-                              <option value=""></option>
-                              {usersList.map( (user:User) => {
-                                const setResponsible = ()=>{
-                                  setResponsibleList(responsibleList.concat(user)) 
-                                }
-                                return <option onClick={setResponsible} key={user.id} value={user.id}>{user.name}</option>
-                              })}
-                              
-                          </Select>
-                          <Box>
-                          <Grid marginLeft='1rem' templateColumns='repeat(2, 1fr)' gap='1.5rem'>
-                            {responsibleList.map((responsible: User)=>{
-                              const removeResponsible = ()=>{
-                                setResponsibleList(responsibleList.filter((item)=> item !== responsible))
-                              }
-                              return <Box 
-                              width='15rem' 
-                              height='3rem' 
-                              bg='#53C4CD' 
-                              alignContent='center' 
-                              padding='0.5rem 0.5rem 0.5rem 2rem' 
-                              borderRadius='2rem'
-                              marginTop='0.8rem'
-                              marginRight='0.5rem'
-                              >
-                                {responsible.name}
-                                <IconButton marginLeft='2rem'
-                                    aria-label="Btn Add Processo"
-                                    bg="white"
-                                    color="#58595B"
-                                    size='sm'
-                                    borderRadius='3rem'
-                                    icon={<CloseIcon />}
-                                    _hover={{ color: "white", bg: "#58595B" }}
-                                    onClick={removeResponsible}
-                                  />
-                              </Box>
-                            })}
-                          </Grid >
-                          </Box>
-                            
-                      </FormControl>
 
-        <Button
-          marginTop= "20px"
-          borderRadius='2rem'
-          type="submit"
-          colorScheme="teal"
-          backgroundColor="#53c4cd" // Define a cor de fundo para #53c4cd
-          color="#333"
-          width="100%" // Faz o botão ocupar todo o espaço lateralmente
+    <form onSubmit={handleSubmit}>
+      <FormControl id="nomeEtapa" mb={4}>
+        <FormLabel className="Subtitulo" color="#ffff">
+          Nome da Etapa
+        </FormLabel>
+        <Input type="text" background="white" color="#333" onChange={handleNameChange} borderRadius={'2rem'} />
+      </FormControl>
+
+      <FormControl id="objetivo" mb={4}>
+        <FormLabel className="Subtitulo" color="#ffff">
+          Objetivo
+        </FormLabel>
+        <Textarea background="white" color="#333" onChange={handleObjectiveChange} borderRadius={'2rem'} />
+      </FormControl>
+
+      <FormControl className="Subtitulo" color="#ffff" id="previsaoTermino" mb={4}>
+        <FormLabel>Previsão de Término</FormLabel>
+        <Input type="date" background="white" color="#333" borderRadius={'2rem'} onChange={handleEndingDateChange} />
+      </FormControl>
+      <FormControl id="priority" mb={5}>
+        <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={210}>Prioridade</FormLabel>
+        <Select style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
+          value={priority}
+          onChange={handlePriorityChange}>
+          <option value="Alta">Alta</option>
+          <option value="Média">Média</option>
+          <option value="Baixa">Baixa</option>
+        </Select>
+      </FormControl>
+      <FormControl id="responsaveis" color="#ffff" mb={4}>
+        <FormLabel className="Subtitulo">Responsáveis</FormLabel>
+        <Select style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
+          value={''}
         >
-          Enviar
-        </Button>
-      </form>
+          <option value=""></option>
+          {usersList.map((user: User) => {
+            const setResponsible = () => {
+              setResponsibleList(responsibleList.concat(user))
+            }
+            return <option onClick={setResponsible} key={user.id} value={user.id}>{user.name}</option>
+          })}
+
+        </Select>
+        <Box>
+          <Grid marginLeft='1rem' templateColumns='repeat(2, 1fr)' gap='1.5rem'>
+            {responsibleList.map((responsible: User) => {
+              const removeResponsible = () => {
+                setResponsibleList(responsibleList.filter((item) => item !== responsible))
+              }
+              return <Box
+                width='15rem'
+                height='3rem'
+                bg='#53C4CD'
+                alignContent='center'
+                padding='0.5rem 0.5rem 0.5rem 2rem'
+                borderRadius='2rem'
+                marginTop='0.8rem'
+                marginRight='0.5rem'
+                key={responsible.id}>
+                {responsible.name}
+                <IconButton marginLeft='2rem'
+                  aria-label="Btn Add Processo"
+                  bg="white"
+                  color="#58595B"
+                  size='sm'
+                  borderRadius='3rem'
+                  icon={<CloseIcon />}
+                  _hover={{ color: "white", bg: "#58595B" }}
+                  onClick={removeResponsible}
+                />
+              </Box>
+            })}
+          </Grid >
+        </Box>
+
+      </FormControl>
+
+      <Button
+        marginTop="20px"
+        borderRadius='2rem'
+        type="submit"
+        colorScheme="teal"
+        backgroundColor="#53c4cd" // Define a cor de fundo para #53c4cd
+        color="#333"
+        width="100%" // Faz o botão ocupar todo o espaço lateralmente
+        onClick={onClose}
+      >
+        Enviar
+      </Button>
+    </form>
 
   );
 }

@@ -15,7 +15,6 @@ interface ModalEtapaFormI {
 }
 
 export const ModalEtapaForm = ({widthIcon,sizeIcon,heightIcon,steps, setSteps, processId}:ModalEtapaFormI) => {
-
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     return <>
@@ -39,7 +38,7 @@ export const ModalEtapaForm = ({widthIcon,sizeIcon,heightIcon,steps, setSteps, p
         header={<Heading as="h2" size="lg" mb={4} className="Titulo" color="#54c5ce" textAlign="center">
         Nova etapa
       </Heading>}>
-            <EtapaForm steps={steps} setSteps={setSteps} processId={processId} />
+            <EtapaForm steps={steps} setSteps={setSteps} processId={processId} onClose={onClose} />
         </ModalGeneric>
     </>
 

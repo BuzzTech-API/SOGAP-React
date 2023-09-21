@@ -1,6 +1,7 @@
-import SideBar from "../components/SideBar"
+
 import { Flex } from "@chakra-ui/react"
 import { Outlet } from "react-router-dom"
+import SideBar from "../components/SideBar/SideBar"
 
 function DefaultLayout(){
     return(
