@@ -6,7 +6,7 @@ import { Login } from "../pages/Login"
 import { ModalSolicitaEvidencia } from "../components/Modal/BtnPedirEvidencia"
 import { ShowProcess } from "../pages/ShowProcess"
 import DefaultLayout from "../layout/DefaultLayout"
-
+import { useDisclosure } from "@chakra-ui/react"
 // Valida o token
 const validateAccessToken = async () => {
     let authenticated = new Authenticated()
@@ -46,6 +46,7 @@ export function RequireAuth() {
 
    
 export function Router(){
+    const { onClose } = useDisclosure();
     return(
         <BrowserRouter>
             <Routes>
@@ -53,7 +54,7 @@ export function Router(){
                 <Route element={<RequireAuth/>}>
                   <Route element={<DefaultLayout/>}>
                     <Route path="/" element={<Home/>}/>
-                    <Route path="/modal2" element={<ModalSolicitaEvidencia />}/>
+                    <Route path="/modal2" element={<ModalSolicitaEvidencia step_id={1} onClose={onClose} />}/>
                     <Route path="/process/:id" element={<ShowProcess/>}/>
                   </Route>
                 </Route>

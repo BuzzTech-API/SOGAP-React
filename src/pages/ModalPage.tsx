@@ -1,16 +1,14 @@
 
-import { Button, useDisclosure } from "@chakra-ui/react";
-import React from "react";
-import { ModalGeneric } from "../components/Modal/Modal";
+import { useDisclosure } from "@chakra-ui/react";
 import { ModalSolicitaEvidencia } from "../components/Modal/BtnPedirEvidencia";
 
 export const PageModal = () =>{
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { onClose } = useDisclosure();
 
     return (
         
             <>
-            <ModalSolicitaEvidencia></ModalSolicitaEvidencia>
+            <ModalSolicitaEvidencia step_id={1} onClose={onClose}></ModalSolicitaEvidencia>
             </>
         
     );
