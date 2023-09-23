@@ -30,7 +30,7 @@ export interface FormDataStructure {
   title: string;
   description: string;
   objective: string;
-  deadline: Date;
+  deadline: string;
   priority: string;
   responsible: string;
   status: string;
@@ -63,7 +63,7 @@ const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
     title: '',
     description: '',
     objective: '',
-    deadline: new Date(),
+    deadline: '',
     priority: '',
     responsible: '',
     status: 'Não iniciado',
@@ -75,6 +75,13 @@ const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
     setFormData((prevData) => ({
       ...prevData,
       [title]: value,
+    }));
+  };
+  //Função para lidar com mudanças no corpo do formulário
+  const handleChangeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      ['deadline']: e.target.value,
     }));
   };
 
@@ -180,8 +187,8 @@ const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
                         placeholder="Selecione a data"
                         size="md"
                         type="date"
-                        value={formData.deadline.toString()}
-                        onChange={handleChange} 
+                        value={formData.deadline}
+                        onChange={handleChangeDeadline} 
                         />
                       </FormControl>
                       <Flex justifyContent="center" alignItems="center">
@@ -205,7 +212,6 @@ const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
                               {usersList.map( (user:User) => {
                                 const setResponsible = ()=>{
                                   setResponsibleList(responsibleList.concat(user))
-                                  console.log(responsibleList)
                                 }
                                 return <option onClick={setResponsible} key={user.id} value={user.id}>{user.name}</option>
                               })}
@@ -226,6 +232,7 @@ const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
                               borderRadius='2rem'
                               marginTop='0.8rem'
                               marginRight='0.5rem'
+                              key={responsible.id}
                               >
                                 {responsible.name}
                                 <IconButton marginLeft='2rem'
