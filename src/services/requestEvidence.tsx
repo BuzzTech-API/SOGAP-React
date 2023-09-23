@@ -1,9 +1,8 @@
 import Evidence from "../models/Evidence";
 import RequestForEvidence from "../models/RequestForEvidence";
 
-export const formatData = async (today: Date) => {
+export const formatData = (today: Date) => {
   // função para pegar a data atual e formatar para "ano/mes/dia"
-  today = new Date()
   const year = today.getFullYear()
   const month = today.getMonth() + 1 // getMonth() retorna um valor de 0-11 por isso o +1
   const day = today.getDate()
@@ -21,16 +20,20 @@ export const createRequestEvidence = async (
     evidenceValidationDate: Date,
     deliveryDate: Date, 
   ) => {
+
+    const evidenceDate = formatData(evidenceValidationDate)
+    const deliveryDat = formatData(deliveryDate)
     const bodyJson = {
         "requiredDocument": requiredDocument,
         "description": description,
         "step_id": step_id,
         "user_id": user_id,
-        "evidenceValidationDate": evidenceValidationDate,
-        "deliveryDate": deliveryDate,
-        "is_validated": false,
-        "is_active": true
+        "evidenceValidationDate": evidenceDate,
+        "deliveryDate": deliveryDat,
+        "is_validated": true,
+        "is_actived": true
       }
+
       const token = localStorage.getItem('access_token');
       const response = await fetch(`http://localhost:8000/request_for_evidence/`, {
         method: 'POST',

@@ -2,7 +2,7 @@
 import { useDisclosure, FormLabel, Input, Textarea, Button, Select } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import User from "../../models/User";
-import { createRequestEvidence, formatData } from "../../services/requestEvidence";
+import { createRequestEvidence } from "../../services/requestEvidence";
 import { verifyTokenFetch } from "../../services/token";
 import { getAllUsers } from "../../services/users";
 import { ModalGeneric } from "./Modal";
@@ -75,7 +75,7 @@ export const ModalSolicitaEvidencia = ({ step_id, onClose }: requestEvidence) =>
                         <Textarea bg='white' placeholder='Descreva a solicitação' onChange={handleDescriptionChange}/>
 
                         <FormLabel pt={3} color='white'>Data de entrega</FormLabel>
-                        <Input bg='white' placeholder="Selecione a data" size="md" type="datetime-local" onChange={handleEvidenceValidationDateChange}/>
+                        <Input bg='white' placeholder="Selecione a data" size="md" type="date" onChange={handleEvidenceValidationDateChange}/>
 
                         <FormLabel pt={3} color='white'>Responsável</FormLabel>
                         <Select style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"value={''}>
