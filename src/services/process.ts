@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { ProcessInterface } from "../interfaces/processInterface";
 import Process from "../models/Process";
 import User from "../models/User";
+import {FormDataStructure} from "../components/FormProcess"
 
 
 export const getAllProcess = async () => {
@@ -86,3 +87,20 @@ export const getProcessById = async (id: number) => {
     return null
   }
 }
+
+export const sendFormData = async (formData: FormDataStructure) => {
+  const token = localStorage.getItem('access_token');
+  const response = await fetch('http://localhost:8000/processes/', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+  });
+  if (!response.ok) {
+    throw new Error('Erro ao enviar dados do Formulário para o backend - sendFormData')
+  }
+  return await response.json();
+};
