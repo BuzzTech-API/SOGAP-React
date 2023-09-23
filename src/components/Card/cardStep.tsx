@@ -5,6 +5,7 @@ import { CardBase } from "./cardBase";
 
 interface StepCard{
     step: Step;
+    onClick: ()=>void
 }
 
 function formatDateToBrasil(data:string){
@@ -20,8 +21,7 @@ function formatDateToBrasil(data:string){
 export const CardStep = (stepI:StepCard) => {
     const [step, setStep] = useState(stepI.step)
     
-    const evento = ()=>{console.log('Evento card:'+ step.objective);
-    }
+    const evento = stepI.onClick
     let bgColor: string;
     if (step.priority === 'Alta') {
         bgColor='#FF0000'
@@ -45,7 +45,7 @@ export const CardStep = (stepI:StepCard) => {
                             textAlign='center' 
                             textColor='#FFF'
                             >
-                            Titulo
+                            {step.name}
                             </Text>
                             <Text 
                             fontSize='1rem' 

@@ -13,49 +13,55 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Grid,
+  Flex,
+  CloseButton,
+  Spacer,
 } from '@chakra-ui/react';
 
 // Importe o componente ModalUploadEvidence aqui
 import { ModalUploadEvidence } from './UploadEvidence';
+import User from '../models/User';
+import RequestForEvidence from '../models/RequestForEvidence';
+import Step from '../models/Steps';
+import { StepUser } from '../interfaces/stepInterface';
 
 interface VisualizarEtapaProps {
-  nomeEtapa: string;
-  objetivo: string;
-  previsaoTermino: Date;
-  responsaveis: string;
-  solicitacaoEvidencia: string;
+  step: Step
+  onClose: ()=> void
 }
 
 const VisualizarEtapa: React.FC<VisualizarEtapaProps> = ({
-  nomeEtapa,
-  objetivo,
-  previsaoTermino,
-  responsaveis,
-  solicitacaoEvidencia,
+  step, onClose
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const previsaoTerminoFormatada = previsaoTermino.toLocaleDateString('pt-BR');
+  const previsaoTerminoFormatada = step.endingDate.toString();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
+  
   return (
     <Box
       className="card"
-      maxWidth="400px"
-      margin="0 auto"
-      padding="20px"
+      width="44rem"
+      minHeight='55rem'
+      margin="1rem 2rem"
+      padding="1rem"
       border="1px solid #ccc"
-      borderRadius="8px"
+      borderRadius="2rem"
       boxShadow="0 2px 4px #0000001a"
       backgroundColor="#292A2D"
       alignItems="center"
     >
-      <Heading as="h2" size="lg" mb={4} className="Titulo" color="#54c5ce" textAlign="center">
+      <Flex>
+
+      <Heading paddingLeft={'12rem'} as="h2" size="lg" mb={4} className="Titulo" color="#54c5ce" textAlign="center">
         Detalhes da Etapa
       </Heading>
-
+      <Spacer />
+      <CloseButton onClick={onClose} />
+      </Flex>
 
       <VStack align="start" spacing={4} color="#ffff">
         <Box>
@@ -65,9 +71,9 @@ const VisualizarEtapa: React.FC<VisualizarEtapaProps> = ({
             p="2"
             mt="2"
             backgroundColor="#58595B"
-            width="360px"
+            width="42rem"
           >
-            <Text color="#53C4CD">{nomeEtapa}</Text>
+            <Text color="#53C4CD">{step.name}</Text>
           </Box>
         </Box>
 
@@ -78,10 +84,10 @@ const VisualizarEtapa: React.FC<VisualizarEtapaProps> = ({
             p="2"
             mt="2"
             backgroundColor="#58595B"
-            width="360px"
+            width="42rem"
             height="200px"
           >
-            <Text color="#53C4CD">{objetivo}</Text>
+            <Text color="#53C4CD">{step.objective}</Text>
           </Box>
         </Box>
 
@@ -92,32 +98,47 @@ const VisualizarEtapa: React.FC<VisualizarEtapaProps> = ({
             p="2"
             mt="2"
             backgroundColor="#58595B"
-            width="360px"
+            width="42rem"
           >
             <Text color="#53C4CD">{previsaoTerminoFormatada}</Text>
           </Box>
         </Box>
-
         <Box>
+
           <Text fontWeight="bold" color="#53C4CD">Responsáveis:</Text>
-          <Box
-            borderRadius="8px"
-            p="2"
-            mt="2"
-            backgroundColor="#58595B"
-            width="360px"
-          >
-            <Text color="#53C4CD">{responsaveis}</Text>
-          </Box>
+        <Grid templateColumns='repeat(3, 1fr)' gap={'1rem'}>
+          {step.users!==undefined?
+          step.users.map((user: StepUser) => {
+            
+            
+            return (
+              <Box
+                borderRadius="8px"
+                p="2"
+                mt="2"
+                backgroundColor="#58595B"
+                width="13rem"
+                >
+                <Text color="#53C4CD">{user.user.name}</Text>
+              </Box>
+            )
+          }
+          ):<></>}
+        </Grid>
         </Box>
 
         <Divider />
 
         <Box>
           <Text fontWeight="bold" color="#53C4CD">Solicitação de Evidência:</Text>
-          <Box>
-            <Text color="#53C4CD">{solicitacaoEvidencia}</Text>
-          </Box>
+          {step.requestsForEvidence!== undefined? step.requestsForEvidence.map((requestsForEvidence:RequestForEvidence)=>{
+            return(
+              <Box>
+                <Text color="#53C4CD">{requestsForEvidence.requiredDocument}</Text>
+              </Box>
+            )
+          }): <></>}
+          
         </Box>
 
         <Button colorScheme="teal" onClick={openModal}>

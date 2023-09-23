@@ -59,7 +59,6 @@ export const getProcessById = async (id: number) => {
   if (response.ok) {
     const content: ProcessInterface = await response.json()
 
-
     const usersList = new Array<User>()
     if (content.users !== undefined) {
       content.users.forEach(element => {

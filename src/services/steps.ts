@@ -46,13 +46,14 @@ export const createStep = async (name: string,
     const step = new Step(
       content.id,
       content.process_id,
+      content.name,
       content.order,
       content.objective,
       content.endingDate,
       content.endDate,
       content.priority,
       content.is_active,
-      usersList,
+      content.users,
       content.requestsForEvidence
     );
 
