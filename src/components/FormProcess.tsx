@@ -1,4 +1,4 @@
-import DatePicker from "react-datepicker";
+import { sendFormData } from "../services/process";
 import "react-datepicker/dist/react-datepicker.css";
 import React, { useEffect, useState } from 'react';
 import { Box,
@@ -26,13 +26,14 @@ import User from "../models/User";
 import { getAllUsers } from "../services/users";
 
 //Interface para manipulação dos dados
-interface FormData {
+export interface FormDataStructure {
   title: string;
   description: string;
   objective: string;
-  deadline: string;
+  deadline: Date;
   priority: string;
   responsible: string;
+  status: string;
 }
 
 interface IconSettings{
@@ -43,9 +44,6 @@ interface IconSettings{
 
 //Função Principal
 const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
-
-
-
 
   const [usersList, setUsersList] = useState(new Array<User>())
   const [responsibleList, setResponsibleList] = useState(new Array<User>())
@@ -59,21 +57,16 @@ const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
         })();
     }, [])
 
-
-    
-
-
-
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormDataStructure>({
     title: '',
     description: '',
     objective: '',
-    deadline: '',
+    deadline: new Date(),
     priority: '',
     responsible: '',
+    status: 'Não iniciado',
   });
 
   //Função para lidar com mudanças no corpo do formulário
@@ -92,16 +85,19 @@ const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
   };
 
   //Função para submeter os dados ao servidor BackEnd
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
-    //window.location.reload();
-    //Fetch backEnd
+    try {
+      const response = await sendFormData(formData);
+      if(response){
+        window.location.reload()  //recarrega a pagina após apertar o botão de criar
+      }
+    } catch (error) {
+      console.error("Erro ao enviar dados do Formulário para o backend", error);
+    }
   };
   
   //Variáveis para o Modal
-  
-
 
   //Variável para o Calendário "DatePicker"
   const [prazo, setDeadline] = useState<null | Date>(null);
@@ -109,7 +105,7 @@ const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
   //Variável para o boxList "Prioridade"
   const [priority, setPrioridade] = useState("Alta");
 
-//Retorno em HTML do Formulário
+  //Retorno em HTML do Formulário
   return (<>
     <IconButton margin=''
                                     aria-label="Btn Add Processo"
@@ -119,8 +115,7 @@ const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
                                     icon={<AddIcon h={heightIcon} w={widthIcon} />}
                                     _hover={{ color: "#58595B", bg: "white" }}
                                     onClick={onOpen}
-                                    >
-                                        
+                                    >                                    
     </IconButton>
     <Modal size="xxl" isOpen={isOpen} onClose={onClose}>
         
@@ -180,7 +175,14 @@ const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
                     <Box textAlign="center">
                       <FormControl id="deadline" mb={3}>
                         <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={210}>Prazo</FormLabel>
-                        <Input bg='white' placeholder="Selecione a data" size="md" type="date"/>
+                        <Input
+                        bg='#D9D9D9'
+                        placeholder="Selecione a data"
+                        size="md"
+                        type="date"
+                        value={formData.deadline.toString()}
+                        onChange={handleChange} 
+                        />
                       </FormControl>
                       <Flex justifyContent="center" alignItems="center">
                         <FormControl id="priority" mb={5}>
@@ -202,7 +204,8 @@ const FormP = ({widthIcon, sizeIcon, heightIcon}: IconSettings) => {
                               <option value=""></option>
                               {usersList.map( (user:User) => {
                                 const setResponsible = ()=>{
-                                  setResponsibleList(responsibleList.concat(user)) 
+                                  setResponsibleList(responsibleList.concat(user))
+                                  console.log(responsibleList)
                                 }
                                 return <option onClick={setResponsible} key={user.id} value={user.id}>{user.name}</option>
                               })}
