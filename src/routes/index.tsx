@@ -45,7 +45,6 @@ export function RequireAuth() {
 
    
 export function Router(){
-
     return(
         <BrowserRouter>
             <Routes>
