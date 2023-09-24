@@ -1,15 +1,8 @@
 import Evidence from "../models/Evidence";
 import RequestForEvidence from "../models/RequestForEvidence";
+import { formatData } from "./formatDate";
 
-export const formatData = (today: Date) => {
-  // função para pegar a data atual e formatar para "ano/mes/dia"
-  const year = today.getFullYear()
-  const month = today.getMonth() + 1 // getMonth() retorna um valor de 0-11 por isso o +1
-  const day = today.getDate()
-  const formattedDate = `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`
 
-  return formattedDate
-}
 
 
 export const createRequestEvidence = async (
@@ -30,7 +23,7 @@ export const createRequestEvidence = async (
         "user_id": user_id,
         "evidenceValidationDate": evidenceDate,
         "deliveryDate": deliveryDat,
-        "is_validated": true,
+        "is_validated": false,
         "is_actived": true
       }
 

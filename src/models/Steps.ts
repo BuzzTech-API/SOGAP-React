@@ -1,6 +1,5 @@
 import { StepUser } from "../interfaces/stepInterface"
 import RequestForEvidence from "./RequestForEvidence"
-import User from "./User"
 
 export default class Step {
     
@@ -14,7 +13,7 @@ export default class Step {
     private _priority!: string
     private _is_active!: boolean
     private _users: Array<StepUser> =[]
-    private _requestsForEvidence: Array<RequestForEvidence> = []
+    private _requests: Array<RequestForEvidence> = []
     
     
     constructor(
@@ -28,7 +27,7 @@ export default class Step {
         priority:string,
         is_active:boolean,
         users:Array<StepUser>,
-        requestsForEvidence:Array<RequestForEvidence>,
+        requests:Array<RequestForEvidence>,
         )
     constructor()
     constructor(
@@ -42,7 +41,7 @@ export default class Step {
         priority?:string,
         is_active?:boolean,
         users?:Array<StepUser>,
-        requestsForEvidence?:Array<RequestForEvidence>,
+        requests?:Array<RequestForEvidence>,
         ) {
         if( id!==undefined &&
             process_id!==undefined &&
@@ -54,7 +53,7 @@ export default class Step {
             priority!==undefined &&
             is_active!==undefined &&
             users!==undefined &&
-            requestsForEvidence!==undefined){
+            requests!==undefined){
 
                 this._id = id
                 this._process_id = process_id
@@ -66,7 +65,7 @@ export default class Step {
                 this._priority = priority
                 this._is_active = is_active
                 this._users = users
-                this._requestsForEvidence = requestsForEvidence
+                this._requests = requests
             }
     }
     public get id(): number {
@@ -75,11 +74,11 @@ export default class Step {
     public set id(value: number) {
         this._id = value
     }
-    public get requestsForEvidence(): Array<RequestForEvidence> {
-        return this._requestsForEvidence
+    public get requests(): Array<RequestForEvidence> {
+        return this._requests
     }
-    public set requestsForEvidence(value: Array<RequestForEvidence>) {
-        this._requestsForEvidence = value
+    public set requests(value: Array<RequestForEvidence>) {
+        this._requests = value
     }
     public get objective(): string {
         return this._objective

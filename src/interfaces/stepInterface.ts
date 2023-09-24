@@ -10,14 +10,14 @@ export interface StepUser{
 
 export interface StepInterface{
     id: number
-    process_id: number
     name:string
-    order: number
     objective: string
     endingDate: Date
     endDate: Date
+    process_id: number
     priority: string
+    order: number
     is_active: boolean
+    requests: Array<RequestForEvidence>
     users: Array<StepUser>
-    requestsForEvidence: Array<RequestForEvidence>
 }

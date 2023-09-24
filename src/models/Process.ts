@@ -4,6 +4,7 @@ import User from "./User";
 export default class Process {
     private _id!: number;
     private _title!: string;
+    private _description!: string;
     private _objective!: string;
     private _endingDate!: Date;
     private _createDate!: Date;
@@ -17,6 +18,7 @@ export default class Process {
     constructor(
         id: number,
         title: string,
+        description: string,
         objective: string,
         endingDate: Date,
         createDate: Date,
@@ -31,6 +33,7 @@ export default class Process {
     constructor(
         id?: number,
         title?: string,
+        description?: string,
         objective?: string,
         endingDate?: Date,
         createDate?: Date,
@@ -43,6 +46,7 @@ export default class Process {
         ) {
         if (id!==undefined &&
             title!==undefined &&
+            description!==undefined &&
             endingDate!==undefined &&
             createDate!==undefined &&
             lastUpdate!==undefined &&
@@ -55,6 +59,7 @@ export default class Process {
             
                 this._id = id
                 this._title = title
+                this._description = description
                 this._objective = objective
                 this._endingDate = endingDate
                 this._createDate = createDate
@@ -143,6 +148,11 @@ export default class Process {
         this._objective = value;
     }
 
-
+    public get description(): string {
+        return this._description;
+    }
+    public set description(value: string) {
+        this._description = value;
+    }
 
 }

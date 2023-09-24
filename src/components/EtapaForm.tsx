@@ -19,6 +19,7 @@ import Step from '../models/Steps';
 import { CloseIcon } from '@chakra-ui/icons';
 import { createStep } from '../services/steps';
 import { verifyTokenFetch } from '../services/token';
+import { StepUser } from '../interfaces/stepInterface';
 
 interface EtapaFormI {
   steps: Array<Step>;
@@ -59,23 +60,40 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
   //Função para submeter os dados ao servidor BackEnd
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    verifyTokenFetch()
+    await verifyTokenFetch()
     const newStep = await createStep(name, endingDate, endingDate, processId, objective, priority, steps.length + 1)
+
     if (newStep !== null) {
+      const userStepList = new Array<StepUser>()
       responsibleList.forEach(async (user: User) => {
         await createUserStep(user.id, newStep.id)
+        const userStep: StepUser = {
+          user_id: user.id,
+          step_id: newStep.id,
+          user: user
+        }
+        userStepList.push(userStep)
       })
 
-
+      newStep.users = userStepList;
       setSteps(steps.concat(newStep))
-
-      //window.location.reload();
     }
     //Fetch backEnd
   };
+  const setResponsible = (user:User) => {
+    setResponsibleList(responsibleList.concat(user))
+  }
 
+  const handleChangeResponsible = (e:React.ChangeEvent<HTMLSelectElement>) => {
+    const newResponsible = usersList.find(user => user.id===Number.parseInt(e.target.value))
+    if(newResponsible){
+      setResponsible(newResponsible)
+    }
+
+  };
   useEffect(() => {
     (async () => {
+      await verifyTokenFetch()
       const listOfUsers = await getAllUsers()
       if (listOfUsers) {
         setUsersList(listOfUsers)
@@ -123,18 +141,17 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
         <FormLabel className="Subtitulo">Responsáveis</FormLabel>
         <Select style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
           value={''}
+          onChange={handleChangeResponsible}
         >
           <option value=""></option>
           {usersList.map((user: User) => {
-            const setResponsible = () => {
-              setResponsibleList(responsibleList.concat(user))
-            }
-            return <option onClick={setResponsible} key={user.id} value={user.id}>{user.name}</option>
+            
+            return <option key={user.id} value={user.id}>{user.name}</option>
           })}
 
         </Select>
         <Box>
-          <Grid marginLeft='1rem' templateColumns='repeat(2, 1fr)' gap='1.5rem'>
+          <Grid minH={'10rem'} marginLeft='1rem' templateColumns='repeat(2, 1fr)' gap='1.5rem'>
             {responsibleList.map((responsible: User) => {
               const removeResponsible = () => {
                 setResponsibleList(responsibleList.filter((item) => item !== responsible))

@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProcessById } from "../services/process";
+import { getAllProcess, getProcessById } from "../services/process";
 import Process from "../models/Process";
-import { Box, Center, Flex, Grid, Heading, Modal, Text  } from "@chakra-ui/react";
+import { Box, Center, Flex, Grid, Heading, Text  } from "@chakra-ui/react";
 import Step from "../models/Steps";
 import { CardStep } from "../components/Card/cardStep";
 import { CardBase } from "../components/Card/cardBase";
-import FormP from "../components/FormProcess";
 import { ModalEtapaForm } from "../components/Modal/ModalEtapaForm";
-import EtapaForm from "../components/EtapaForm";
 import SideBar from "../components/SideBar/SideBar";
 import VisualizarEtapa from "../components/VizualizarEtapa";
 
-interface ShowProcessProps{
-    id:number
-}
+
 
 export const ShowProcess = ()=>{
     const { id } = useParams();
     const [process, setProcess] = useState(new Process())
+    const [processes, setProcesses] = useState(new Array<Process>())
     const [steps, setSteps] = useState(new Array<Step>())
     const [step, setStep] = useState(new Step())
     const [isVisible, setIsVisible] = useState(false)
@@ -36,8 +33,12 @@ export const ShowProcess = ()=>{
                     }
                 }
             }
+            const processList = await getAllProcess()
+            if(processList){
+                setProcesses(processList)
+            }
         })();
-        
+
 
     }, [id])
     
@@ -47,38 +48,50 @@ export const ShowProcess = ()=>{
         setGridColumn('4')
     }
     
-    return(
+    return(<>
+    <SideBar processes={processes} setProcesses={setProcesses} />
     <Flex textColor='white' flexDirection='row'>
 
     <Flex textColor='white' flexDirection='column'>
     <Box 
     width={widthBox}
-    height='8rem'
+    minHeight='8rem'
     marginLeft='1rem'
     marginTop='1rem'
     borderRadius='2rem'
     padding='1rem'
     bg='#58595B'
     >
-        <Flex flexDirection='column'>
-        <Heading
-        color='#53C4CD'
-        size='lg'
-        >
-        {process.title}
-        </Heading>
-        <Text>{process.objective}</Text>
+        <Flex flexDirection={'row'} gap={'4rem'}>
+            <Flex flexDirection='column'>
+                <Heading
+                color='#53C4CD'
+                size='lg'
+                >
+                {process.title}
+                </Heading>
+                <Text>{process.description}</Text>
+            </Flex>
+            <Flex flexDirection='column'>
+                <Box bg={'#D9D9D9'} textColor={'#000'} fontSize={'1.5rem'} textAlign={'center'} borderRadius={'1rem'} padding={'0.2rem'}>
+                {process.status}
+                </Box>
+                <Text
+                >Objetivo: {process.objective}
+                </Text>
+            </Flex>
         </Flex>
     </Box>
     <Flex
     width={widthBox}
-    minHeight='45rem'
     marginLeft='1rem'
     marginTop='1rem'
     borderRadius='2rem'
     padding='1rem'
     bg='#58595B'
-    
+    maxHeight='45rem'
+    height={'45rem'}
+    overflow={'auto'}
     >
     
         
@@ -97,7 +110,15 @@ export const ShowProcess = ()=>{
                 <Box padding='0' width='100%' height='100%'>
                     <Center margin='45% auto'>
                         
-                        <ModalEtapaForm sizeIcon="4rem" heightIcon={'14'} widthIcon={'14'} processId={process.id} setSteps={setSteps} steps={steps} />
+                        <ModalEtapaForm 
+                        sizeIcon="4rem" 
+                        heightIcon={'14'} 
+                        widthIcon={'14'} 
+                        processId={process.id} 
+                        setSteps={setSteps} 
+                        steps={steps} 
+                        
+                        />
 
                     </Center>
                     
@@ -116,7 +137,7 @@ export const ShowProcess = ()=>{
       )}
     
     </Flex>
-
+    </>
     )
 
 }

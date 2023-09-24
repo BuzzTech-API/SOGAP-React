@@ -5,14 +5,6 @@ import {
   Text,
   VStack,
   Divider,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Grid,
   Flex,
   CloseButton,
@@ -20,11 +12,11 @@ import {
 } from '@chakra-ui/react';
 
 // Importe o componente ModalUploadEvidence aqui
-import { ModalUploadEvidence } from './UploadEvidence';
-import User from '../models/User';
 import RequestForEvidence from '../models/RequestForEvidence';
 import Step from '../models/Steps';
 import { StepUser } from '../interfaces/stepInterface';
+import { ModalSolicitaEvidencia } from './Modal/BtnPedirEvidencia';
+import { ViewRequest } from './Modal/ModalResquestForEvidence';
 
 interface VisualizarEtapaProps {
   step: Step
@@ -34,12 +26,10 @@ interface VisualizarEtapaProps {
 const VisualizarEtapa: React.FC<VisualizarEtapaProps> = ({
   step, onClose
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const previsaoTerminoFormatada = step.endingDate.toString();
+  const [requests, setRequests] = useState(step.requests)
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  console.log(step);
   
   return (
     <Box
@@ -128,38 +118,23 @@ const VisualizarEtapa: React.FC<VisualizarEtapaProps> = ({
         </Box>
 
         <Divider />
-
         <Box>
           <Text fontWeight="bold" color="#53C4CD">Solicitação de Evidência:</Text>
-          {step.requestsForEvidence!== undefined? step.requestsForEvidence.map((requestsForEvidence:RequestForEvidence)=>{
+        <Flex marginTop='1rem' flexWrap={'wrap'} maxWidth={'45rem'} gap={'0.5rem'}>
+
+          {requests!== undefined ? requests.map((request:RequestForEvidence)=>{
             return(
-              <Box>
-                <Text color="#53C4CD">{requestsForEvidence.requiredDocument}</Text>
-              </Box>
+              <><ViewRequest request={request} process_id={step.process_id}/></>
             )
           }): <></>}
           
+
+        
+        <ModalSolicitaEvidencia step_id={step.id} requests={requests} setRequests={setRequests} />
+        </Flex>
         </Box>
 
-        <Button colorScheme="teal" onClick={openModal}>
-          Adicionar Evidência
-        </Button>
 
-        <Modal isOpen={isModalOpen} onClose={closeModal} size="lg">
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Adicionar Evidência</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <ModalUploadEvidence idRequestForEvidence={0} idProcess={0} />
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="teal" onClick={closeModal}>
-                Fechar
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
       </VStack>
     </Box>
   );

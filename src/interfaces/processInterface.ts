@@ -10,6 +10,7 @@ export interface ProcessUser{
 export interface ProcessInterface{
     id: number; 
     title: string; 
+    description: string; 
     objective:string;
     endingDate: Date; 
     createDate: Date; 
