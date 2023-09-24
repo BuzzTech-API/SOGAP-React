@@ -20,14 +20,21 @@ import {
     footer?: React.ReactNode,
     widthModal?: string,
     heightModal?: string
-  
+    bgColor?: string
+    textColor?: string
   }
   
-  export const ModalGeneric = ({header, footer, children, isOpen, onClose, widthModal,heightModal}: ModalProps) =>{
+  export const ModalGeneric = ({header, footer, children, isOpen, onClose, widthModal,heightModal,bgColor, textColor}: ModalProps) =>{
+    if (bgColor===undefined) {
+      bgColor='#58595B'
+    }
+    if (textColor===undefined) {
+      textColor='#FFF'
+    }
     return (
       <Modal size={'xxl'} isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent bg='#58595B' borderRadius='2rem' width={widthModal} height={heightModal}>
+          <ModalContent textColor={textColor} bg={bgColor} borderRadius='2rem' width={widthModal} height={heightModal}>
             <Flex flexDirection='column'>
             <Box>
               {header ? <ModalHeader>{header}</ModalHeader>: null}

@@ -13,22 +13,38 @@ import {
 } from '@chakra-ui/react'
 import { useState } from "react";
 import { loginToken } from "./../services/token";
+import { Navigate } from 'react-router-dom';
 
 export const Login = () => {
     const [show, setShow] = useState(false)
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
+    const [token, setToken] = useState(localStorage.getItem('access_token'))
+    const [refresh_token, setRefresh_token] = useState(localStorage.getItem('refresh_token'))
     const handleClick = () => setShow(!show)
-
+    console.log(window.location.origin);
     const submit = async (e: any) => {
         e.preventDefault();
 
-        loginToken(email, senha)
-        
+        try {
+            await loginToken(email, senha)
+        } catch (error) {
+            
+        }finally{
+            setToken(localStorage.getItem('access_token'))
+            setRefresh_token(localStorage.getItem('refresh_token'))
+        }
 
     }
-
+    
+    
     return <Card backgroundColor={'#58595B'} margin={'10rem auto'} textColor={'white'} width='40rem'>
+        {token && (
+          <Navigate to="/" replace={true} />
+        )}
+        {refresh_token && (
+          <Navigate to="/" replace={true} />
+        )}
         <form onSubmit={submit}>
             <Center padding='2rem'>
                 <Heading>Login</Heading>

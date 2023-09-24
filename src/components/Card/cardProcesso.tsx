@@ -36,7 +36,7 @@ export const CardProcess = (processI: processCardInterface) => {
                         </Box>
                         <Box padding='0.5rem 0.1rem'>
                             <Text fontSize='1rem' textAlign='center' textColor='#FFF'>Titulo</Text>
-                            <Text fontSize='1.5rem' textAlign='center' textColor='#53C4CD'>{process.title}</Text>
+                            <Text noOfLines={2} fontSize='1.5rem' textAlign='center' textColor='#53C4CD'>{process.title}</Text>
                         </Box>
                         <Box padding='0.5rem 0.1rem'>
                             <Text fontSize='1rem' textAlign='center' textColor='#FFF'>Última Atualização</Text>

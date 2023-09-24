@@ -1,27 +1,20 @@
-import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import Step from "../../models/Steps";
 import { CardBase } from "./cardBase";
+import { formatDateToBrasil } from "../../services/formatDate";
 
 interface StepCard{
     step: Step;
+    onClick: ()=>void
 }
 
-function formatDateToBrasil(data:string){
-    // função para pegar a data atual e formatar para "ano/mes/dia"
-    const year = data.split('-')[0]
-    const month = data.split('-')[1] // getMonth() retorna um valor de 0-11 por isso o +1
-    const day = data.split('-')[2]
-    const formattedDate = `${day}/${month}/${year}`
-    return formattedDate
-}
 
 
 export const CardStep = (stepI:StepCard) => {
     const [step, setStep] = useState(stepI.step)
     
-    const evento = ()=>{console.log('Evento card:'+ step.objective);
-    }
+    const evento = stepI.onClick
     let bgColor: string;
     if (step.priority === 'Alta') {
         bgColor='#FF0000'
@@ -31,7 +24,7 @@ export const CardStep = (stepI:StepCard) => {
         bgColor='#00750C'
     }
         return  <CardBase width="18rem" height="21rem" bgColor="#1d1e20" onClickEvent={evento}>
-                    <Box flex='1' marginBottom='0.5rem'>
+                    <Box flex='1' marginBottom='0rem'>
                         <Box padding='1rem'>
                             <Flex>
                                 <Heading textColor='#FFF' size='md' textAlign='center'>Etapa </Heading>
@@ -40,24 +33,35 @@ export const CardStep = (stepI:StepCard) => {
                             </Flex>
                         </Box>
                         <Box padding='0.5rem 0.1rem'>
-                            <Text 
+                            <Center 
                             fontSize='1.2rem' 
                             textAlign='center' 
                             textColor='#FFF'
+                            flexWrap={'wrap'}
+                            maxHeight={'3rem'}
+                            height={'3rem'}
+                            marginBottom={'0.7rem'}
+                            alignSelf={'center'}
                             >
-                            Titulo
-                            </Text>
-                            <Text 
+                            {step.name}
+                            </Center>
+                            <Flex 
                             fontSize='1rem' 
                             textAlign='center' 
                             textColor='#FFF'
-                            >
+                            maxHeight={'3rem'}
+                            height={'3rem'}
+                            flexWrap={'wrap'}
+                            ><Text noOfLines={2}>
+
+                            {step.objective}
                             {step.objective}
                             </Text>
+                            </Flex>
                         </Box>
                         <Box padding='0.5rem 0.1rem'>
                             <Text fontSize='1.2rem' textAlign='center' textColor='#FFF'>Prazo</Text>
-                            <Text fontSize='1.5rem' fontWeight='bold' textAlign='center' textColor='#FFF'>{formatDateToBrasil(step.endingDate.toLocaleString('pt-BR'))}</Text>
+                            <Text fontSize='1.5rem' fontWeight='bold' textAlign='center' textColor='#FFF'>{formatDateToBrasil(step.endingDate.toString())}</Text>
                         </Box>
 
 
@@ -73,7 +77,7 @@ export const CardStep = (stepI:StepCard) => {
                     fontSize="25px"
                     textAlign='center'
                     marginBottom='0'
-                    marginTop='1.7rem'
+                    marginTop='1rem'
                     borderTop='0.2rem solid'
                     borderColor='#FFF'
                     padding='0.6rem'

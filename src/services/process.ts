@@ -7,12 +7,13 @@ import {FormDataStructure} from "../components/FormProcess"
 
 export const getAllProcess = async () => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch('http://localhost:8000/processes', {
+  const response = await fetch(`http://localhost:8000/processes`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
       'Authorization': `Bearer ${token}`,
-    }
+    },
+    
   })
 
   if (response.ok) {
@@ -26,6 +27,7 @@ export const getAllProcess = async () => {
       processList.push(new Process(
         item.id,
         item.title,
+        item.description,
         item.objective,
         item.endingDate,
         item.createDate,
@@ -60,7 +62,6 @@ export const getProcessById = async (id: number) => {
   if (response.ok) {
     const content: ProcessInterface = await response.json()
 
-
     const usersList = new Array<User>()
     if (content.users !== undefined) {
       content.users.forEach(element => {
@@ -71,6 +72,7 @@ export const getProcessById = async (id: number) => {
     const process = new Process(
       content.id,
       content.title,
+      content.description,
       content.objective,
       content.endingDate,
       content.createDate,
@@ -91,7 +93,7 @@ export const getProcessById = async (id: number) => {
 
 export const sendFormData = async (formData: FormDataStructure) => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch('http://localhost:8000/processes/', {
+  const response = await fetch(`http://localhost:8000/processes/`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

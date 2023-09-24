@@ -8,41 +8,40 @@ import { ProcessInterface } from "../../interfaces/processInterface"
 import User from "../../models/User"
 import FormP from "../FormProcess"
 import { getAllProcess } from "../../services/process"
-import { Link, Navigate, redirect } from "react-router-dom"
+import { Link, Navigate} from "react-router-dom"
+import { DrawerCadastro } from "../Cadastro"
 
-
-function SideBar() {
+interface sideBarI{
+    processes: Array<Process>,
+    setProcesses:  React.Dispatch<React.SetStateAction<Process[]>>
+}
+function SideBar(sideBarI:sideBarI) {
     
-    const [processes, setProcesses] = useState(new Array<Process>())
-    useEffect(() => {
-        (async () => {
-            const processList = await getAllProcess()
-            if (processList) {
-                setProcesses(processList)
-            }
-            })();
-        }, [])
+    
+    
 
     return (
         <Flex
             flexDirection="column"
             bg="#58595B"
             maxW="380px"
-            h="100vh"
+            h="57.7rem"
             gap="30px"
-            borderTopEndRadius="10px"
-            borderBottomEndRadius="10px">
+            >
 
             {/*LOGO */}
+            <Link to={"/"}>
             <Center
                 mt="80px"
-                mb="50px">
+                mb="50px"
+                >
                 <Image src={"../../assets/images/logo-ionichealth-1.png"} alt="Logo Ionic Health"></Image>
             </Center>
+            </Link>
 
 
             <Flex
-                flexDirection="column">
+                flexDirection="column" gap={'0.3rem'}>
 
                 {/* CONFIG PROCESSOS */}
                 <Flex
@@ -69,9 +68,10 @@ function SideBar() {
                         p="0"
                         icon={<Search2Icon />}>
                     </IconButton>
-                    <FormP sizeIcon="md" heightIcon={4} widthIcon={4} />
+                    <FormP sizeIcon="md" heightIcon={4} widthIcon={4} processes={sideBarI.processes} setProcesses={sideBarI.setProcesses} />
 
                 </Flex>
+                <DrawerCadastro />
             </Flex>
 
             {/* LISTA DE PROCESSOS */}
@@ -81,16 +81,19 @@ function SideBar() {
                 p="5px"
                 pl="20px"
                 cursor="pointer"
+                maxHeight='45rem'
+                overflow={'auto'}
                 >
 
                 {/* PROCESSO CRIADO */}
-                {processes.map( (process:Process) =>{
+                {sideBarI.processes.map( (process:Process) =>{
                     
-                    return <Flex
+                    return <Link to={`/process/${process.id}`}><Flex
                     align="center"
                     key={process.id}
                     marginBottom='1rem'
-                    ><Link to={`/process/${process.id}`}>
+                    flexDirection='row'
+                    >
                         <ChevronRightIcon
                             color="white"
                             boxSize="30px">
@@ -101,8 +104,8 @@ function SideBar() {
                             fontSize="25px">
                             {process.title}
                         </Text>
-                    </Link>
-                </Flex>
+                    </Flex>
+                </Link>
                 })}
 
                 

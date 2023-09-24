@@ -1,6 +1,5 @@
 import { StepInterface } from "../interfaces/stepInterface";
 import Step from "../models/Steps";
-import User from "../models/User";
 
 
 
@@ -37,26 +36,24 @@ export const createStep = async (name: string,
 
   if (response.ok) {
     const content: StepInterface = await response.json()
-    const usersList = new Array<User>()
-    if (content.users !== undefined) {
-      content.users.forEach(element => {
-        usersList.push(element.user)
-      });
-    }
-    const step = new Step(
-      content.id,
-      content.process_id,
-      content.order,
-      content.objective,
-      content.endingDate,
-      content.endDate,
-      content.priority,
-      content.is_active,
-      usersList,
-      content.requestsForEvidence
-    );
+    console.log(content);
+    
+    
+    const step = new Step();
+    step.id=content.id
+    step.process_id =  content.process_id
+    step.name =  content.name
+    step.order =  content.order
+    step.objective =  content.objective
+    step.endingDate =  content.endingDate
+    step.endDate =  content.endDate
+    step.priority =  content.priority
+    step.is_active =  content.is_active
+    step.users =  content.users
+    step.requests =  content.requests    
 
-
+      console.log(step);
+      
     return step
   } else {
     return null

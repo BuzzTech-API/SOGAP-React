@@ -6,7 +6,6 @@ import SideBar from "../components/SideBar/SideBar"
 function DefaultLayout(){
     return(
         <Flex flexDirection="row">
-            <SideBar/>
             <Outlet/>
         </Flex>
     )
