@@ -81,7 +81,8 @@ function SideBar(sideBarI:sideBarI) {
                 p="5px"
                 pl="20px"
                 cursor="pointer"
-                maxHeight='45rem'
+                minHeight={'33rem'}
+                maxHeight='33rem'
                 overflow={'auto'}
                 >
 
