@@ -23,7 +23,7 @@ export const createStep = async (name: string,
     "is_active": true
   }
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost:8000/steps/`, {
+  const response = await fetch(`http://localhost/api/steps/`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

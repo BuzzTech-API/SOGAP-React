@@ -21,7 +21,7 @@ export const ModalUploadEvidence = ({idRequestForEvidence, idProcess}:ModalUploa
             await refreshTokenFetch()
 
             
-            const response = await fetch(`http://localhost:8000/users_processes/process_id/${idProcess}`, {
+            const response = await fetch(`http://localhost/api/users_processes/process_id/${idProcess}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -41,7 +41,7 @@ export const ModalUploadEvidence = ({idRequestForEvidence, idProcess}:ModalUploa
                 formData.append('file', file);
 
 
-                let host = `http://localhost:8000/uploadfile/`
+                let host = `http://localhost/api/uploadfile/`
                 
                 usersList.map((user : User) => {
                     host = host + user.email + "&"
@@ -78,7 +78,7 @@ export const ModalUploadEvidence = ({idRequestForEvidence, idProcess}:ModalUploa
                     }
 
                     await fetch(
-                        `http://localhost:8000/evidences/`,{
+                        `http://localhost/api/evidences/`,{
                         method: 'POST',
                         headers:{
                             'Accept': 'application/json',

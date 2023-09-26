@@ -28,7 +28,7 @@ export const createRequestEvidence = async (
       }
 
       const token = localStorage.getItem('access_token');
-      const response = await fetch(`http://localhost:8000/request_for_evidence/`, {
+      const response = await fetch(`http://localhost/api/request_for_evidence/`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

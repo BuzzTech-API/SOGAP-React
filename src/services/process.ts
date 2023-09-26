@@ -7,7 +7,7 @@ import {FormDataStructure} from "../components/FormProcess"
 
 export const getAllProcess = async () => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost:8000/processes`, {
+  const response = await fetch(`http://localhost/api/processes`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -51,7 +51,7 @@ export const getAllProcess = async () => {
 
 export const getProcessById = async (id: number) => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost:8000/processes/${id}`, {
+  const response = await fetch(`http://localhost/api/processes/${id}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -93,7 +93,7 @@ export const getProcessById = async (id: number) => {
 
 export const sendFormData = async (formData: FormDataStructure) => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost:8000/processes/`, {
+  const response = await fetch(`http://localhost/api/processes/`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
