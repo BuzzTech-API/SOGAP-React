@@ -38,6 +38,25 @@ export const createUserStep = async (user_id: number, step_id: number) => {
   })
 }
 
+export const deleteUserStep = async (user_id: number, step_id: number) => {
+  const bodyJson = {
+    "user_id": user_id,
+    "step_id": step_id
+  }
+  
+  const token = localStorage.getItem('access_token');
+  const response = await fetch(`http://localhost/api/stepes_users/`, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+
+    body: JSON.stringify(bodyJson)
+  })
+}
+
 export const createUser = async (name: string, email: string, role: string, team: string, password: string) => {
   const bodyJson = {
     name: name,
