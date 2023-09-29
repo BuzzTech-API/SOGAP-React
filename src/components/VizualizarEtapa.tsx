@@ -17,6 +17,7 @@ import Step from '../models/Steps';
 import { StepUser } from '../interfaces/stepInterface';
 import { ModalSolicitaEvidencia } from './Modal/BtnPedirEvidencia';
 import { ViewRequest } from './Modal/ModalResquestForEvidence';
+import { ModalUpdateStep } from './Modal/ModalEditarEtapa';
 
 interface VisualizarEtapaProps {
   step: Step
@@ -131,6 +132,7 @@ const VisualizarEtapa: React.FC<VisualizarEtapaProps> = ({
 
         
         <ModalSolicitaEvidencia step_id={step.id} requests={requests} setRequests={setRequests} />
+        <ModalUpdateStep step = {step}/>
         </Flex>
         </Box>
 
