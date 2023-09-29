@@ -62,6 +62,7 @@ export const createStep = async (name: string,
 }
 
 export const updateStep = async (
+  step_id: number,
   name: string,
   endDate: Date,
   endingDate: Date,
@@ -73,6 +74,7 @@ export const updateStep = async (
 
   const EndingDate = formatData(endingDate)
   const bodyJson = {
+      "step_id": step_id,
       "name": name,
       "endDate": endDate,
       "endingDate": EndingDate,
@@ -82,7 +84,6 @@ export const updateStep = async (
       "order": order,
       "is_active": true
     }
-    console.log(bodyJson);
     
     const token = localStorage.getItem('access_token');
     const response = await fetch(`http://localhost/api/steps/`, {
