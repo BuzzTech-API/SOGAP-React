@@ -36,6 +36,7 @@ export const createUserStep = async (user_id: number, step_id: number) => {
 
     body: JSON.stringify(bodyJson)
   })
+  return response
 }
 
 export const deleteUserStep = async (user_id: number, step_id: number) => {
@@ -55,6 +56,7 @@ export const deleteUserStep = async (user_id: number, step_id: number) => {
 
     body: JSON.stringify(bodyJson)
   })
+  return response
 }
 
 export const createUser = async (name: string, email: string, role: string, team: string, password: string) => {
@@ -97,4 +99,5 @@ export const createProcessUser  = async (user_id: number, process_id: number) =>
 
     body: JSON.stringify(bodyJson)
   })
+  return response
 }

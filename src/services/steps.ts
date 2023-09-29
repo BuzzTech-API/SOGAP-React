@@ -96,6 +96,5 @@ export const updateStep = async (
   
       body: JSON.stringify(bodyJson)
     })
-    if(response.ok)
-      return "Alterações feitas"
+    return response
 }
