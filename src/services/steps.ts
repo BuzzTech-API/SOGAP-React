@@ -1,5 +1,6 @@
 import { StepInterface } from "../interfaces/stepInterface";
 import Step from "../models/Steps";
+import { formatData } from "./formatDate";
 
 
 
@@ -58,4 +59,42 @@ export const createStep = async (name: string,
   } else {
     return null
   }
+}
+
+export const updateStep = async (
+  step_id: number,
+  name: string,
+  endDate: Date,
+  endingDate: Date,
+  process_id: number,
+  objective: string,
+  priority: string, 
+  order: number
+) => {
+
+  const EndingDate = formatData(endingDate)
+  const bodyJson = {
+      "step_id": step_id,
+      "name": name,
+      "endDate": endDate,
+      "endingDate": EndingDate,
+      "process_id": process_id,
+      "objective": objective,
+      "priority": priority,
+      "order": order,
+      "is_active": true
+    }
+    
+    const token = localStorage.getItem('access_token');
+    const response = await fetch(`http://localhost/api/steps/`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+  
+      body: JSON.stringify(bodyJson)
+    })
+    return response
 }
