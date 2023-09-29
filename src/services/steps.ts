@@ -71,11 +71,10 @@ export const updateStep = async (
   order: number
 ) => {
 
-  const EndDate = formatData(endDate)
   const EndingDate = formatData(endingDate)
   const bodyJson = {
       "name": name,
-      "endDate": EndDate,
+      "endDate": endDate,
       "endingDate": EndingDate,
       "process_id": process_id,
       "objective": objective,
@@ -83,7 +82,8 @@ export const updateStep = async (
       "order": order,
       "is_active": true
     }
-
+    console.log(bodyJson);
+    
     const token = localStorage.getItem('access_token');
     const response = await fetch(`http://localhost/api/steps/`, {
       method: 'PUT',
