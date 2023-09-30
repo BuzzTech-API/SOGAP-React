@@ -126,8 +126,8 @@ export const updateProcess = async (formData: UpdateProcessInterface) => {
 
 export const deleteUserProcess = async (user_id: number, process_id: number) => {
   const bodyJson = {
-    "user_id": user_id,
-    "process_id": process_id
+    user_id: user_id,
+    process_id: process_id
   }
   const token = localStorage.getItem('access_token');
   const response = await fetch(`http://localhost/api/users_processes/`, {

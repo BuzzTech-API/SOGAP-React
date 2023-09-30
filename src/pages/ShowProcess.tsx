@@ -73,6 +73,7 @@ export const ShowProcess = ()=>{
                 </Heading>
                 <Text>{process.description}</Text>
             </Flex>
+            <Spacer/>
             <Flex flexDirection='column'>
                 <Box bg={'#D9D9D9'} textColor={'#000'} fontSize={'1.5rem'} textAlign={'center'} borderRadius={'1rem'} padding={'0.2rem'}>
                 {process.status}
@@ -80,9 +81,8 @@ export const ShowProcess = ()=>{
                 <Text
                 >Objetivo: {process.objective}
                 </Text>
-            </Flex>
-            <Spacer />
-            <ModalUpdateProcess />
+                <ModalUpdateProcess />
+            </Flex>          
         </Flex>
     </Box>
     <Flex
