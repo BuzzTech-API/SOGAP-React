@@ -1,6 +1,5 @@
 import RequestForEvidence from "../models/RequestForEvidence"
 import User from "../models/User"
-import { ProcessUser } from "./processInterface"
 
 export interface StepUser{
     user_id: number
