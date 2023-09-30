@@ -41,6 +41,7 @@ export const ModalUpdateProcess = () => {
                         status: 'Não iniciado',
                         id: Number(id)
                     })
+                    setResponsibleList(process.users)
                 }
             }
         })()
@@ -81,8 +82,15 @@ export const ModalUpdateProcess = () => {
         ...prevData,
         'priority': e.target.value,
         }))
-
     }
+
+        //Função para lidar com mudança no item de "Prioridade"
+        const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+            setFormData((prevData) => ({
+            ...prevData,
+            'status': e.target.value,
+            }))
+        }
 
 
     //Função para submeter os dados ao servidor BackEnd
@@ -100,6 +108,7 @@ export const ModalUpdateProcess = () => {
 
             await Promise.all(process.users.map(user => deleteUserProcess(user.id, process.id))) //Deleta todos os usuarios relacionados ao processo
 
+            
             for (const user of responsibleList) { //Cria usuarios relacionados a etapa
                 await createProcessUser(user.id, process.id)
             }
@@ -131,13 +140,13 @@ export const ModalUpdateProcess = () => {
     return (
 
         <>
-            <Button display="flex" mb={3} bg='#53C4CD' variant='solid' 
+            <Button display="flex" mt={3} bg='#53C4CD' variant='solid' 
             textColor='black' colorScheme="#58595B" width='100%' 
             type="submit" onClick={onOpen}
             >Editar</Button>
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem">
                 <form onSubmit={handleSubmit}>
-                    <FormLabel textAlign="center" fontSize="large" color='white'><strong>Edição de Etapa</strong></FormLabel>
+                    <FormLabel textAlign="center" fontSize="large" color='white'><strong>Edição de Processo</strong></FormLabel>
 
                     <FormLabel pt={3} color='white'>Título</FormLabel>
                     <Input 
@@ -161,7 +170,7 @@ export const ModalUpdateProcess = () => {
                     value={formData.description}
                     onChange={handleChange} />
 
-                    <FormLabel pt={3} color='white'>Objetivo</FormLabel>
+                    <FormLabel pt={3} color='white'>Otivo</FormLabel>
                     <Input 
                     bg='white' 
                     textColor={'black'} 
@@ -182,7 +191,7 @@ export const ModalUpdateProcess = () => {
                     value={formData.endingDate}
                     onChange={handleChangeEndingDate} />
 
-                    <FormControl id="priority" mb={5}>
+                    <FormControl id="priority" mb={3}>
                         <FormLabel color="#ffffff" fontSize="20px" pt={3} mb={1} ml={210}>Prioridade</FormLabel>
                         <Select 
                         placeholder={process.priority} 
@@ -193,6 +202,21 @@ export const ModalUpdateProcess = () => {
                             <option value="Alta">Alta</option>
                             <option value="Média">Média</option>
                             <option value="Baixa">Baixa</option>
+
+                        </Select>
+                    </FormControl>
+
+                    <FormControl id="status" mb={3}>
+                        <FormLabel color="#ffffff" fontSize="20px" pt={3} mb={1} ml={210}>Status</FormLabel>
+                        <Select 
+                        placeholder={process.status} 
+                        style={{ width: "100%", height: "40px" }} 
+                        rounded="100px" color="#000000" bg="#D9D9D9"
+                        value={formData.status}
+                        onChange={handleStatusChange}>
+                            <option value="Não iniciado">Não iniciado</option>
+                            <option value="Em andamento">Em andamento</option>
+                            <option value="Concluido">Concluido</option>
 
                         </Select>
                     </FormControl>
