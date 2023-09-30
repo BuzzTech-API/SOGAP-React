@@ -1,4 +1,5 @@
-import { StepInterface } from "../interfaces/stepInterface";
+import { StepInterface, StepUser } from "../interfaces/stepInterface";
+import RequestForEvidence from "../models/RequestForEvidence";
 import Step from "../models/Steps";
 import { formatData } from "./formatDate";
 
@@ -97,4 +98,53 @@ export const updateStep = async (
       body: JSON.stringify(bodyJson)
     })
     return response
+}
+
+
+export const getStepsById = async (id: number) => {
+  const token = localStorage.getItem('access_token');
+  const response = await fetch(`http://localhost/api/steps/${id}`, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    }
+  })
+
+  if (response.ok) {
+    const content: StepInterface = await response.json()
+
+    const usersList = new Array<StepUser>()
+    if (content.users !== undefined) {
+      content.users.forEach(element => {
+        usersList.push(element)
+      })
+    }
+
+    const requestsList = new Array<RequestForEvidence>()
+    if (content.requests !== undefined) {
+      content.requests.forEach(request => {
+        requestsList.push(request)
+      })
+    }
+
+    const process = new Step(
+      content.id,
+      content.process_id,
+      content.name,
+      content.order,
+      content.objective,
+      content.endingDate,
+      content.endDate,
+      content.priority,
+      content.is_active,
+      usersList,
+      requestsList
+    )
+
+
+    return process
+  } else {
+    return null
+  }
 }

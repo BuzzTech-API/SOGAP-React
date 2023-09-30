@@ -27,8 +27,7 @@ import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import User from "../models/User";
 import { createProcessUser, getAllUsers } from "../services/users";
 import { formatData } from "../services/formatDate";
-import { refreshToken, refreshTokenFetch } from "../services/token";
-import { ProcessInterface } from "../interfaces/processInterface";
+import { refreshTokenFetch } from "../services/token";
 import Process from "../models/Process";
 
 //Interface para manipulação dos dados
@@ -69,7 +68,6 @@ const FormP = ({ widthIcon, sizeIcon, heightIcon, setProcesses, processes }: Ico
   }, [])
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormDataStructure>({
     title: '',
     description: '',
@@ -139,14 +137,6 @@ const FormP = ({ widthIcon, sizeIcon, heightIcon, setProcesses, processes }: Ico
       onClose()
     }
   };
-
-  //Variáveis para o Modal
-
-  //Variável para o Calendário "DatePicker"
-  const [prazo, setDeadline] = useState<null | Date>(null);
-
-  //Variável para o boxList "Prioridade"
-  const [priority, setPrioridade] = useState("Alta");
 
   //Retorno em HTML do Formulário
   return (<>

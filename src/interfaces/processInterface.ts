@@ -21,3 +21,16 @@ export interface ProcessInterface{
     steps:Array<Step>;
     users:Array<ProcessUser>
 }
+
+export interface UpdateProcessInterface{
+    title: string; 
+    description: string; 
+    objective:string;
+    endingDate: string; 
+    createDate: string; 
+    lastUpdate: string; 
+    is_active: boolean; 
+    priority: string; 
+    status: string; 
+    id: number;
+}

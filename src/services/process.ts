@@ -1,5 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
-import { ProcessInterface } from "../interfaces/processInterface";
+import { ProcessInterface, UpdateProcessInterface } from "../interfaces/processInterface";
 import Process from "../models/Process";
 import User from "../models/User";
 import {FormDataStructure} from "../components/FormProcess"
@@ -107,3 +106,38 @@ export const sendFormData = async (formData: FormDataStructure) => {
   }
   return await response.json();
 };
+
+export const updateProcess = async (formData: UpdateProcessInterface) => {
+  const token = localStorage.getItem('access_token');
+  const response = await fetch(`http://localhost/api/processes/`, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+  });
+  if (!response.ok) {
+    throw new Error('Erro ao enviar dados do Formulário para o backend - sendFormData')
+  }
+  return await response.json();
+}
+
+export const deleteUserProcess = async (user_id: number, process_id: number) => {
+  const bodyJson = {
+    user_id: user_id,
+    process_id: process_id
+  }
+  const token = localStorage.getItem('access_token');
+  const response = await fetch(`http://localhost/api/users_processes/`, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bodyJson),
+  });
+  return await response.json()
+}

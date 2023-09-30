@@ -1,22 +1,21 @@
 
-import { useDisclosure, FormLabel, Input, Textarea, Button, Select, FormControl, Box, Grid, IconButton } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { verifyTokenFetch } from "../../services/token";
-import { ModalGeneric } from "./Modal";
-import Step from "../../models/Steps";
-import { updateStep } from "../../services/steps";
-import User from "../../models/User";
-import { createUserStep, deleteUserStep, getAllUsers } from "../../services/users";
-import { CloseIcon } from "@chakra-ui/icons";
-import { StepUser } from "../../interfaces/stepInterface";
-import { sleep } from "../../services/sleep";
+import { useDisclosure, FormLabel, Input, Textarea, Button, Select, FormControl, Box, Grid, IconButton } from "@chakra-ui/react"
+import React, { useEffect, useState } from "react"
+import { verifyTokenFetch } from "../../services/token"
+import { ModalGeneric } from "./Modal"
+import Step from "../../models/Steps"
+import { getStepsById, updateStep } from "../../services/steps"
+import User from "../../models/User"
+import { createUserStep, deleteUserStep, getAllUsers } from "../../services/users"
+import { CloseIcon } from "@chakra-ui/icons"
+import { StepUser } from "../../interfaces/stepInterface"
 
 interface UpdateStep {
     step: Step
 }
 
 export const ModalUpdateStep = ({ step }: UpdateStep) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const [name, setName] = useState(step.name)
     const [endingDate, setEndingDate] = useState(new Date(step.endingDate))
     const [objective, setObjective] = useState(step.objective)
@@ -26,17 +25,17 @@ export const ModalUpdateStep = ({ step }: UpdateStep) => {
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         // Atualizar o estado com o novo valor do input
-        setName(event.target.value);
-    };
+        setName(event.target.value)
+    }
     const handleEndingDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         // Atualizar o estado com o novo valor do input
         let endingDateChange = new Date(event.target.value)
-        setEndingDate(endingDateChange);
-    };
+        setEndingDate(endingDateChange)
+    }
     const handleObjectiveChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         // Atualizar o estado com o novo valor do input
-        setObjective(event.target.value);
-    };
+        setObjective(event.target.value)
+    }
     const handlePriorityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {        
         //valores de prioridade
         setPriority(event.target.value)
@@ -48,34 +47,39 @@ export const ModalUpdateStep = ({ step }: UpdateStep) => {
         e.preventDefault()
         await verifyTokenFetch()
 
-        if (!name || !endingDate || !objective || !priority || (responsibleList.length === 0)) { //Verificar
-            alert('Preencha os campos')
-            return
-        }
-        
-        const response = await updateStep(step.id, name, step.endDate, endingDate, 
-            step.process_id, objective, priority, step.order) //Atualiza a etapa com os dados rebidos 
-        
-        for(const user of step.users){ //Deleta todos os usuario relacionados a etapa
-            await deleteUserStep(user.user_id, step.id);
-        }
+        try{
 
-        const userStepList = new Array<StepUser>()
-        responsibleList.forEach(async (user: User) => { //Cria usuarios relacionados a etapa
-            await createUserStep(user.id, step.id)
-            const userStep: StepUser = {
-            user_id: user.id,
-            step_id: step.id,
-            user: user
+            if (!name || !endingDate || !objective || !priority || (responsibleList.length === 0)) { //Verificar
+                alert('Preencha os campos')
+                return
             }
-            userStepList.push(userStep)
-        })
+            
+            const response = await updateStep(step.id, name, step.endDate, endingDate, 
+                step.process_id, objective, priority, step.order) //Atualiza a etapa com os dados rebidos 
+            
+            for(const user of step.users){ //Deleta todos os usuario relacionados a etapa
+                await deleteUserStep(user.user_id, step.id)
+            }
 
-        if (response.ok) { //Se der certo ele passa pra dentro do if
+            const userStepList = new Array<StepUser>()
+            responsibleList.forEach(async (user: User) => { //Cria usuarios relacionados a etapa
+                await createUserStep(user.id, step.id)
+                const userStep: StepUser = {
+                user_id: user.id,
+                step_id: step.id,
+                user: user
+                }
+                userStepList.push(userStep)
+            })
+
+            if (response.ok) { //Se der certo ele passa pra dentro do if
+                //Talvez colocar algum popup dizendo que as alterações foram feitas
+            }
+        }catch(e){
+            console.log(e)
+            
+        }finally{
             onClose()
-            await sleep(500)
-            window.location.reload();
-            //Talvez colocar algum popup dizendo que as alterações foram feitas
         }
 
     }
@@ -99,8 +103,13 @@ export const ModalUpdateStep = ({ step }: UpdateStep) => {
             if (listOfUsers) {
                 setUsersList(listOfUsers)
             }
-        })();
-    }, [])
+            const stepData = await getStepsById(step.id) //Função para buscar os dados da etapa
+            if (stepData && stepData.users) {
+                setResponsibleList(stepData.users.map(userStep => userStep.user)) //Define a lista de responsáveis com os usuários retornados
+            }
+            
+        })()
+    }, [step])
 
 
 
@@ -184,5 +193,5 @@ export const ModalUpdateStep = ({ step }: UpdateStep) => {
             </ModalGeneric>
         </>
 
-    );
-};
+    )
+}

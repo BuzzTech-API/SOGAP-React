@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getAllProcess, getProcessById } from "../services/process";
 import Process from "../models/Process";
-import { Box, Center, Flex, Grid, Heading, Text  } from "@chakra-ui/react";
+import { Box, Center, Flex, Grid, Heading, Spacer, Text  } from "@chakra-ui/react";
 import Step from "../models/Steps";
 import { CardStep } from "../components/Card/cardStep";
 import { CardBase } from "../components/Card/cardBase";
 import { ModalEtapaForm } from "../components/Modal/ModalEtapaForm";
 import SideBar from "../components/SideBar/SideBar";
 import VisualizarEtapa from "../components/VizualizarEtapa";
+import { ModalUpdateProcess } from "../components/Modal/ModalEditarProcesso";
 
 
 
@@ -72,6 +73,7 @@ export const ShowProcess = ()=>{
                 </Heading>
                 <Text>{process.description}</Text>
             </Flex>
+            <Spacer/>
             <Flex flexDirection='column'>
                 <Box bg={'#D9D9D9'} textColor={'#000'} fontSize={'1.5rem'} textAlign={'center'} borderRadius={'1rem'} padding={'0.2rem'}>
                 {process.status}
@@ -79,7 +81,8 @@ export const ShowProcess = ()=>{
                 <Text
                 >Objetivo: {process.objective}
                 </Text>
-            </Flex>
+                <ModalUpdateProcess />
+            </Flex>          
         </Flex>
     </Box>
     <Flex
