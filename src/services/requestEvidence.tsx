@@ -1,3 +1,4 @@
+import { RequestEvidenceInterface } from "../interfaces/requestEvidenceInterface";
 import Evidence from "../models/Evidence";
 import RequestForEvidence from "../models/RequestForEvidence";
 import { formatData } from "./formatDate";
@@ -60,3 +61,44 @@ export const createRequestEvidence = async (
         return null
       }
   }
+
+
+  export const getRequestEvidenceById = async (id: number) => {
+    const token = localStorage.getItem('access_token');
+    const response = await fetch(`http://localhost/api/request_for_evidence/${id}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }
+    })
+  
+    if (response.ok) {
+      const content: RequestEvidenceInterface = await response.json()
+  
+      const evidencesList = new Array<Evidence>()
+      if (content.evidences !== undefined) {
+        content.evidences.forEach(element => {
+          evidencesList.push(element)
+        })
+      }
+  
+      const requestEvidence = new RequestForEvidence(
+        content.id,
+        content.requiredDocument,
+        content.description,
+        content.step_id,
+        content.user_id,
+        content.evidenceValidationDate,
+        content.deliveryDate,
+        content.is_validated,
+        content.is_actived,
+        evidencesList
+      )
+  
+  
+      return requestEvidence
+    } else {
+      return null
+    }
+  }  
