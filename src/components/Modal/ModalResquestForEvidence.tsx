@@ -2,6 +2,7 @@ import { Box, Button, useDisclosure, Text, Heading, Center } from "@chakra-ui/re
 import { ModalGeneric } from "./Modal"
 import RequestForEvidence from "../../models/RequestForEvidence"
 import { ModalUploadEvidence } from "../UploadEvidence"
+import { ModalUpdateRequestEvidence } from "./ModalEditarRequisiçãoEvidencia"
 
 interface ViewRequestI{
     request: RequestForEvidence,
@@ -46,6 +47,7 @@ export const ViewRequest  =({request, process_id}:ViewRequestI)=>{
             <Box>
                 <ModalUploadEvidence idRequestForEvidence={request.id} idProcess={process_id} />
             </Box>
+            <ModalUpdateRequestEvidence requestEvidence={request}/>
         </ModalGeneric>
         </>
     )

@@ -84,7 +84,7 @@ export const ModalUpdateProcess = () => {
         }))
     }
 
-        //Função para lidar com mudança no item de "Prioridade"
+        //Função para lidar com mudança no item de "Status"
         const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
             setFormData((prevData) => ({
             ...prevData,
@@ -170,7 +170,7 @@ export const ModalUpdateProcess = () => {
                     value={formData.description}
                     onChange={handleChange} />
 
-                    <FormLabel pt={3} color='white'>Otivo</FormLabel>
+                    <FormLabel pt={3} color='white'>Objetivo</FormLabel>
                     <Input 
                     bg='white' 
                     textColor={'black'} 
