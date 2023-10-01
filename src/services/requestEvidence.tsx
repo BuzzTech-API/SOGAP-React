@@ -102,3 +102,39 @@ export const createRequestEvidence = async (
       return null
     }
   }  
+
+  export const updateRequestEvidence = async (
+    requiredDocument: string,
+    description: string,
+    step_id: number,
+    user_id: number,
+    evidenceValidationDate: string,
+    deliveryDate: string,
+    id: number
+  ) => {
+  
+    const bodyJson = {
+        "requiredDocument": requiredDocument,
+        "description": description,
+        "step_id": step_id,
+        "user_id": user_id,
+        "evidenceValidationDate": evidenceValidationDate,
+        "deliveryDate": deliveryDate,
+        "is_validated": true,
+        "is_actived": true,
+        "id": id,
+      }
+      
+      const token = localStorage.getItem('access_token');
+      const response = await fetch(`http://localhost/api/request_for_evidence/`, {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+    
+        body: JSON.stringify(bodyJson)
+      })
+      return response
+  }
