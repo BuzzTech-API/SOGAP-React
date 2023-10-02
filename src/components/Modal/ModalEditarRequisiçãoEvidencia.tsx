@@ -7,7 +7,7 @@ import { getAllUsers } from "../../services/users"
 import RequestForEvidence from "../../models/RequestForEvidence"
 import { formatData } from "../../services/formatDate"
 import { UpdateRequestEvidenceInterface } from "../../interfaces/requestEvidenceInterface"
-import { getRequestEvidenceById } from "../../services/requestEvidence"
+import { getRequestEvidenceById, updateRequestEvidence } from "../../services/requestEvidence"
 
 interface UpdateRequestEvidence {
     requestEvidence: RequestForEvidence
@@ -16,9 +16,7 @@ interface UpdateRequestEvidence {
 export const ModalUpdateRequestEvidence = ({ requestEvidence }: UpdateRequestEvidence) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [usersList, setUsersList] = useState(new Array<User>())
-    const [requestForEvidence, setRequestForEvidence] = useState(new RequestForEvidence())
     const [responsibleName, setResponsibleName] = useState('')
-    const [user_id, setUserID] = useState(0)
 
     
     useEffect(() => {
@@ -31,8 +29,6 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence }: UpdateRequestEvi
             if(requestEvidence){
                 const reqEvidence = await getRequestEvidenceById(requestEvidence.id)
                 if(reqEvidence){
-                    setRequestForEvidence(reqEvidence)
-                    setUserID(reqEvidence.user_id)
                     setFormData({
                         requiredDocument: reqEvidence.requiredDocument,
                         description: reqEvidence.description,
@@ -44,7 +40,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence }: UpdateRequestEvi
                         is_actived: true,
                         id: requestEvidence.id
                     })
-                const responsibleUser = usersList.find(user => 
+                const responsibleUser = listOfUsers.find(user => 
                     user.id === reqEvidence.user_id)
                 if(responsibleUser){
                     setResponsibleName(responsibleUser.name)
@@ -54,7 +50,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence }: UpdateRequestEvi
 
             
         })()
-    }, [requestEvidence, usersList])
+    }, [requestEvidence])
 
 
 
@@ -81,8 +77,13 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence }: UpdateRequestEvi
 
 
     const handleChangeResponsible = (e:React.ChangeEvent<HTMLSelectElement>) => {
+        const newUserID = Number.parseInt(e.target.value.split(':')[0])
         setResponsibleName(e.target.value)
-        setUserID(Number.parseInt(e.target.value.split(':')[0]))
+        setFormData((prevData) => ({
+            ...prevData,
+            user_id: newUserID,
+        }))
+
     }
 
 
@@ -92,40 +93,13 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence }: UpdateRequestEvi
         await verifyTokenFetch()
 
         try{
-            console.log(formData);
-            console.log(responsibleName);
-            console.log(user_id);
-            console.log(requestForEvidence);
             
-            
-            
-
-            /*if () { //Verificar
-                alert('Preencha os campos')
-                return
-            }*/
-            /*
-            const response = await updateStep(step.id, name, step.endDate, endingDate, 
-                step.process_id, objective, priority, step.order) //Atualiza a etapa com os dados rebidos 
-            
-            for(const user of step.users){ //Deleta todos os usuario relacionados a etapa
-                await deleteUserStep(user.user_id, step.id)
-            }
-
-            const userStepList = new Array<StepUser>()
-            responsibleList.forEach(async (user: User) => { //Cria usuarios relacionados a etapa
-                await createUserStep(user.id, step.id)
-                const userStep: StepUser = {
-                user_id: user.id,
-                step_id: step.id,
-                user: user
-                }
-                userStepList.push(userStep)
-            })
+            const response = await updateRequestEvidence(formData) //Atualiza a etapa com os dados rebidos 
 
             if (response.ok) { //Se der certo ele passa pra dentro do if
                 //Talvez colocar algum popup dizendo que as alterações foram feitas
-            }*/
+            }
+
         }catch(e){
             console.log(e)
             
@@ -147,7 +121,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence }: UpdateRequestEvi
             type="submit" onClick={onOpen}
             >Editar</Button>
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem">
-                <form onSubmit={handleSubmit}>
+                <form  onSubmit={handleSubmit}>
                     <FormLabel textAlign="center" fontSize="large" color='white'><strong>Edição de Requisição de Evidência</strong></FormLabel>
 
                     <FormLabel pt={3} color='white'>Documento requerido</FormLabel>
@@ -199,7 +173,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence }: UpdateRequestEvi
                     </Select>
 
                     <Button display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='black' colorScheme="#58595B" width='100%' type="submit">Confirmar</Button>
-                </form>
+                </form >
             </ModalGeneric>
         </>
 

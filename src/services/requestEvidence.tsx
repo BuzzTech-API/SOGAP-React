@@ -1,4 +1,4 @@
-import { RequestEvidenceInterface } from "../interfaces/requestEvidenceInterface";
+import { RequestEvidenceInterface, UpdateRequestEvidenceInterface } from "../interfaces/requestEvidenceInterface";
 import Evidence from "../models/Evidence";
 import RequestForEvidence from "../models/RequestForEvidence";
 import { formatData } from "./formatDate";
@@ -103,30 +103,9 @@ export const createRequestEvidence = async (
     }
   }  
 
-  export const updateRequestEvidence = async (
-    requiredDocument: string,
-    description: string,
-    step_id: number,
-    user_id: number,
-    evidenceValidationDate: string,
-    deliveryDate: string,
-    id: number
-  ) => {
-  
-    const bodyJson = {
-        "requiredDocument": requiredDocument,
-        "description": description,
-        "step_id": step_id,
-        "user_id": user_id,
-        "evidenceValidationDate": evidenceValidationDate,
-        "deliveryDate": deliveryDate,
-        "is_validated": true,
-        "is_actived": true,
-        "id": id,
-      }
-      
+  export const updateRequestEvidence = async (formData: UpdateRequestEvidenceInterface) => {
       const token = localStorage.getItem('access_token');
-      const response = await fetch(`http://localhost/api/request_for_evidence/`, {
+            const response = await fetch(`http://localhost/api/request_for_evidence/`, {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
@@ -134,7 +113,7 @@ export const createRequestEvidence = async (
           'Content-Type': 'application/json'
         },
     
-        body: JSON.stringify(bodyJson)
+        body: JSON.stringify(formData)
       })
       return response
   }
