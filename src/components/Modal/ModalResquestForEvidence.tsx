@@ -2,6 +2,11 @@ import { Box, Button, useDisclosure, Text, Heading, Center } from "@chakra-ui/re
 import { ModalGeneric } from "./Modal"
 import RequestForEvidence from "../../models/RequestForEvidence"
 import { ModalUploadEvidence } from "../UploadEvidence"
+import { ModalUpdateRequestEvidence } from "./ModalEditarRequisiçãoEvidencia"
+import { formatData } from "../../services/formatDate"
+import { useEffect, useState } from "react"
+import { verifyTokenFetch } from "../../services/token"
+import { getAllUsers } from "../../services/users"
 
 interface ViewRequestI{
     request: RequestForEvidence,
@@ -9,6 +14,24 @@ interface ViewRequestI{
 }
 export const ViewRequest  =({request, process_id}:ViewRequestI)=>{
     const {isOpen, onOpen, onClose} = useDisclosure()
+    const [responsibleName, setResponsibleName] = useState('')
+
+    useEffect(() => {
+        (async () => {
+            await verifyTokenFetch()
+            const listOfUsers = await getAllUsers()
+            if (listOfUsers) {
+                const responsibleUser = listOfUsers.find(user => 
+                    user.id === request.user_id)
+                if(responsibleUser){
+                    setResponsibleName(responsibleUser.name)}
+            }
+            
+ 
+        })()
+    }, [request])
+
+
     return(
         <>
         <Center 
@@ -42,10 +65,13 @@ export const ViewRequest  =({request, process_id}:ViewRequestI)=>{
                 <p>
                     {request.description}
                 </p>
+                <Heading size={'md'}>Data de entrega: {formatData(new Date(request.deliveryDate))}</Heading>
+                <Heading size={'md'}>Responsável: {responsibleName}</Heading>
             </Box>
             <Box>
                 <ModalUploadEvidence idRequestForEvidence={request.id} idProcess={process_id} />
             </Box>
+            <ModalUpdateRequestEvidence requestEvidence={request}/>
         </ModalGeneric>
         </>
     )

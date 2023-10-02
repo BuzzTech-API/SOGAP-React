@@ -1,4 +1,4 @@
-import { Button, Heading, IconButton, useDisclosure } from "@chakra-ui/react"
+import { Heading, IconButton, useDisclosure } from "@chakra-ui/react"
 import { ModalGeneric } from "./Modal"
 import EtapaForm from "../EtapaForm"
 import { AddIcon } from "@chakra-ui/icons"
