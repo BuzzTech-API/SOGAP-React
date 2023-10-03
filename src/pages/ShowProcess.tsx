@@ -10,6 +10,7 @@ import { ModalEtapaForm } from "../components/Modal/ModalEtapaForm";
 import SideBar from "../components/SideBar/SideBar";
 import VisualizarEtapa from "../components/VizualizarEtapa";
 import { ModalUpdateProcess } from "../components/Modal/ModalEditarProcesso";
+import { BtnDeleteEvidence } from "../components/BtnDeleteEvidence";
 
 
 
@@ -82,6 +83,7 @@ export const ShowProcess = ()=>{
                 >Objetivo: {process.objective}
                 </Text>
                 <ModalUpdateProcess />
+                <BtnDeleteEvidence process={process} />
             </Flex>          
         </Flex>
     </Box>
