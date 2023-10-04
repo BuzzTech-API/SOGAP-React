@@ -5,7 +5,7 @@ export const refreshToken = async (authenticated: Authenticated) => {
   const refresh_token = localStorage.getItem('refresh_token')
   if (refresh_token) {
     try {
-      const response = await fetch(`http://localhost/api/refresh_token`, {
+      const response = await fetch(`http://localhost:8000/refresh_token`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -38,7 +38,7 @@ export const verifyToken = async (authenticated: Authenticated) => {
   const refresh_token = localStorage.getItem('refresh_token')
   if (token) {
     try {
-      const response = await fetch(`http://localhost/api/users/get/me`, {
+      const response = await fetch(`http://localhost:8000/users/get/me`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -69,7 +69,7 @@ export const verifyToken = async (authenticated: Authenticated) => {
 }
 
 export const loginToken = async (email: string, senha: string) => {
-  const response = await fetch(`http://localhost/api/login/`, {
+  const response = await fetch(`http://localhost:8000/login/`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -89,7 +89,7 @@ export const refreshTokenFetch = async () => {
   const refresh_token = localStorage.getItem('refresh_token')
   if (refresh_token) {
     try {
-      const response = await fetch(`http://localhost/api/refresh_token`, {
+      const response = await fetch(`http://localhost:8000/refresh_token`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -119,7 +119,7 @@ export const verifyTokenFetch = async () => {
   const refresh_token = localStorage.getItem('refresh_token')
   if (token) {
     try {
-      const response = await fetch(`http://localhost/api/users/get/me`, {
+      const response = await fetch(`http://localhost:8000/users/get/me`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',

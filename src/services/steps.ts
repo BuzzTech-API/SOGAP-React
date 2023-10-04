@@ -25,7 +25,7 @@ export const createStep = async (name: string,
     "is_active": true
   }
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost/api/steps/`, {
+  const response = await fetch(`http://localhost:8000/steps/`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -87,7 +87,7 @@ export const updateStep = async (
     }
     
     const token = localStorage.getItem('access_token');
-    const response = await fetch(`http://localhost/api/steps/`, {
+    const response = await fetch(`http://localhost:8000/steps/`, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -103,7 +103,7 @@ export const updateStep = async (
 
 export const getStepsById = async (id: number) => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost/api/steps/${id}`, {
+  const response = await fetch(`http://localhost:8000/steps/${id}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
