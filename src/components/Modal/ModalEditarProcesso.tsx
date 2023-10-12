@@ -140,8 +140,8 @@ export const ModalUpdateProcess = () => {
     return (
 
         <>
-            <Button display="flex" mt={3} bg='#53C4CD' variant='solid' 
-            textColor='black' colorScheme="#58595B" width='100%' 
+            <Button bg='#53C4CD' variant='solid' 
+            textColor='white' colorScheme="#58595B" width='50%' 
             type="submit" onClick={onOpen}
             >Editar</Button>
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem">

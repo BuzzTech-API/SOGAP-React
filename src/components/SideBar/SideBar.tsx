@@ -9,7 +9,7 @@ import User from "../../models/User"
 import FormP from "../FormProcess"
 import { getAllProcess } from "../../services/process"
 import { Link, Navigate} from "react-router-dom"
-import { DrawerCadastro } from "../Cadastro"
+import { DrawerCadastro } from "../Drawer/Cadastro"
 
 interface sideBarI{
     processes: Array<Process>,
