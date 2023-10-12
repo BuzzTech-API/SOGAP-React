@@ -15,7 +15,6 @@ import {
 import { useState } from "react";
 import { loginToken, verifyCode } from "./../services/token";
 import { Navigate } from 'react-router-dom';
-
 import QRCode from 'qrcode.react';
 import { ModalGeneric } from '../components/Modal/Modal';
 
@@ -46,8 +45,6 @@ export const Login = () => {
     const [token, setToken] = useState(localStorage.getItem('access_token'))
     const [refresh_token, setRefresh_token] = useState(localStorage.getItem('refresh_token'))
     const handleClick = () => setShow(!show)
-    console.log(window.location.origin);
-    
     const submit = async (e: any) => {
         e.preventDefault();
 
@@ -68,9 +65,16 @@ export const Login = () => {
             await verifyCode(verificationCode, email)
         } catch (error) {
             
-        } finally{
-            setToken(localStorage.getItem('access_token'))
-            setRefresh_token(localStorage.getItem('refresh_token'))
+        }finally{
+            try {
+                onOpen()
+            } catch (error) {
+                
+            }finally{
+
+                setToken(localStorage.getItem('access_token'))
+                setRefresh_token(localStorage.getItem('refresh_token'))
+            }
         }
     }
 

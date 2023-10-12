@@ -1,6 +1,6 @@
 
-import { useDisclosure, FormLabel, Input, Textarea, Button, Select, IconButton } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { useDisclosure, FormLabel, Input, Textarea, Button, Select, IconButton, Center } from "@chakra-ui/react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import User from "../../models/User";
 import { createRequestEvidence } from "../../services/requestEvidence";
 import { refreshTokenFetch, verifyTokenFetch } from "../../services/token";
@@ -8,15 +8,17 @@ import { getAllUsers } from "../../services/users";
 import { ModalGeneric } from "./Modal";
 import { AddIcon } from "@chakra-ui/icons";
 import RequestForEvidence from "../../models/RequestForEvidence";
+import Step from "../../models/Steps";
 
 interface requestEvidence {
-    step_id: number
-    setRequests: React.Dispatch<React.SetStateAction<RequestForEvidence[]>>
-    requests: Array<RequestForEvidence>
+    step: Step,
+    setStep: React.Dispatch<SetStateAction<Step>>,
+    requests: RequestForEvidence[],
+    setRequests: React.Dispatch<SetStateAction<RequestForEvidence[]>>
 }
 
 
-export const ModalSolicitaEvidencia = ({ step_id, setRequests, requests }: requestEvidence) => {
+export const ModalSolicitaEvidencia = ({ step, setStep, requests, setRequests }: requestEvidence) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [requiredDocument, setRequiredDocument] = useState('')
     const [description, setDescription] = useState('')
@@ -40,10 +42,10 @@ export const ModalSolicitaEvidencia = ({ step_id, setRequests, requests }: reque
     };
     const handleChangeResponsible = (e: React.ChangeEvent<HTMLSelectElement>) => {
 
-        
-        
+
+
         setResponsibleName(e.target.value)
-        setUserID(Number.parseInt(e.target.value.split(':')[0]))
+        setUserID(Number.parseInt(responsibleName))
 
     }
 
@@ -52,10 +54,13 @@ export const ModalSolicitaEvidencia = ({ step_id, setRequests, requests }: reque
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         const deliveryDate = new Date()
         e.preventDefault();
+        console.log(responsibleName);
         await verifyTokenFetch()
-        const newRequest =await createRequestEvidence(requiredDocument, description, step_id, user_id, evidenceValidationDate, deliveryDate)
+        const newRequest = await createRequestEvidence(requiredDocument, description, step.id, Number.parseInt(responsibleName), evidenceValidationDate, deliveryDate)
         if (newRequest) {
-            setRequests(requests.concat(newRequest))   
+            step.requests.push(newRequest)
+            setStep(step)
+            setRequests(requests.concat(newRequest))
             onClose()
         }
         //window.location.reload();
@@ -78,23 +83,25 @@ export const ModalSolicitaEvidencia = ({ step_id, setRequests, requests }: reque
     return (
 
         <>
-            <IconButton margin=''
-                aria-label="Btn Add Processo"
-                bg="#58595B"
-                color="#FFF"
-                borderRadius='1rem'
-                padding='1rem'
-                size={'lg'}
-                width={'8rem'}
-                icon={<AddIcon h={'10'} w={'20'} />}
-                _hover={{ color: "#58595B", bg: "#FFF" }}
-                onClick={onOpen}
-            ></IconButton>
+            <Center>
+                <IconButton marginTop='1rem'
+                    aria-label="Btn Add Processo"
+                    bg="#36E3D3"
+                    color="#FFF"
+                    borderRadius='3rem'
+                    padding='1rem'
+                    size={'lg'}
+                    width={'2rem'}
+                    icon={<AddIcon h={'2rem'} w={'2rem'} />}
+                    _hover={{ color: "#58595B", bg: "#FFF" }}
+                    onClick={onOpen}
+                ></IconButton>
+            </Center>
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem">
                 <form onSubmit={handleSubmit}>
                     <FormLabel textAlign="center" fontSize="large" color='white'><strong>Solicitação de evidência</strong></FormLabel>
                     <FormLabel pt={3} color='white'>Documento requerido</FormLabel>
-                    <Input bg='white' textColor={'black'} placeholder='Digite o documento requerido' size='md' type="text" onChange={handleRequiredDocumentChange} />
+                    <Input  bg='white' textColor={'black'} placeholder='Digite o documento requerido' size='md' type="text" onChange={handleRequiredDocumentChange} />
 
                     <FormLabel pt={3} color='white'>Descrição</FormLabel>
                     <Textarea bg='white' textColor={'black'} placeholder='Descreva a solicitação' onChange={handleDescriptionChange} />
@@ -112,10 +119,10 @@ export const ModalSolicitaEvidencia = ({ step_id, setRequests, requests }: reque
                         textColor={'black'}
                         bg="#D9D9D9"
                         value={responsibleName}>
-                            <option value=""></option>
+                        <option value=""></option>
                         {usersList.map((user: User) => {
-                            
-                            return <option value={user.id+": "+user.name} key={user.id}>{user.id+": "+user.name}</option>
+
+                            return <option value={user.id} key={user.id}>{user.name + ": " + user.team}</option>
                         })}
                     </Select>
 

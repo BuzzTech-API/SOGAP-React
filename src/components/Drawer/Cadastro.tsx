@@ -22,8 +22,8 @@ import {
 
 } from '@chakra-ui/react'
 import { useState } from "react";
-import { refreshTokenFetch } from "../services/token";
-import { createUser } from '../services/users';
+import { refreshTokenFetch } from "../../services/token";
+import { createUser } from '../../services/users';
 import { AddIcon } from '@chakra-ui/icons';
 import React from 'react';
 
@@ -62,10 +62,9 @@ export function DrawerCadastro() {
     
   
     return (
-      <><Center>
-      
-        <Button leftIcon={<AddIcon />} bg={'#54c5ce'} onClick={onOpen} width={'70%'}>
-          Cadastrar Usuário
+      <><Center width={'100%'}>
+        <Button bg={'#58595B'} _hover={{background: '#FFF', color:'#58595B' }} color={'#FFF'} onClick={onOpen} width={'100%'}>
+        Cadastrar Usuário
         </Button>
       </Center>
         <Drawer

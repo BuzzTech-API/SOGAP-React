@@ -36,8 +36,8 @@ export const BtnDeleteEvidence = ({process}: DeleteProcessInterface) => {
 
     return(
         <>
-        <Button display="flex" mb={3} bg='red' variant='solid' 
-            textColor='white' colorScheme="#58595B" width='100%' 
+        <Button bg='red' variant='solid' 
+            textColor='white' colorScheme="#58595B" width='50%' 
             type="submit" onClick={onOpen}
             >Deletar</Button>
 

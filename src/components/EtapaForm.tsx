@@ -113,14 +113,14 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
         <FormLabel className="Subtitulo" color="#ffff">
           Nome da Etapa
         </FormLabel>
-        <Input type="text" background="white" color="#333" onChange={handleNameChange} borderRadius={'2rem'} />
+        <Input maxLength={64} type="text" background="white" color="#333" onChange={handleNameChange} borderRadius={'2rem'} />
       </FormControl>
 
       <FormControl id="objetivo" mb={4}>
         <FormLabel className="Subtitulo" color="#ffff">
           Objetivo
         </FormLabel>
-        <Textarea background="white" color="#333" onChange={handleObjectiveChange} borderRadius={'2rem'} />
+        <Textarea maxLength={300} background="white" color="#333" onChange={handleObjectiveChange} borderRadius={'2rem'} />
       </FormControl>
 
       <FormControl className="Subtitulo" color="#ffff" id="previsaoTermino" mb={4}>
