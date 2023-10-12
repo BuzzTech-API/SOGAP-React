@@ -17,9 +17,6 @@ import { loginToken, verifyCode } from "./../services/token";
 import { Navigate } from 'react-router-dom';
 import { ModalGeneric } from '../components/Modal/Modal';
 
-import QRCode from 'qrcode.react';
-import { ModalGeneric } from '../components/Modal/Modal';
-
 
 // const QRCodeGenerator: React.FC = () => {
 //   const [text, setText] = useState<string>(''); // O texto que você deseja codificar
@@ -43,7 +40,6 @@ export const Login = () => {
     const [senha, setSenha] = useState('')
     const [verificationCode, setVerificationCode] = useState('')
     const [is_enable, setIs_enable] = useState(false)
-    const { isOpen, onOpen, onClose} = useDisclosure()
     const [token, setToken] = useState(localStorage.getItem('access_token'))
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [refresh_token, setRefresh_token] = useState(localStorage.getItem('refresh_token'))
@@ -68,9 +64,16 @@ export const Login = () => {
             await verifyCode(verificationCode, email)
         } catch (error) {
             
-        } finally{
-            setToken(localStorage.getItem('access_token'))
-            setRefresh_token(localStorage.getItem('refresh_token'))
+        }finally{
+            try {
+                onOpen()
+            } catch (error) {
+                
+            }finally{
+
+                setToken(localStorage.getItem('access_token'))
+                setRefresh_token(localStorage.getItem('refresh_token'))
+            }
         }
     }
 
