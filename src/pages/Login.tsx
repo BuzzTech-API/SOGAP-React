@@ -64,16 +64,9 @@ export const Login = () => {
             await verifyCode(verificationCode, email)
         } catch (error) {
             
-        }finally{
-            try {
-                onOpen()
-            } catch (error) {
-                
-            }finally{
-
-                setToken(localStorage.getItem('access_token'))
-                setRefresh_token(localStorage.getItem('refresh_token'))
-            }
+        } finally{
+            setToken(localStorage.getItem('access_token'))
+            setRefresh_token(localStorage.getItem('refresh_token'))
         }
     }
 
