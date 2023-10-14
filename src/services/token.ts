@@ -69,7 +69,7 @@ export const verifyToken = async (authenticated: Authenticated) => {
 }
 
 export const loginToken = async (email: string, senha: string) => {
-  const response = await fetch(`http://localhost:8000/login/`, {
+  const response = await fetch(`http://localhost:8000/login`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -79,6 +79,10 @@ export const loginToken = async (email: string, senha: string) => {
 
   });
   const data = await response.json()
+  if(data.is_enabled2fa){
+    localStorage.setItem('login_token',data.login_token)
+    return false
+  }
   localStorage.setItem('access_token', data.access_token)
   localStorage.setItem('refresh_token', data.refresh_token)
 }
@@ -104,6 +108,40 @@ export const refreshTokenFetch = async () => {
       }
       else {
         localStorage.removeItem('refresh_token');
+      }
+    } catch (error) {
+      // Se a verificação falhar (por exemplo, token inválido), você pode lidar com isso aqui
+      console.error('Erro na verificação do token:', error);
+    }
+  }
+}
+
+
+export const verifyCode = async (verificationCode: string, email: string) => {
+  const login_token = localStorage.getItem('login_token')
+
+  const bodyJson = {
+    "verification_code": verificationCode,
+    "email": email
+  }
+
+  if (login_token) {
+    try {
+      const response = await fetch(`http://localhost:8000/verify-2fa`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${login_token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyJson)
+      });
+
+      if (response.status === 200) {
+        const data = await response.json()
+        localStorage.setItem('access_token', data.access_token)
+        localStorage.setItem('login_token', data.login_token)
+        localStorage.removeItem('login_token');
       }
     } catch (error) {
       // Se a verificação falhar (por exemplo, token inválido), você pode lidar com isso aqui
