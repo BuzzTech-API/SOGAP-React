@@ -1,5 +1,5 @@
 
-import { useDisclosure, FormLabel, Input, Textarea, Button, Select, FormControl, Box, Grid, IconButton, Tag, TagLabel, TagRightIcon, TagCloseButton, Flex } from "@chakra-ui/react"
+import { useDisclosure, FormLabel, Input, Textarea, Button, Select, FormControl, Box, Tag, TagLabel, TagCloseButton, Flex } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
 import { verifyTokenFetch } from "../../services/token"
 import { ModalGeneric } from "./Modal"

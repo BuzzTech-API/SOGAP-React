@@ -16,12 +16,27 @@ const theme = extendTheme({
     normal: 400, // O peso normal da fonte (não negrito)
     bold: 1000, // O peso da fonte em negrito
   },
-});
+  components: {
+    Table: {
+      variants: {
+        striped: {
+          tbody: {
+            "tr:nth-of-type(odd)": {
+              background: "#444", // Aplica a cor de strip à linha ímpar
+            },
+          },
+        },
+      },
+    },
+  },
+}
+);
+
 
 root.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      <App/>
+      <App />
     </ChakraProvider>
   </React.StrictMode>
 );

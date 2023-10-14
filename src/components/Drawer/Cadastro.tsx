@@ -145,7 +145,7 @@ export function DrawerCadastro() {
               </Stack>
             </DrawerBody>
   
-            <DrawerFooter borderTopWidth='1px'>
+            <DrawerFooter borderTopWidth='1px' display={'flex'} justifyContent={'center'}>
               <Button bg={'red'} textColor={'white'} mr={3} onClick={onClose}>
                 Cancelar
               </Button>

@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Heading,
   FormControl,
   FormLabel,
   Input,
   Textarea,
   Button,
-  Flex,
-  IconButton,
   Select,
-  Center,
-  Grid,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  Flex,
 } from '@chakra-ui/react';
 import User from '../models/User';
 import { createUserStep, getAllUsers } from '../services/users';
 import Step from '../models/Steps';
-import { CloseIcon } from '@chakra-ui/icons';
 import { createStep } from '../services/steps';
 import { verifyTokenFetch } from '../services/token';
 import { StepUser } from '../interfaces/stepInterface';
@@ -80,13 +78,13 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
     }
     //Fetch backEnd
   };
-  const setResponsible = (user:User) => {
+  const setResponsible = (user: User) => {
     setResponsibleList(responsibleList.concat(user))
   }
 
-  const handleChangeResponsible = (e:React.ChangeEvent<HTMLSelectElement>) => {
-    const newResponsible = usersList.find(user => user.id===Number.parseInt(e.target.value))
-    if(newResponsible){
+  const handleChangeResponsible = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newResponsible = usersList.find(user => user.id === Number.parseInt(e.target.value))
+    if (newResponsible) {
       setResponsible(newResponsible)
     }
 
@@ -145,41 +143,50 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
         >
           <option value=""></option>
           {usersList.map((user: User) => {
-            
+
             return <option key={user.id} value={user.id}>{user.name}</option>
           })}
 
         </Select>
         <Box>
-          <Grid minH={'10rem'} marginLeft='1rem' templateColumns='repeat(2, 1fr)' gap='1.5rem'>
+          <Flex
+            minH={'10rem'}
+            maxWidth={'100%'}
+            marginLeft='1rem'
+            flexDirection='row'
+            gap='1.5rem'
+            flexWrap="wrap"
+            justifyContent="flex-start"
+          >
             {responsibleList.map((responsible: User) => {
               const removeResponsible = () => {
                 setResponsibleList(responsibleList.filter((item) => item !== responsible))
               }
-              return <Box
-                width='15rem'
-                height='3rem'
+              return <Tag
                 bg='#53C4CD'
                 alignContent='center'
-                padding='0.5rem 0.5rem 0.5rem 2rem'
-                borderRadius='2rem'
+                minWidth='5rem'
+                height='3rem'
+                key={responsible.id}
                 marginTop='0.8rem'
                 marginRight='0.5rem'
-                key={responsible.id}>
-                {responsible.name}
-                <IconButton marginLeft='2rem'
+              >
+                <TagLabel>{responsible.name}</TagLabel>
+                <TagCloseButton
+                  width={'2rem'}
+                  height={'2rem'}
                   aria-label="Btn Add Processo"
                   bg="white"
                   color="#58595B"
-                  size='sm'
-                  borderRadius='3rem'
-                  icon={<CloseIcon />}
                   _hover={{ color: "white", bg: "#58595B" }}
                   onClick={removeResponsible}
                 />
-              </Box>
+              </Tag>
+
+
+
             })}
-          </Grid >
+          </Flex >
         </Box>
 
       </FormControl>

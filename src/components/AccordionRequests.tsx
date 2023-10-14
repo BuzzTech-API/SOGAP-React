@@ -6,6 +6,7 @@ import User from "../models/User";
 import Process from "../models/Process";
 import { useEffect, useState } from "react";
 import { verifyTokenFetch } from "../services/token";
+import { formatDateToBrasil } from "../services/formatDate";
 
 interface AccordionI {
   requestForEvidenceI: RequestForEvidence
@@ -82,7 +83,7 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
               color="#FFFFFF"
               alignSelf="stretch"
             >
-              {requestForEvidence.evidences[0].deliveryDate.toString()}
+              {formatDateToBrasil(requestForEvidence.evidences[0].deliveryDate.toString())}
             </Text>
           </Box>
           <Box>
@@ -223,7 +224,7 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
               color="#FFFFFF"
               alignSelf="stretch"
             >
-              {requestForEvidence.deliveryDate.toString()}
+              {formatDateToBrasil(requestForEvidence.deliveryDate.toString())}
             </Text>
           </Box>
           <Text

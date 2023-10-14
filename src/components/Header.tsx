@@ -58,7 +58,6 @@ export const Header = () => {
                 flexDirection={'row'}
                 padding='0.5rem'
                 background="#292A2D"
-                boxShadow={'0 4px 4px 0 rgba(0,0,0,0.25)'}
 
             >
                 <Menu>

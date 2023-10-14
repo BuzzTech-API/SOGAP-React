@@ -20,14 +20,14 @@ import {
   Select,
   Flex,
   useDisclosure,
-  IconButton,
-  Grid
+  Tag,
+  TagCloseButton,
+  TagLabel
 } from '@chakra-ui/react';
-import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import User from "../models/User";
 import { createProcessUser, getAllUsers } from "../services/users";
 import { formatData } from "../services/formatDate";
-import { refreshTokenFetch } from "../services/token";
+import { refreshTokenFetch, verifyTokenFetch } from "../services/token";
 import Process from "../models/Process";
 
 //Interface para manipulação dos dados
@@ -44,21 +44,20 @@ export interface FormDataStructure {
 }
 
 interface IconSettings {
-  widthIcon: number,
-  sizeIcon: string,
-  heightIcon: number,
+  width: string,
   setProcesses: React.Dispatch<React.SetStateAction<Process[]>>
   processes: Array<Process>
 }
 
 //Função Principal
-const FormP = ({ widthIcon, sizeIcon, heightIcon, setProcesses, processes }: IconSettings) => {
+const FormP = ({ width, setProcesses, processes }: IconSettings) => {
 
 
   const [usersList, setUsersList] = useState(new Array<User>())
   const [responsibleList, setResponsibleList] = useState(new Array<User>())
   useEffect(() => {
     (async () => {
+      await verifyTokenFetch()
       const listOfUsers = await getAllUsers()
       if (listOfUsers) {
         setUsersList(listOfUsers)
@@ -133,23 +132,21 @@ const FormP = ({ widthIcon, sizeIcon, heightIcon, setProcesses, processes }: Ico
       console.error("Erro ao enviar dados do Formulário para o backend", error);
 
 
-    }finally{
+    } finally {
       onClose()
     }
   };
 
   //Retorno em HTML do Formulário
   return (<>
-    <IconButton margin=''
+    <Button margin=''
       aria-label="Btn Add Processo"
-      bg="#58595B"
+      bg="#29784E"
       color="white"
-      size={sizeIcon}
-      icon={<AddIcon h={heightIcon} w={widthIcon} />}
-      _hover={{ color: "#58595B", bg: "white" }}
+      _hover={{ color: "#29784E", bg: "white" }}
       onClick={onOpen}
-    >
-    </IconButton>
+    >Novo Processo
+    </Button>
     <Modal size="xxl" isOpen={isOpen} onClose={onClose}>
 
       <ModalOverlay />
@@ -175,6 +172,7 @@ const FormP = ({ widthIcon, sizeIcon, heightIcon, setProcesses, processes }: Ico
                     <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={5}>Título</FormLabel>
                     <Input
                       rounded="100px"
+                      maxLength={60}
                       bg="#D9D9D9"
                       type="text"
                       title="title"
@@ -186,6 +184,7 @@ const FormP = ({ widthIcon, sizeIcon, heightIcon, setProcesses, processes }: Ico
                     <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={5}>Descrição</FormLabel>
                     <Input style={{ height: "100px" }}
                       overflowY="auto"
+                      maxLength={300}
                       rounded="20px"
                       bg="#D9D9D9"
                       type="text"
@@ -201,6 +200,7 @@ const FormP = ({ widthIcon, sizeIcon, heightIcon, setProcesses, processes }: Ico
                       bg="#D9D9D9"
                       type="text"
                       title="objective"
+                      maxLength={200}
                       value={formData.objective}
                       onChange={handleChange}
                     />
@@ -243,36 +243,44 @@ const FormP = ({ widthIcon, sizeIcon, heightIcon, setProcesses, processes }: Ico
 
                       </Select>
                       <Box>
-                        <Grid marginLeft='1rem' templateColumns='repeat(2, 1fr)' gap='1.5rem'>
+                        <Flex
+
+                          maxWidth={'100%'}
+                          marginLeft='1rem'
+                          flexDirection='row'
+                          gap='1.5rem'
+                          flexWrap="wrap"
+                          justifyContent="flex-start"
+                        >
                           {responsibleList.map((responsible: User) => {
                             const removeResponsible = () => {
                               setResponsibleList(responsibleList.filter((item) => item !== responsible))
                             }
-                            return <Box
-                              width='15rem'
-                              height='3rem'
+                            return <Tag
                               bg='#53C4CD'
                               alignContent='center'
-                              padding='0.5rem 0.5rem 0.5rem 2rem'
-                              borderRadius='2rem'
+                              minWidth='5rem'
+                              height='3rem'
+                              key={responsible.id}
                               marginTop='0.8rem'
                               marginRight='0.5rem'
-                              key={responsible.id}
                             >
-                              {responsible.name}
-                              <IconButton marginLeft='2rem'
+                              <TagLabel>{responsible.name}</TagLabel>
+                              <TagCloseButton
+                                width={'2rem'}
+                                height={'2rem'}
                                 aria-label="Btn Add Processo"
                                 bg="white"
                                 color="#58595B"
-                                size='sm'
-                                borderRadius='3rem'
-                                icon={<CloseIcon />}
                                 _hover={{ color: "white", bg: "#58595B" }}
                                 onClick={removeResponsible}
                               />
-                            </Box>
+                            </Tag>
+
+
+
                           })}
-                        </Grid >
+                        </Flex >
                       </Box>
 
                     </FormControl>
