@@ -24,6 +24,7 @@ import RequestForEvidence from "../../models/RequestForEvidence"
 import { AccordionRequests } from "../AccordionRequests"
 import { ModalSolicitaEvidencia } from "../Modal/BtnPedirEvidencia"
 import { ModalUpdateStep } from "../Modal/ModalEditarEtapa"
+import { formatDateToBrasil } from "../../services/formatDate"
 
 interface propsED {
   isOpen: boolean,
@@ -124,7 +125,7 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose }: propsED) => {
                         padding={'0.3rem'}
                         overflow={'hidden'}
                         textAlign={'center'}
-                      >{step.endingDate !== undefined && step.endingDate.toString()}</Box>
+                      >{step.endingDate !== undefined && formatDateToBrasil(step.endingDate.toString())}</Box>
 
                     </Box>
                     <Box

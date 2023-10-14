@@ -1,7 +1,6 @@
-import { Box, Card, Center, Flex, Heading, Spacer, Stack, Text } from "@chakra-ui/react";
+import { Card, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import Step from "../../models/Steps";
-import { CardBase } from "./cardBase";
 import { formatDateToBrasil } from "../../services/formatDate";
 
 interface StepCard {
@@ -12,9 +11,8 @@ interface StepCard {
 
 
 export const CardStep = (stepI: StepCard) => {
-    const [step, setStep] = useState(stepI.step)
+    const [step] = useState(stepI.step)
 
-    const evento = stepI.onClick
     let bgColor: string;
     if (step.priority === 'Alta') {
         bgColor = '#FF0000'
@@ -25,20 +23,22 @@ export const CardStep = (stepI: StepCard) => {
     }
 
     return (
-        <Card background="#414243" onClick={stepI.onClick} boxShadow="base" opacity="0.9" w={'242px'} h={'270px'} maxHeight={'270px'}>
-            <Stack justify="flex-start" align="center" spacing="23px">
+        <Card background="#414243" onClick={stepI.onClick} boxShadow="base" opacity="0.9" w={'15.1rem'} h={'17rem'} maxHeight={'17rem'} borderRadius={'0.5rem'}>
+            <Stack justify="flex-start" align="center" spacing="23px" opacity={'0.9'}>
                 <Stack
                     justify="flex-start"
                     align="center"
                     spacing="34px"
                     height="209.56px"
                     alignSelf="stretch"
+                    opacity={'0.9'}
+                    padding={'0.3rem'}
                 >
                     <Text
-                        fontFamily="Inter"
+                        fontFamily="Poppins"
                         lineHeight="1.43"
                         fontWeight="medium"
-                        fontSize="14px"
+                        fontSize="0.9rem"
                         color="#FFFFFF"
                         alignSelf="stretch"
                         textAlign="center"
@@ -46,10 +46,10 @@ export const CardStep = (stepI: StepCard) => {
                         Etapa {step.order}
                     </Text>
                     <Text
-                        fontFamily="Inter"
+                        fontFamily="Poppins"
                         lineHeight="1.43"
                         fontWeight="bold"
-                        fontSize="14px"
+                        fontSize="0.9rem"
                         color="#FFFFFF"
                         height="50px"
                         alignSelf="stretch"
@@ -58,10 +58,10 @@ export const CardStep = (stepI: StepCard) => {
                         {step.name}
                     </Text>
                     <Text
-                        fontFamily="Inter"
+                        fontFamily="Poppins"
                         lineHeight="1.43"
                         fontWeight="medium"
-                        fontSize="14px"
+                        fontSize="0.9rem"
                         color="#FFFFFF"
                         height="20px"
                         alignSelf="stretch"
@@ -70,10 +70,10 @@ export const CardStep = (stepI: StepCard) => {
                         Prazo
                     </Text>
                     <Text
-                        fontFamily="Inter"
+                        fontFamily="Poppins"
                         lineHeight="1.5"
                         fontWeight="bold"
-                        fontSize="16px"
+                        fontSize="1rem"
                         color="#FFFFFF"
                         height="22px"
                         alignSelf="stretch"
@@ -87,7 +87,7 @@ export const CardStep = (stepI: StepCard) => {
                     bottom={0}
                     paddingX="98px"
                     paddingY="5px"
-                    borderBottomRadius="8px"
+                    borderBottomRadius="0.5rem"
                     direction="row"
                     justify="center"
                     align="center"
@@ -96,7 +96,7 @@ export const CardStep = (stepI: StepCard) => {
                     background={bgColor}
                     margin={0}
                     opacity="0.9"
-                    width={242}
+                    width={'15.1rem'}
                 >
                     <Text
                         fontFamily="Inter"
@@ -106,7 +106,7 @@ export const CardStep = (stepI: StepCard) => {
                         color="#FFFFFF"
                         textAlign="center"
                     >
-                        Baixa
+                        {step.priority}
                     </Text>
                 </Stack>
             </Stack>

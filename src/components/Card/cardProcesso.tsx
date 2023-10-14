@@ -29,7 +29,7 @@ export const CardProcess = (processI: processCardInterface) => {
     }else{
         bgColor='#00750C'
     }
-        return  <CardBase width="20rem" height="25rem" onClickEvent={evento}>
+        return  <CardBase width="20rem" height="23rem" onClickEvent={evento}>
                     <Box flex='1' marginBottom='0rem'>
                         <Box borderBottom='0.2rem solid' borderColor='#FFF' padding='0.4rem'>
                             <Heading textColor='#53C4CD' size='lg' textAlign='center'>Processo #{process.id}</Heading>
@@ -51,7 +51,7 @@ export const CardProcess = (processI: processCardInterface) => {
                     <Box 
                     bg={bgColor} 
                     width='20rem' 
-                    height='4rem' 
+                    height='2rem' 
                     borderRadius='0 0 2rem 2rem' 
                     alignSelf='flex-end'
                     textColor='#FFF'

@@ -14,6 +14,7 @@ import { CardBase } from "../components/Card/cardBase";
 import { ModalEtapaForm } from "../components/Modal/ModalEtapaForm";
 import { ProcessTabs } from "../components/TabsProcesso";
 import { EtapaDrawer } from "../components/Drawer/EtapaDrawer";
+import { verifyTokenFetch } from "../services/token";
 
 
 export const ShowProcess = () => {
@@ -27,6 +28,7 @@ export const ShowProcess = () => {
     useEffect(() => {
         (async () => {
             if (id) {
+                await verifyTokenFetch()
                 const process = await getProcessById(Number.parseInt(id))
                 if (process) {
 
@@ -63,8 +65,8 @@ export const ShowProcess = () => {
 
                             return (<CardStep step={step} onClick={showInfos} />)
                         })}
-                        <CardBase width="242px" height="270px" borderRadius="0.4rem" bgColor="#414243">
-                            <Box padding='0' width='100%' height='100%'>
+                        <CardBase width="242px" height="270px" borderRadius="0.4rem" bgColor="#414243" opacity={'0.9'}>
+                            <Box padding='0' width='100%' height='100%' >
                                 <Center margin='45% auto'>
 
                                     <ModalEtapaForm
