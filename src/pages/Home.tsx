@@ -7,6 +7,7 @@ import FormP from "../components/FormProcess"
 import { getAllProcess } from "../services/process"
 import { Link } from "react-router-dom"
 import SideBar from "../components/SideBar/SideBar"
+import CardProcesso from "../components/CardProcesso/CardProcesso"
 
 export const Home = () => {
     const [processes, setProcesses] = useState(new Array<Process>())
@@ -48,6 +49,7 @@ export const Home = () => {
                 </Box>
             </CardBase>
             
+            <CardProcesso altura='294px' comprimento="234px" nomeProcesso="dafada" tipoProcesso="aeadawd" prazo="25/10/2023" bgDiasRestantes="red" children corTexto="#FFFFFF"/>
         </Grid>
     </Flex>
 
