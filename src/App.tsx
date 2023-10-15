@@ -1,6 +1,5 @@
-import { ChakraProvider, CSSReset, extendTheme} from '@chakra-ui/react';
+import { CSSReset } from '@chakra-ui/react';
 import { Router } from './routes';
-
 
 
 

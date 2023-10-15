@@ -1,15 +1,15 @@
 import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, useDisclosure } from "@chakra-ui/react";
-import Process from "../models/Process";
 import { ModalGeneric } from "./Modal/Modal";
 import { verifyTokenFetch } from "../services/token";
-import { deleteProcess } from "../services/process";
 import { useRef, useState } from "react";
+import Steps from "../models/Steps";
+import { deleteStep } from "../services/steps";
 
-interface DeleteProcessInterface {
-    process: Process
+interface DeleteEtapaInterface {
+    etapa: Steps
 }
 
-export const BtnDeleteEvidence = ({process}: DeleteProcessInterface) => {
+export const BtnDeleteEtapa = ({etapa}: DeleteEtapaInterface) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [showSuccessDialog, setShowSuccessDialog] = useState(false)
     const cancelRef = useRef(null)
@@ -19,7 +19,7 @@ export const BtnDeleteEvidence = ({process}: DeleteProcessInterface) => {
         await verifyTokenFetch()
 
         try{
-            const response = await deleteProcess(process.id, false)
+            const response = await deleteStep(etapa.id, false)
             if(response){
                 setShowSuccessDialog(true)
             }
@@ -36,8 +36,8 @@ export const BtnDeleteEvidence = ({process}: DeleteProcessInterface) => {
 
     return(
         <>
-        <Button display="flex" mb={3} bg='red' variant='solid' 
-            textColor='white' colorScheme="#58595B" width='100%' 
+        <Button bg='red' variant='solid' 
+            textColor='white' colorScheme="#58595B" width='8rem' 
             type="submit" onClick={onOpen}
             >Deletar</Button>
 
@@ -49,7 +49,7 @@ export const BtnDeleteEvidence = ({process}: DeleteProcessInterface) => {
           <AlertDialogOverlay>
             <AlertDialogContent>
               <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                Processo apagado com sucesso!
+                Etapa apagada com sucesso!
               </AlertDialogHeader>
 
               <AlertDialogFooter>
@@ -69,7 +69,7 @@ export const BtnDeleteEvidence = ({process}: DeleteProcessInterface) => {
                     color='white'
                     mt={3}
                     >
-                        <strong>Tem certeza de que quer deletar o processo {process.title} ?</strong>
+                        <strong>Tem certeza de que quer deletar a etapa {etapa.name} ?</strong>
                         
                         <ButtonGroup gap="240" mt={5}>
                             <Button 

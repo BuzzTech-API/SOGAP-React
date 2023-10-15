@@ -117,3 +117,47 @@ export const createRequestEvidence = async (
       })
       return response
   }
+
+  export const deleteEvidence = async (process_id: number, is_active: boolean) => {
+    const bodyJson = {
+      id: process_id,
+      is_active: is_active
+    }
+    console.log(bodyJson);
+    
+    const token = localStorage.getItem('access_token');
+    const response = await fetch(`http://localhost:8000/request_for_evidence/delete`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bodyJson),
+    });
+    return await response.json()
+  }
+  export const validateEvidence = async (id: number) => {
+      const token = localStorage.getItem('access_token');
+            const response = await fetch(`http://localhost:8000/request_for_evidence/validate/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+      })
+      return response
+  }
+  export const invalidateEvidence = async (id: number) => {
+      const token = localStorage.getItem('access_token');
+            const response = await fetch(`http://localhost:8000/evidences/invalidate/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+      })
+      return response
+  }
