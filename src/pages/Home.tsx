@@ -9,7 +9,7 @@ import { formatDateToBrasil } from "../services/formatDate"
 import { BtnDeleteEvidence } from "../components/BtnDeleteEvidence"
 import { ModalUpdateProcess } from "../components/Modal/ModalEditarProcesso"
 import { verifyTokenFetch } from "../services/token"
-
+import TwoAuthModal from "../components/QrCodeModal"
 
 
 export const Home = () => {
@@ -21,8 +21,6 @@ export const Home = () => {
             if (processList) {
                 setProcesses(processList)
             }
-
-
         })();
     }, [])
 
