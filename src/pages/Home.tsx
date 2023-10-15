@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Box, Button, Text, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Spacer } from "@chakra-ui/react"
 import Process from "../models/Process"
-import { CardProcess } from "../components/Card/cardProcesso"
+import { CardProcess } from "../components/Card/cardProcessoPrazo"
 import FormP from "../components/FormProcess"
 import { getAllProcess } from "../services/process"
 import { Link } from "react-router-dom"
@@ -28,26 +28,40 @@ export const Home = () => {
 
 
 
-    return (<Flex flexDirection={'column'} gap={'0.5rem'}>
+    return (<Flex flexDirection={'column'}>
+
+        <Flex width='100.125rem' alignSelf={'center'} marginTop='1rem'>
+            <Text
+                fontFamily={'Poppins'}
+                fontSize='1.5rem'
+                fontStyle='normal'
+                fontWeight='700'
+                lineHeight='2rem'
+                alignSelf={'start'}
+                display={'flex'}
+                width={'14rem'}
+                color={'#FF2828'}
+            >Próximo do Prazo</Text>
+        </Flex>
         <Flex
-            marginLeft='1rem'
+            width='100.125rem'
+            alignSelf={'center'}
             flexDirection='row'
-            gap='1.5rem'
+            flexWrap="wrap"
+            gap='1rem'
             marginTop={'1rem'}
-            maxHeight='19.5rem'
+            maxHeight='18rem'
             maxWidth={'110rem'}
-            overflowX={'auto'} >
+            overflowY={'auto'} >
             {processes.map((process: Process) => {
                 return <Link to={`/process/${process.id}`}><CardProcess key={process.id}
                     process={process}
                 /></Link>
-
-
             })}
         </Flex>
-        <Flex flexDirection={'column'} gap={'0.5rem'}>
+        <Flex flexDirection={'column'} gap={'0.25rem'}>
 
-            <Flex width='100.125rem' alignSelf={'center'}>
+            <Flex width='100.125rem' alignSelf={'center'} marginTop='1rem'>
                 <Text
                     fontFamily={'Poppins'}
                     fontSize='1.5rem'
@@ -71,19 +85,25 @@ export const Home = () => {
 
             <TableContainer
                 width='100.125rem'
-                height='24.4375rem'
+                height='19rem'
                 alignSelf={'center'}
                 bg={'#58595B'}
                 borderRadius={'0.75rem'}
                 overflowY={'auto'}
             >
                 <Table color={'#FFF'} bg={'#58595B'} variant='striped' colorScheme="theme" >
-                    <Thead>
+                    <Thead
+
+                        bg={'#58595B'}
+                        position="sticky"
+                        top="0"
+                        zIndex="sticky"
+                    >
                         <Tr >
                             <Th color={'#FFF'}>Título</Th>
-                            <Th color={'#FFF'}>Última Atualização</Th>
-                            <Th color={'#FFF'}>Status</Th>
-                            <Th color={'#FFF'}>Ações</Th>
+                            <Th textAlign="center" color={'#FFF'}>Última Atualização</Th>
+                            <Th textAlign="center" color={'#FFF'}>Status</Th>
+                            <Th textAlign="center" color={'#FFF'}>Ações</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -91,8 +111,8 @@ export const Home = () => {
                             return (
                                 <Tr>
 
-                                    <Td>{process.title}</Td>
-                                    <Td>{formatDateToBrasil(process.lastUpdate.toString())}</Td>
+                                    <Td minWidth='50rem'>{process.title}</Td>
+                                    <Td textAlign="center">{formatDateToBrasil(process.lastUpdate.toString())}</Td>
                                     <Td>{process.status}</Td>
                                     <Td
                                         display={'flex'}

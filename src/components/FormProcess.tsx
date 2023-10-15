@@ -200,7 +200,7 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
                       bg="#D9D9D9"
                       type="text"
                       title="objective"
-                      maxLength={200}
+                      maxLength={120}
                       value={formData.objective}
                       onChange={handleChange}
                     />
