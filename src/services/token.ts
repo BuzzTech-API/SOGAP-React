@@ -87,6 +87,19 @@ export const loginToken = async (email: string, senha: string) => {
   localStorage.setItem('refresh_token', data.refresh_token)
 }
 
+export const enableTwoFactor = async () => {
+  const token = localStorage.getItem('access_token');
+  const response = await fetch(`http://localhost:8000/enable-2fa`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },    
+  });
+    const data = await response.json()
+    return data
+}
 
 
 export const refreshTokenFetch = async () => {
@@ -116,13 +129,34 @@ export const refreshTokenFetch = async () => {
   }
 }
 
+export const codeVerified = async (verification_code: string) => {
+  const bodyJson = {
+    "verification_code": verification_code,
+  }
+  const token = localStorage.getItem('access_token');
+  const response = await fetch(`http://localhost:8000/verify-2fa-First-Auth`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyJson)    
+  });
+  if (response.status === 200) {
+    const data = await response.json()
+    return data.verify
+  }
+  else{
+    return false
+  }
+}
 
-export const verifyCode = async (verificationCode: string, email: string) => {
+export const verifyCode = async (verificationCode: string) => {
   const login_token = localStorage.getItem('login_token')
 
   const bodyJson = {
     "verification_code": verificationCode,
-    "email": email
   }
 
   if (login_token) {

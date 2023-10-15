@@ -18,7 +18,6 @@ import { Navigate } from 'react-router-dom';
 import QRCode from 'qrcode.react';
 import { ModalGeneric } from '../components/Modal/Modal';
 
-
 // const QRCodeGenerator: React.FC = () => {
 //   const [text, setText] = useState<string>(''); // O texto que você deseja codificar
 
@@ -52,6 +51,7 @@ export const Login = () => {
             const is_enable = await loginToken(email, senha)
             if(is_enable === false){
                 setIs_enable(true)
+                onOpen()
             }
             } catch (error) {
             
@@ -62,7 +62,7 @@ export const Login = () => {
         e.preventDefault()
     
         try {
-            await verifyCode(verificationCode, email)
+            await verifyCode(verificationCode)
         } catch (error) {
             
         } finally{
@@ -111,7 +111,7 @@ export const Login = () => {
                 </Center>
             </Box>
         </form>
-        {is_enable && (<ModalGeneric isOpen={true} onClose={onClose} >
+        {is_enable && (<ModalGeneric isOpen={isOpen} onClose={onClose} >
             <form onSubmit={submitVerification}>
             <Box width={'30rem'} height={'30rem'} margin={'1rem auto'} justifyContent={'center'} padding={'1rem'}>
                 <Center>
