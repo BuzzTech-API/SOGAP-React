@@ -24,7 +24,21 @@ export const Home = () => {
     }, [])
 
 
-    return (<Flex flexDirection={'column'} gap={'0.5rem'}>
+    return (<Flex flexDirection={'column'}>
+
+        <Flex width='100.125rem' alignSelf={'center'} marginTop='1rem'>
+            <Text
+                fontFamily={'Poppins'}
+                fontSize='1.5rem'
+                fontStyle='normal'
+                fontWeight='700'
+                lineHeight='2rem'
+                alignSelf={'start'}
+                display={'flex'}
+                width={'14rem'}
+                color={'#FF2828'}
+            >Próximo do Prazo</Text>
+        </Flex>
         <Flex
             width='100.125rem'
             alignSelf={'center'}
