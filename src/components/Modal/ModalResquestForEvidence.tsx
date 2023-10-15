@@ -7,12 +7,16 @@ import { formatData } from "../../services/formatDate"
 import { useEffect, useState } from "react"
 import { verifyTokenFetch } from "../../services/token"
 import { getAllUsers } from "../../services/users"
+import { BtnDeleteEvidencia } from "../BtnDeleteEvidencia"
 
 interface ViewRequestI{
     request: RequestForEvidence,
     process_id: number
 }
-export const ViewRequest  =({request, process_id}:ViewRequestI)=>{
+
+export const ViewRequest:React.FC<ViewRequestI>  =({
+    request, process_id
+})=>{
     const {isOpen, onOpen, onClose} = useDisclosure()
     const [responsibleName, setResponsibleName] = useState('')
 
@@ -72,6 +76,7 @@ export const ViewRequest  =({request, process_id}:ViewRequestI)=>{
                 <ModalUploadEvidence idRequestForEvidence={request.id} idProcess={process_id} />
             </Box>
             <ModalUpdateRequestEvidence requestEvidence={request}/>
+            <BtnDeleteEvidencia evidencia= {request}/>
         </ModalGeneric>
         </>
     )
