@@ -17,7 +17,7 @@ function formatDateToBrasil(data: string) {
     return formattedDate
 }
 
-export const CardProcess = (processI: processCardInterface) => {
+export const CardProcessoPrazo = (processI: processCardInterface) => {
     const [process] = useState(processI.process)
 
     const evento = () => {

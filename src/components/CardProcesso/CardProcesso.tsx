@@ -1,7 +1,6 @@
 import { ReactNode, useState } from "react"
 import Process from "../../models/Process"
-import { Center, Flex, Text, VStack } from "@chakra-ui/react"
-import { string } from "yup";
+import { Center, Flex, Text } from "@chakra-ui/react"
 
 interface processCardInterface {
     process: Process

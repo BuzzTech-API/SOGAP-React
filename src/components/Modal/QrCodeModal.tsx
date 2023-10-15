@@ -22,97 +22,97 @@ import QRCode from "qrcode.react";
 import { codeVerified, enableTwoFactor } from "../../services/token";
 
 export interface UriFormat {
-    uriCode: string;
-  }
-
-interface props{
-  isOpen: boolean,
-  onClose: ()=>void
-  setIs_enable2fa:React.Dispatch<React.SetStateAction<boolean>>
+  uriCode: string;
 }
-const TwoAuthModal = ({isOpen, onClose, setIs_enable2fa}:props) => {
 
-    const [verificationCode, setVerificationCode] = useState('');
-    const [uriCode, setUriCode] = useState<string>('');
-    useEffect(()=> {
-        (async () => {
-            const data = await enableTwoFactor()
-            setTimeout(()=>{
-                setUriCode(data.qr_code_image);
-            }, 1000); 
-        })();    
-    }, []);
+interface props {
+  isOpen: boolean,
+  onClose: () => void
+  setIs_enable2fa: React.Dispatch<React.SetStateAction<boolean>>
+}
+const TwoAuthModal = ({ isOpen, onClose, setIs_enable2fa }: props) => {
 
-const handleVerification = async () => {
-        const verify_code = await codeVerified(verificationCode)
-        if (verify_code === true) {
-          alert('Código válido!');
-          setIs_enable2fa(true)
-          onClose()
+  const [verificationCode, setVerificationCode] = useState('');
+  const [uriCode, setUriCode] = useState<string>('');
+  useEffect(() => {
+    (async () => {
+      const data = await enableTwoFactor()
+      setTimeout(() => {
+        setUriCode(data.qr_code_image);
+      }, 1000);
+    })();
+  }, []);
 
-        } else {
-          alert('Código inválido!');
-        }
-    };
-    
-    return (
-      <Modal size="lg" isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent >
+  const handleVerification = async () => {
+    const verify_code = await codeVerified(verificationCode)
+    if (verify_code === true) {
+      alert('Código válido!');
+      setIs_enable2fa(true)
+      onClose()
+
+    } else {
+      alert('Código inválido!');
+    }
+  };
+
+  return (
+    <Modal size="lg" isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent >
         <Card bg="#58595B" margin="0">
-          <ModalHeader color="#ffffff" textAlign="left"  borderBottom="1px solid #e1e1e1">Autenticação de Dois Fatores (2FA)</ModalHeader>
+          <ModalHeader color="#ffffff" textAlign="left" borderBottom="1px solid #e1e1e1">Autenticação de Dois Fatores (2FA)</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-                <Text mt="20px" sx={{color: '#53C4CD', fontSize: 'lg', fontWeight: 'bold',}} borderBottom="1px solid #e1e1e1">
-                Configurando o Google Autenticator
-                </Text>
-            <Center>   
-                <Box style={{ margin: '20px'}}>
-                    <ul style={{ textAlign: 'left', listStyleType: 'disc', color: 'white'  }}>
-                    <li >
-                        <Text color="white">Instale o Google Autenticador (IOS - Android).</Text>
-                    </li>
-                    <li>
-                        <Text color="white">Na aplicação app, selecione o ícone de "+".</Text>
-                    </li>
-                    <li>
-                        <Text color="white">Selecione "Escanear QR Code" e use a câmera do seu telefone celular para escanear o QR Code.</Text>
-                    </li>
-                    </ul>
-                </Box>
-            </Center>
-                <Text sx={{color: '#53C4CD', fontSize: 'lg', fontWeight: 'bold',}} borderBottom="1px solid #e1e1e1">
-                Escaneie o QR Code
-                </Text>   
+            <Text mt="20px" sx={{ color: '#53C4CD', fontSize: 'lg', fontWeight: 'bold', }} borderBottom="1px solid #e1e1e1">
+              Configurando o Google Autenticator
+            </Text>
             <Center>
-                <Box padding='2rem' bg="white" borderRadius="1rem" mt="4" mb="3">
+              <Box style={{ margin: '20px' }}>
+                <ul style={{ textAlign: 'left', listStyleType: 'disc', color: 'white' }}>
+                  <li >
+                    <Text color="white">Instale o Google Autenticador (IOS - Android).</Text>
+                  </li>
+                  <li>
+                    <Text color="white">Na aplicação app, selecione o ícone de "+".</Text>
+                  </li>
+                  <li>
+                    <Text color="white">Selecione "Escanear QR Code" e use a câmera do seu telefone celular para escanear o QR Code.</Text>
+                  </li>
+                </ul>
+              </Box>
+            </Center>
+            <Text sx={{ color: '#53C4CD', fontSize: 'lg', fontWeight: 'bold', }} borderBottom="1px solid #e1e1e1">
+              Escaneie o QR Code
+            </Text>
+            <Center>
+              <Box padding='2rem' bg="white" borderRadius="1rem" mt="4" mb="3">
                 <QRCode value={uriCode} size={300} />
-                </Box>
+              </Box>
             </Center>
             <FormControl>
-            <FormLabel>
-                <Text sx={{color: '#53C4CD', fontSize: 'lg', fontWeight: 'bold',}} borderBottom="1px solid #e1e1e1">
-                Verifique o seu Código
+              <FormLabel>
+                <Text sx={{ color: '#53C4CD', fontSize: 'lg', fontWeight: 'bold', }} borderBottom="1px solid #e1e1e1">
+                  Verifique o seu Código
                 </Text>
-                <Text color="white" sx={{fontSize: 'sm', }}>
-                Para confirmar as alterações, por favor verifique o seu código de autenticação:
+                <Text color="white" sx={{ fontSize: 'sm', }}>
+                  Para confirmar as alterações, por favor verifique o seu código de autenticação:
                 </Text>
-            </FormLabel>
-            
-            <Grid templateColumns="1fr 1fr" gap={4}>
-             <Input color="white" style={{ width: '100%' }} type="text" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)}/>
+              </FormLabel>
+
+              <Grid templateColumns="1fr 1fr" gap={4}>
+                <Input color="white" style={{ width: '100%' }} type="text" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} />
                 <Button bg="#53C4CD" onClick={handleVerification} ml="auto" color={'white'}>
-                Verificar e Ativar
+                  Verificar e Ativar
                 </Button>
-            </Grid>
+              </Grid>
             </FormControl>
           </ModalBody>
           <ModalFooter>
           </ModalFooter>
         </Card>
-        </ModalContent>
-      </Modal>
-    );
-  };
+      </ModalContent>
+    </Modal>
+  );
+};
 
 export default TwoAuthModal;

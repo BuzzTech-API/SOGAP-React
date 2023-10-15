@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react"
 import { Box, Button, Text, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Spacer } from "@chakra-ui/react"
 import Process from "../models/Process"
-import { CardProcess } from "../components/Card/cardProcessoPrazo"
 import FormP from "../components/FormProcess"
 import { getAllProcess } from "../services/process"
 import { Link } from "react-router-dom"
-import CardProcesso from "../components/CardProcesso/CardProcesso"
 import { formatDateToBrasil } from "../services/formatDate"
 import { BtnDeleteProcess } from "../components/BtnDeleteProcess"
 import { ModalUpdateProcess } from "../components/Modal/ModalEditarProcesso"
 import { verifyTokenFetch } from "../services/token"
+import { CardProcessoPrazo } from "../components/Card/cardProcessoPrazo"
 
 
 export const Home = () => {
@@ -51,7 +50,7 @@ export const Home = () => {
             maxWidth={'110rem'}
             overflowY={'auto'} >
             {processes.map((process: Process) => {
-                return <Link to={`/process/${process.id}`}><CardProcess key={process.id}
+                return <Link to={`/process/${process.id}`}><CardProcessoPrazo key={process.id}
                     process={process}
                 /></Link>
             })}
