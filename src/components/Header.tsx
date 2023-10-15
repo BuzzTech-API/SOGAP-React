@@ -10,13 +10,15 @@ import {
     MenuList,
     MenuItem,
     Spacer,
+    useDisclosure,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { IonicLogo } from './IonicLogo'
 import { useEffect, useState } from 'react'
 import { getUser } from '../services/users'
-import { verifyTokenFetch } from '../services/token'
+import { disable2FA, verifyTokenFetch } from '../services/token'
 import { DrawerCadastro } from './Drawer/Cadastro'
+import TwoAuthModal from "../components/Modal/QrCodeModal"
 
 
 
@@ -25,6 +27,7 @@ export const Header = () => {
     const [name, setName] = useState('')
     const [role, setRole] = useState('')
     const [is_enable2fa, setIs_enable2fa] = useState(false)
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     useEffect(() => {
         (async () => {
@@ -41,6 +44,13 @@ export const Header = () => {
 
 
     }, [])
+
+    const deactivated2FA = async () => {
+        const data = await disable2FA()
+        if (data.deactivated===true) {
+            setIs_enable2fa(false)
+        }
+    }
 
 
     return (
@@ -103,6 +113,11 @@ export const Header = () => {
                                 color={'#FFF'}
                                 width={'100%'}
                                 _hover={{ background: '#FFF', color: '#58595B' }}
+                                onClick={()=>{
+                                    localStorage.removeItem('access_token')
+                                    localStorage.removeItem('refresh_token')
+                                    window.location.reload();
+                                }}
                             >Sair</Button>
                         </MenuItem>
 
@@ -155,12 +170,27 @@ export const Header = () => {
                         >
                         </Avatar>
                     </MenuButton>
-                    <MenuList>
-                        {is_enable2fa ===true ? 
-                        <MenuItem as='a' href='#'>Link 1</MenuItem> : 
-                        <MenuItem as='a' href='#'>Link 2</MenuItem>}
-                        
-                        
+                    <MenuList
+                        color={'#FFF'}
+                        bg={'#58595B'}
+                        padding={'1rem'}
+                    >
+                        {is_enable2fa === true ?
+                            <MenuItem as={Button} bg={'#58595B'}
+                                color={'#FFF'}
+                                width={'100%'}
+                                _hover={{ background: '#FFF', color: '#58595B' }}
+                                onClick={deactivated2FA}
+                            >Desativar Autenticação 2 Fatores</MenuItem> :
+                            <MenuItem
+                                as={Button}
+                                onClick={onOpen}
+                                bg={'#58595B'}
+                                color={'#FFF'}
+                                width={'100%'}
+                                _hover={{ background: '#FFF', color: '#58595B' }}
+                            >Ativar Autenticação 2 Fatores</MenuItem>}
+                        <TwoAuthModal isOpen={isOpen} onClose={onClose} setIs_enable2fa={setIs_enable2fa} />
                     </MenuList>
                 </Menu>
 

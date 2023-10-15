@@ -51,6 +51,9 @@ export const Login = () => {
             if(is_enable === false){
                 setIs_enable(true)
                 onOpen()
+            }else{
+                setToken(localStorage.getItem('access_token'))
+                setRefresh_token(localStorage.getItem('refresh_token'))
             }
             } catch (error) {
             

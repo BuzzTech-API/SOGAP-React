@@ -223,6 +223,7 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
                         <Select style={{ width: "37%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
                           value={formData.priority}
                           onChange={handleChangePrioridade}>
+                          <option value=""></option>
                           <option value="Alta">Alta</option>
                           <option value="Média">Média</option>
                           <option value="Baixa">Baixa</option>

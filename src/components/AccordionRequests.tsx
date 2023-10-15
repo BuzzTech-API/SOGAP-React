@@ -7,7 +7,7 @@ import Process from "../models/Process";
 import { useEffect, useState } from "react";
 import { verifyTokenFetch } from "../services/token";
 import { formatDateToBrasil } from "../services/formatDate";
-import { validateEvidence } from "../services/requestEvidence";
+import { invalidateEvidence, validateEvidence } from "../services/requestEvidence";
 
 interface AccordionI {
   requestForEvidenceI: RequestForEvidence
@@ -28,6 +28,13 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
   const valitadeEvidenceAction = async () => {
     await verifyTokenFetch()
     await validateEvidence(requestForEvidence.id)
+    requestForEvidence.is_validated = true
+    setIs_validated(requestForEvidence.is_validated)
+  }
+  const invalitadeEvidenceAction = async () => {
+    await verifyTokenFetch()
+    await invalidateEvidence(requestForEvidence.evidences[0].id)
+    requestForEvidence.evidences.pop()
     requestForEvidence.is_validated = true
     setIs_validated(requestForEvidence.is_validated)
   }
@@ -178,6 +185,7 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
                   color={'#FFF'}
                   width={'100%'}
                   _hover={{ background: '#FFF', color: '#58595B' }}
+                  onClick={invalitadeEvidenceAction}
                 >Invalidar Evidência</Button>
               </MenuItem>
             </MenuList>

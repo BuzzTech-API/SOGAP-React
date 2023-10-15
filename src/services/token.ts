@@ -219,3 +219,20 @@ export const verifyTokenFetch = async () => {
     return await refreshTokenFetch()
   }
 }
+
+
+export const disable2FA = async () => {
+  const token = localStorage.getItem('access_token');
+  const response = await fetch(`http://localhost:8000/deactivate2fa`, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },    
+  });
+    const data = await response.json()
+    return data
+}
+
+

@@ -7,34 +7,30 @@ import {
   FormLabel,
   Input,
   Card,
-  CardHeader,
-  CardBody,                                      //Importação das Bibliotecas
-  Heading,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalCloseButton,
-  Select,
-  Flex,
-  IconButton,
   Grid,
   Center,
-  useDisclosure,
   ModalFooter,
   Text,
 } from '@chakra-ui/react';
-import { AddIcon, CloseIcon,} from "@chakra-ui/icons";
 import QRCode from "qrcode.react";
-import User from "../models/User";
-import { codeVerified, enableTwoFactor } from "../services/token";
+import { codeVerified, enableTwoFactor } from "../../services/token";
 
 export interface UriFormat {
     uriCode: string;
   }
 
-const TwoAuthModal = () => {
+interface props{
+  isOpen: boolean,
+  onClose: ()=>void
+  setIs_enable2fa:React.Dispatch<React.SetStateAction<boolean>>
+}
+const TwoAuthModal = ({isOpen, onClose, setIs_enable2fa}:props) => {
 
     const [verificationCode, setVerificationCode] = useState('');
     const [uriCode, setUriCode] = useState<string>('');
@@ -49,16 +45,18 @@ const TwoAuthModal = () => {
 
 const handleVerification = async () => {
         const verify_code = await codeVerified(verificationCode)
-        if (verify_code == true) {
+        if (verify_code === true) {
           alert('Código válido!');
-          console.log("OnClose")
+          setIs_enable2fa(true)
+          onClose()
+
         } else {
           alert('Código inválido!');
         }
     };
     
     return (
-      <Modal size="lg" isOpen={true} onClose={() => {}}>
+      <Modal size="lg" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent >
         <Card bg="#58595B" margin="0">
@@ -103,7 +101,7 @@ const handleVerification = async () => {
             
             <Grid templateColumns="1fr 1fr" gap={4}>
              <Input color="white" style={{ width: '100%' }} type="text" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)}/>
-                <Button bg="#53C4CD" onClick={handleVerification} ml="auto">
+                <Button bg="#53C4CD" onClick={handleVerification} ml="auto" color={'white'}>
                 Verificar e Ativar
                 </Button>
             </Grid>

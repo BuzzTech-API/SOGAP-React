@@ -149,3 +149,15 @@ export const createRequestEvidence = async (
       })
       return response
   }
+  export const invalidateEvidence = async (id: number) => {
+      const token = localStorage.getItem('access_token');
+            const response = await fetch(`http://localhost:8000/evidences/invalidate/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+      })
+      return response
+  }
