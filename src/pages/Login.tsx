@@ -8,21 +8,23 @@ import {
     FormControl,
     FormLabel,
     Center,
-    Heading
+    Heading,
+    useDisclosure
 
 } from '@chakra-ui/react'
 import { useState } from "react";
 import { loginToken } from "./../services/token";
 import { Navigate } from 'react-router-dom';
+import { ModalGeneric } from '../components/Modal/Modal';
 
 export const Login = () => {
     const [show, setShow] = useState(false)
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [token, setToken] = useState(localStorage.getItem('access_token'))
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const [refresh_token, setRefresh_token] = useState(localStorage.getItem('refresh_token'))
     const handleClick = () => setShow(!show)
-    console.log(window.location.origin);
     const submit = async (e: any) => {
         e.preventDefault();
 
@@ -31,8 +33,15 @@ export const Login = () => {
         } catch (error) {
             
         }finally{
-            setToken(localStorage.getItem('access_token'))
-            setRefresh_token(localStorage.getItem('refresh_token'))
+            try {
+                onOpen()
+            } catch (error) {
+                
+            }finally{
+
+                setToken(localStorage.getItem('access_token'))
+                setRefresh_token(localStorage.getItem('refresh_token'))
+            }
         }
 
     }
@@ -81,5 +90,8 @@ export const Login = () => {
                 </Center>
             </Box>
         </form>
+        <ModalGeneric isOpen={isOpen} onClose={onClose}>
+                    Isaque é lindo
+        </ModalGeneric>
     </Card>
 }

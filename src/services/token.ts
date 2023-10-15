@@ -69,7 +69,7 @@ export const verifyToken = async (authenticated: Authenticated) => {
 }
 
 export const loginToken = async (email: string, senha: string) => {
-  const response = await fetch(`http://localhost:8000/login/`, {
+  const response = await fetch(`http://localhost:8000/login`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

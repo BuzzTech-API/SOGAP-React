@@ -1,86 +1,116 @@
-import { Box, Center, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
+import { Card, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import Step from "../../models/Steps";
-import { CardBase } from "./cardBase";
 import { formatDateToBrasil } from "../../services/formatDate";
 
-interface StepCard{
+interface StepCard {
     step: Step;
-    onClick: ()=>void
+    onClick: () => void
 }
 
 
 
-export const CardStep = (stepI:StepCard) => {
-    const [step, setStep] = useState(stepI.step)
-    
-    const evento = stepI.onClick
+export const CardStep = (stepI: StepCard) => {
+    const [step] = useState(stepI.step)
+
     let bgColor: string;
     if (step.priority === 'Alta') {
-        bgColor='#FF0000'
-    }else if (step.priority ==='Média') {
-        bgColor='#FF7A00'
-    }else{
-        bgColor='#00750C'
+        bgColor = '#FF0000'
+    } else if (step.priority === 'Média') {
+        bgColor = '#FF7A00'
+    } else {
+        bgColor = '#00750C'
     }
-        return  <CardBase width="18rem" height="21rem" bgColor="#1d1e20" onClickEvent={evento}>
-                    <Box flex='1' marginBottom='0rem'>
-                        <Box padding='1rem'>
-                            <Flex>
-                                <Heading textColor='#FFF' size='md' textAlign='center'>Etapa </Heading>
-                                <Spacer />
-                                <Heading size='md'>{step.order}</Heading>
-                            </Flex>
-                        </Box>
-                        <Box padding='0.5rem 0.1rem'>
-                            <Center 
-                            fontSize='1.2rem' 
-                            textAlign='center' 
-                            textColor='#FFF'
-                            flexWrap={'wrap'}
-                            maxHeight={'3rem'}
-                            height={'3rem'}
-                            marginBottom={'0.7rem'}
-                            alignSelf={'center'}
-                            >
-                            {step.name}
-                            </Center>
-                            <Flex 
-                            fontSize='1rem' 
-                            textAlign='center' 
-                            textColor='#FFF'
-                            maxHeight={'3rem'}
-                            height={'3rem'}
-                            flexWrap={'wrap'}
-                            ><Text noOfLines={2}>
 
-                            {step.objective}
-                            {step.objective}
-                            </Text>
-                            </Flex>
-                        </Box>
-                        <Box padding='0.5rem 0.1rem'>
-                            <Text fontSize='1.2rem' textAlign='center' textColor='#FFF'>Prazo</Text>
-                            <Text fontSize='1.5rem' fontWeight='bold' textAlign='center' textColor='#FFF'>{formatDateToBrasil(step.endingDate.toString())}</Text>
-                        </Box>
+    return (
+        <Card background="#414243" onClick={stepI.onClick} boxShadow="base" opacity="0.9" w={'15.1rem'} h={'17rem'} maxHeight={'17rem'} borderRadius={'0.5rem'}>
+            <Stack justify="flex-start" align="center" spacing="23px" opacity={'0.9'}>
+                <Stack
+                    justify="flex-start"
+                    align="center"
+                    spacing="34px"
+                    height="209.56px"
+                    alignSelf="stretch"
+                    opacity={'0.9'}
+                    padding={'0.3rem'}
+                >
+                    <Text
+                        fontFamily="Poppins"
+                        lineHeight="1.43"
+                        fontWeight="medium"
+                        fontSize="0.9rem"
+                        color="#FFFFFF"
+                        alignSelf="stretch"
+                        textAlign="center"
+                    >
+                        Etapa {step.order}
+                    </Text>
+                    <Text
+                        fontFamily="Poppins"
+                        lineHeight="1.43"
+                        fontWeight="bold"
+                        fontSize="0.9rem"
+                        color="#FFFFFF"
+                        height="50px"
+                        alignSelf="stretch"
+                        textAlign="center"
+                    >
+                        {step.name}
+                    </Text>
+                    <Text
+                        fontFamily="Poppins"
+                        lineHeight="1.43"
+                        fontWeight="medium"
+                        fontSize="0.9rem"
+                        color="#FFFFFF"
+                        height="20px"
+                        alignSelf="stretch"
+                        textAlign="center"
+                    >
+                        Prazo
+                    </Text>
+                    <Text
+                        fontFamily="Poppins"
+                        lineHeight="1.5"
+                        fontWeight="bold"
+                        fontSize="1rem"
+                        color="#FFFFFF"
+                        height="22px"
+                        alignSelf="stretch"
+                        textAlign="center"
+                    >
+                        {formatDateToBrasil(step.endingDate.toString())}
+                    </Text>
+                </Stack>
+                <Stack
+                    position="absolute"
+                    bottom={0}
+                    paddingX="98px"
+                    paddingY="5px"
+                    borderBottomRadius="0.5rem"
+                    direction="row"
+                    justify="center"
+                    align="center"
+                    spacing="10px"
+                    overflow="hidden"
+                    background={bgColor}
+                    margin={0}
+                    opacity="0.9"
+                    width={'15.1rem'}
+                >
+                    <Text
+                        fontFamily="Inter"
+                        lineHeight="1.5"
+                        fontWeight="bold"
+                        fontSize="16px"
+                        color="#FFFFFF"
+                        textAlign="center"
+                    >
+                        {step.priority}
+                    </Text>
+                </Stack>
+            </Stack>
+        </Card>
+    )
 
-
-                    </Box>
-                    <Box 
-                    bg={bgColor} 
-                    width='18rem' 
-                    height='4rem' 
-                    borderRadius='0 0 2rem 2rem' 
-                    alignSelf='flex-end'
-                    textColor='#FFF'
-                    fontFamily="Poppins, sans-serif"
-                    fontSize="25px"
-                    textAlign='center'
-                    marginBottom='0'
-                    marginTop='1rem'
-                    borderTop='0.2rem solid'
-                    borderColor='#FFF'
-                    padding='0.6rem'
-                    >{step.priority}</Box>
-                </CardBase>
 }

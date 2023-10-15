@@ -5,7 +5,6 @@ import { Home } from "../pages/Home"
 import { Login } from "../pages/Login"
 import { ShowProcess } from "../pages/ShowProcess"
 import DefaultLayout from "../layout/DefaultLayout"
-import { Cadastro } from "../components/Cadastro"
 // Valida o token
 const validateAccessToken = async () => {
     let authenticated = new Authenticated()

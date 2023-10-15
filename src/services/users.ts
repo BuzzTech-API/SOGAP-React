@@ -44,7 +44,7 @@ export const deleteUserStep = async (user_id: number, step_id: number) => {
     "user_id": user_id,
     "step_id": step_id
   }
-  
+
   const token = localStorage.getItem('access_token');
   const response = await fetch(`http://localhost:8000/stepes_users/`, {
     method: 'DELETE',
@@ -62,8 +62,8 @@ export const deleteUserStep = async (user_id: number, step_id: number) => {
 export const createUser = async (name: string, email: string, role: string, team: string, password: string) => {
   const bodyJson = {
     name: name,
-    email: email ,
-    role: role ,
+    email: email,
+    role: role,
     team: team,
     is_active: true,
     password: password
@@ -79,11 +79,34 @@ export const createUser = async (name: string, email: string, role: string, team
 
     body: JSON.stringify(bodyJson)
   })
-  const user: User = await response.json() 
+  const user: User = await response.json()
   return user
 }
 
-export const createProcessUser  = async (user_id: number, process_id: number) => {
+export const getUser = async () => {
+  const token = localStorage.getItem('access_token');
+  if (token) {
+    try {
+      const response = await fetch(`http://localhost:8000/users/get/me`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        const data = response.json()
+        return data
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
+
+export const createProcessUser = async (user_id: number, process_id: number) => {
   const bodyJson = {
     "user_id": user_id,
     "process_id": process_id
@@ -100,4 +123,26 @@ export const createProcessUser  = async (user_id: number, process_id: number) =>
     body: JSON.stringify(bodyJson)
   })
   return response
+}
+
+export const getUserById = async (id:number) => {
+  const token = localStorage.getItem('access_token');
+  if (token) {
+    try {
+      const response = await fetch(`http://localhost:8000/users/${id}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        const data = response.json()
+        return data
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
