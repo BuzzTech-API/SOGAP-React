@@ -5,6 +5,7 @@ import { CardProcess } from "../components/Card/cardProcessoPrazo"
 import FormP from "../components/FormProcess"
 import { getAllProcess } from "../services/process"
 import { Link } from "react-router-dom"
+import CardProcesso from "../components/CardProcesso/CardProcesso"
 import { formatDateToBrasil } from "../services/formatDate"
 import { BtnDeleteProcess } from "../components/BtnDeleteProcess"
 import { ModalUpdateProcess } from "../components/Modal/ModalEditarProcesso"
@@ -77,6 +78,7 @@ export const Home = () => {
                 >
                     <FormP width={'9rem'} processes={processes} setProcesses={setProcesses} />
                 </Box>
+
             </Flex>
 
             <TableContainer
