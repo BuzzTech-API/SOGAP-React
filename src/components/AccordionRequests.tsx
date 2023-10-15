@@ -7,6 +7,7 @@ import Process from "../models/Process";
 import { useEffect, useState } from "react";
 import { verifyTokenFetch } from "../services/token";
 import { formatDateToBrasil } from "../services/formatDate";
+import { validateEvidence } from "../services/requestEvidence";
 
 interface AccordionI {
   requestForEvidenceI: RequestForEvidence
@@ -14,6 +15,7 @@ interface AccordionI {
 export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
   const [user, setUser] = useState(new User('', '', '', false, 0, '', new Array<Process>()))
   const [requestForEvidence, setRequestForEvidence] = useState(requestForEvidenceI)
+  const [is_validated, setIs_validated] = useState(requestForEvidence.is_validated)
   useEffect(() => {
     (async () => {
       await verifyTokenFetch()
@@ -23,7 +25,12 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
 
   }, [requestForEvidence.user_id])
 
-
+  const valitadeEvidenceAction = async () => {
+    await verifyTokenFetch()
+    await validateEvidence(requestForEvidence.id)
+    requestForEvidence.is_validated = true
+    setIs_validated(requestForEvidence.is_validated)
+  }
 
 
 
@@ -31,7 +38,16 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
 
     return (<AccordionItem>
       <AccordionButton height="44px" alignSelf="stretch">
-        <Text
+        {is_validated ? <Text
+
+          lineHeight="1.5"
+          fontWeight="semibold"
+          fontSize="md"
+          color="#29784E"
+          flex="1"
+        >
+          {requestForEvidence.requiredDocument}
+        </Text> : <Text
 
           lineHeight="1.5"
           fontWeight="semibold"
@@ -40,7 +56,7 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
           flex="1"
         >
           {requestForEvidence.requiredDocument}
-        </Text>
+        </Text>}
       </AccordionButton>
       <AccordionPanel minWidth={'100%'} textAlign={'center'}>
         <VStack spacing={'1rem'}>
@@ -133,7 +149,16 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
               {user.name}
             </Text>
           </Box>
-          <Menu>
+          {is_validated===true && requestForEvidence.evidences.length !== 0 && requestForEvidence.evidences !== undefined && (<Text
+            lineHeight="1.5"
+            fontWeight="semibold"
+            fontSize="md"
+            color="#29784E"
+            flex="1"
+          >
+            Evidência Validada
+          </Text>)}
+          {is_validated===false && requestForEvidence.evidences.length !== 0 && requestForEvidence.evidences !== undefined && (<Menu>
             <MenuButton as={Button} bgColor={'#29784E'} color={'#FFF'} variant="solid" size="md">
               Ações
             </MenuButton>
@@ -144,15 +169,8 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
                   color={'#FFF'}
                   width={'100%'}
                   _hover={{ background: '#FFF', color: '#58595B' }}
+                  onClick={valitadeEvidenceAction}
                 >Validar Evidência</Button>
-              </MenuItem>
-              <MenuItem bg={'#58595B'} key={'SolicitarCorrecao'}>
-                <Button
-                  bg={'#58595B'}
-                  color={'#FFF'}
-                  width={'100%'}
-                  _hover={{ background: '#FFF', color: '#58595B' }}
-                >Solicitar Correção</Button>
               </MenuItem>
               <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
                 <Button
@@ -163,13 +181,15 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
                 >Invalidar Evidência</Button>
               </MenuItem>
             </MenuList>
-          </Menu>
+          </Menu>)}
+
 
 
         </VStack>
       </AccordionPanel>
     </AccordionItem>)
-  } else {
+  }
+  else {
     return (<AccordionItem>
       <AccordionButton height="44px" alignSelf="stretch">
         <Text
@@ -273,9 +293,9 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
               </MenuItem>
             </MenuList>
           </Menu>
-          </ VStack>
-        </AccordionPanel>
-      </AccordionItem>
+        </ VStack>
+      </AccordionPanel>
+    </AccordionItem>
     )
   }
 }

@@ -174,7 +174,7 @@ export const verifyCode = async (verificationCode: string) => {
       if (response.status === 200) {
         const data = await response.json()
         localStorage.setItem('access_token', data.access_token)
-        localStorage.setItem('login_token', data.login_token)
+        localStorage.setItem('refresh_token', data.refresh_token)
         localStorage.removeItem('login_token');
       }
     } catch (error) {
