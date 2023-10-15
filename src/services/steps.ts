@@ -100,15 +100,15 @@ export const updateStep = async (
     return response
 }
 
-export const deleteStep = async (process_id: number, is_active: boolean) => {
+export const deleteStep = async (step_id: number, is_active: boolean) => {
   const bodyJson = {
-    id: process_id,
+    id: step_id,
     is_active: is_active
   }
   console.log(bodyJson);
   
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost:8000/steps/delete`, {
+  const response = await fetch(`http://localhost:8000/steps/delete/`, {
     method: 'DELETE',
     headers: {
       'Accept': 'application/json',

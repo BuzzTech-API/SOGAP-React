@@ -1,6 +1,6 @@
 
 import { useDisclosure, FormLabel, Input, Textarea, Button, Select, FormControl, Box, Tag, TagLabel, TagCloseButton, Flex } from "@chakra-ui/react"
-import React, { useEffect, useState } from "react"
+import React, { SetStateAction, useEffect, useState } from "react"
 import { verifyTokenFetch } from "../../services/token"
 import { ModalGeneric } from "./Modal"
 import Step from "../../models/Steps"
@@ -8,15 +8,19 @@ import { getStepsById, updateStep } from "../../services/steps"
 import User from "../../models/User"
 import { createUserStep, deleteUserStep, getAllUsers } from "../../services/users"
 import { StepUser } from "../../interfaces/stepInterface"
+import { formatToData } from "../../services/formatDate"
 
 interface UpdateStep {
-    step: Step
+    step: Step,
+    setStep?: React.Dispatch<SetStateAction<Step>>,
+    steps?: Step[],
+    setSteps?: React.Dispatch<SetStateAction<Step[]>>,
 }
 
-export const ModalUpdateStep = ({ step }: UpdateStep) => {
+export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [name, setName] = useState(step.name)
-    const [endingDate, setEndingDate] = useState(new Date(step.endingDate))
+    const [endingDate, setEndingDate] = useState(step.endingDate.toString())
     const [objective, setObjective] = useState(step.objective)
     const [priority, setPriority] = useState(step.priority)
     const [usersList, setUsersList] = useState(new Array<User>())
@@ -28,8 +32,8 @@ export const ModalUpdateStep = ({ step }: UpdateStep) => {
     }
     const handleEndingDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         // Atualizar o estado com o novo valor do input
-        let endingDateChange = new Date(event.target.value)
-        setEndingDate(endingDateChange)
+
+        setEndingDate(event.target.value)
     }
     const handleObjectiveChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         // Atualizar o estado com o novo valor do input
@@ -50,19 +54,22 @@ export const ModalUpdateStep = ({ step }: UpdateStep) => {
 
             if (!name || !endingDate || !objective || !priority || (responsibleList.length === 0)) { //Verificar
                 alert('Preencha os campos')
-                return
+
             }
 
-            const response = await updateStep(step.id, name, step.endDate, endingDate,
+
+            const response = await updateStep(step.id, name, step.endDate, formatToData(endingDate),
                 step.process_id, objective, priority, step.order) //Atualiza a etapa com os dados rebidos 
 
             for (const user of step.users) { //Deleta todos os usuario relacionados a etapa
                 await deleteUserStep(user.user_id, step.id)
             }
-
             const userStepList = new Array<StepUser>()
             responsibleList.forEach(async (user: User) => { //Cria usuarios relacionados a etapa
                 await createUserStep(user.id, step.id)
+                
+            })
+            responsibleList.forEach((user: User) => { //Cria usuarios relacionados a etapa
                 const userStep: StepUser = {
                     user_id: user.id,
                     step_id: step.id,
@@ -70,6 +77,46 @@ export const ModalUpdateStep = ({ step }: UpdateStep) => {
                 }
                 userStepList.push(userStep)
             })
+
+            if (setStep!==undefined) {
+                const updatedStep = new Step(
+                    step.id,
+                    step.process_id,
+                    name,
+                    step.order,
+                    objective,
+                    formatToData(endingDate),
+                    step.endDate,
+                    priority,
+                    step.is_active,
+                    userStepList,
+                    step.requests)
+                setStep(updatedStep)
+
+            }
+            if (setSteps !== undefined && steps !== undefined) {
+
+                setSteps(steps.map((item) => {
+                    if (item.id === step.id) {
+                        const updatedStep = new Step(
+                            step.id,
+                            step.process_id,
+                            name,
+                            step.order,
+                            objective,
+                            formatToData(endingDate),
+                            step.endDate,
+                            priority,
+                            step.is_active,
+                            userStepList,
+                            step.requests)
+                        return updatedStep
+
+                    }
+                    return item
+                }))
+            }
+
 
             if (response.ok) { //Se der certo ele passa pra dentro do if
                 //Talvez colocar algum popup dizendo que as alterações foram feitas
@@ -102,10 +149,9 @@ export const ModalUpdateStep = ({ step }: UpdateStep) => {
             if (listOfUsers) {
                 setUsersList(listOfUsers)
             }
-            const stepData = await getStepsById(step.id) //Função para buscar os dados da etapa
-            if (stepData && stepData.users) {
-                setResponsibleList(stepData.users.map(userStep => userStep.user)) //Define a lista de responsáveis com os usuários retornados
-            }
+            
+            setResponsibleList(step.users.map(userStep => userStep.user)) //Define a lista de responsáveis com os usuários retornados
+            
 
         })()
     }, [step])
@@ -115,22 +161,23 @@ export const ModalUpdateStep = ({ step }: UpdateStep) => {
     return (
 
         <>
-            <Button display="flex" mb={3} bg='#53C4CD' variant='solid'
-                textColor='white' colorScheme="#58595B" width='100%'
+            <Button bg='#53C4CD' variant='solid'
+                textColor='white' width='10rem'
                 type="submit" onClick={onOpen}
+                margin={'0.5rem'}
             >Editar</Button>
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem">
                 <form onSubmit={handleSubmit}>
                     <FormLabel textAlign="center" fontSize="large" color='white'><strong>Edição de Etapa</strong></FormLabel>
 
                     <FormLabel pt={3} color='white'>Nome</FormLabel>
-                    <Input bg='white' textColor={'black'} placeholder={step.name} value={step.name} size='md' type="text" onChange={handleNameChange} />
+                    <Input bg='white' textColor={'black'} placeholder={step.name} value={name} size='md' type="text" onChange={handleNameChange} />
 
                     <FormLabel pt={3} color='white'>Prazo</FormLabel>
-                    <Input bg='white' textColor={'black'} size="md" type="date" value={step.endingDate.toString()} onChange={handleEndingDateChange} />
+                    <Input bg='white' textColor={'black'} size="md" type="date" value={endingDate.toString()} onChange={handleEndingDateChange} />
 
                     <FormLabel pt={3} color='white'>Objetivo</FormLabel>
-                    <Textarea bg='white' textColor={'black'} placeholder={step.objective} value={step.objective} onChange={handleObjectiveChange} />
+                    <Textarea bg='white' textColor={'black'} placeholder={step.objective} value={objective} onChange={handleObjectiveChange} />
 
                     <FormControl id="priority" mb={5}>
                         <FormLabel color="#ffffff" fontSize="20px" pt={3} mb={1} ml={210}>Prioridade</FormLabel>
@@ -156,14 +203,14 @@ export const ModalUpdateStep = ({ step }: UpdateStep) => {
 
                         </Select>
                         <Box>
-                            <Flex 
-                            minH={'10rem'} 
-                            maxWidth={'100%'} 
-                            marginLeft='1rem' 
-                            flexDirection='row' 
-                            gap='1.5rem'
-                            flexWrap="wrap"
-                            justifyContent="flex-start" 
+                            <Flex
+                                minH={'10rem'}
+                                maxWidth={'100%'}
+                                marginLeft='1rem'
+                                flexDirection='row'
+                                gap='1.5rem'
+                                flexWrap="wrap"
+                                justifyContent="flex-start"
                             >
                                 {responsibleList.map((responsible: User) => {
                                     const removeResponsible = () => {
@@ -196,7 +243,7 @@ export const ModalUpdateStep = ({ step }: UpdateStep) => {
                             </Flex >
                         </Box>
                     </FormControl>
-                    <Button display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='black' colorScheme="#58595B" width='100%' type="submit">Confirmar</Button>
+                    <Button display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='white' colorScheme="#58595B" width='100%' type="submit">Confirmar</Button>
                 </form>
             </ModalGeneric>
         </>

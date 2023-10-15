@@ -18,11 +18,11 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
         bgColor = '#00750C'
     }
     return (
-        <Tabs height="52.6rem" variant={'soft-rounded'} isFitted textColor={'white'} alignSelf="stretch" boxShadow={'4px 0 4px 0 rgba(0,0,0,0.25)'}>
+        <Tabs height="52.6rem" variant="enclosed" isManual isFitted textColor={'white'} alignSelf="stretch" boxShadow={'4px 0 4px 0 rgba(0,0,0,0.25)'}>
             <TabList width={'25rem'}>
-                <Tab textColor={'white'}>Dados</Tab>
-                <Tab textColor={'white'}>Responsável</Tab>
-                <Tab textColor={'white'}>Ações</Tab>
+                <Tab>Dados</Tab>
+                <Tab>Responsável</Tab>
+                <Tab>Ações</Tab>
             </TabList>
             <TabPanels maxWidth={'25rem'} minWidth={'25rem'} >
                 <TabPanel>

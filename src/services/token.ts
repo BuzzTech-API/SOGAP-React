@@ -47,6 +47,8 @@ export const verifyToken = async (authenticated: Authenticated) => {
       });
 
       if (response.status === 200) {
+        const data = await response.json()
+        localStorage.setItem('cargo', data.role)
         return authenticated.isAuthenticated = true;
       }
       else {
@@ -200,6 +202,8 @@ export const verifyTokenFetch = async () => {
       });
 
       if (response.status === 200) {
+        const data = await response.json()
+        localStorage.setItem('cargo', data.role)
         return
       }
       else {

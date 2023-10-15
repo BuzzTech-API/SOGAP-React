@@ -123,11 +123,10 @@ export const createRequestEvidence = async (
       id: process_id,
       is_active: is_active
     }
-    console.log(bodyJson);
     
     const token = localStorage.getItem('access_token');
-    const response = await fetch(`http://localhost:8000/request_for_evidence/delete`, {
-      method: 'DELETE',
+    const response = await fetch(`http://localhost:8000/request_for_evidence/delete/`, {
+      method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Authorization': `Bearer ${token}`,
@@ -137,6 +136,10 @@ export const createRequestEvidence = async (
     });
     return await response.json()
   }
+
+
+
+
   export const validateEvidence = async (id: number) => {
       const token = localStorage.getItem('access_token');
             const response = await fetch(`http://localhost:8000/request_for_evidence/validate/${id}`, {
@@ -149,6 +152,9 @@ export const createRequestEvidence = async (
       })
       return response
   }
+
+
+
   export const invalidateEvidence = async (id: number) => {
       const token = localStorage.getItem('access_token');
             const response = await fetch(`http://localhost:8000/evidences/invalidate/${id}`, {

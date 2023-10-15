@@ -39,7 +39,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
 
     return (
         <>
-            <Button bg='red' variant='solid'
+            <Button bg='#ff1a1a' variant='solid'
                 textColor='white' colorScheme="#58595B" width='8rem'
                 type="submit" onClick={onOpen}
             >Deletar</Button>
@@ -89,7 +89,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
                             <Button
                                 display="flex"
                                 mb={3}
-                                bg='red'
+                                bg='#ff1a1a'
                                 variant='solid'
                                 textColor='white'
                                 colorScheme="#58595B"

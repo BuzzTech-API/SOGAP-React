@@ -118,6 +118,7 @@ export function DrawerCadastro() {
                                                 <Button textColor={'white'} backgroundColor={'#53C4CD'} h='1.75rem' size='sm' onClick={handleClick}>
                                                     {show ? 'Hide' : 'Show'}
                                                 </Button>
+
                                             </InputRightElement>
                                         </InputGroup>
                                     </FormControl>
@@ -125,11 +126,12 @@ export function DrawerCadastro() {
                                         <FormLabel textAlign={'center'}>Cargo</FormLabel>
                                         <Select
                                             value={role}
-                                            onChange={handleSelectChange}>
-                                            <option value="Gerente">Gerente</option>
-                                            <option value="Lider">Lider</option>
-                                            <option value="Colaborador">Colaborador</option>
-                                            <option value="C-Level">C-Level</option>
+                                            onChange={handleSelectChange}
+                                            bg={'#58595B'}>
+                                            <option value="Gerente" style={{ backgroundColor: '#58595B' }}>Gerente</option>
+                                            <option value="Lider" style={{ backgroundColor: '#58595B' }}>Lider</option>
+                                            <option value="Colaborador" style={{ backgroundColor: '#58595B' }}>Colaborador</option>
+                                            <option value="C-Level" style={{ backgroundColor: '#58595B' }}>C-Level</option>
                                         </Select>
                                     </FormControl>
                                     <FormControl margin={'1rem'}>
@@ -155,6 +157,7 @@ export function DrawerCadastro() {
                 </DrawerContent>
             </Drawer>
         </>
+
     )
 }
 

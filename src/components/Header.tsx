@@ -96,7 +96,7 @@ export const Header = () => {
                         } >
                     </MenuButton>
                     <MenuList color={'#FFF'} bg={'#58595B'}>
-                        <MenuItem bg={'#58595B'}><DrawerCadastro /></MenuItem>
+                        {role==='Administrador' && <MenuItem bg={'#58595B'}><DrawerCadastro /></MenuItem>}
                         <Link to={'/'}>
                             <MenuItem bg={'#58595B'}>
                                 <Button

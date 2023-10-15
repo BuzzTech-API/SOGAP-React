@@ -4,18 +4,27 @@ import RequestForEvidence from "../models/RequestForEvidence";
 import { getUserById } from "../services/users";
 import User from "../models/User";
 import Process from "../models/Process";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { verifyTokenFetch } from "../services/token";
 import { formatDateToBrasil } from "../services/formatDate";
 import { invalidateEvidence, validateEvidence } from "../services/requestEvidence";
+import { ViewRequest } from "./Modal/ViewRequest";
+import { request } from "http";
+import { BtnDeleteEvidencia } from "./BtnDeleteEvidencia";
+import { ModalUpdateRequestEvidence } from "./Modal/ModalEditarRequisiçãoEvidencia";
+import Step from "../models/Steps";
 
 interface AccordionI {
-  requestForEvidenceI: RequestForEvidence
+  requestForEvidenceI: RequestForEvidence,
+  process_id: number,
+  step: Step,
+  setStep: React.Dispatch<SetStateAction<Step>>,
 }
-export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
+export const AccordionRequests = ({ requestForEvidenceI , process_id, step, setStep }: AccordionI) => {
   const [user, setUser] = useState(new User('', '', '', false, 0, '', new Array<Process>()))
   const [requestForEvidence, setRequestForEvidence] = useState(requestForEvidenceI)
   const [is_validated, setIs_validated] = useState(requestForEvidence.is_validated)
+  const role = localStorage.getItem('cargo')
   useEffect(() => {
     (async () => {
       await verifyTokenFetch()
@@ -156,7 +165,7 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
               {user.name}
             </Text>
           </Box>
-          {is_validated===true && requestForEvidence.evidences.length !== 0 && requestForEvidence.evidences !== undefined && (<Text
+          {is_validated === true && requestForEvidence.evidences.length !== 0 && requestForEvidence.evidences !== undefined && (<Text
             lineHeight="1.5"
             fontWeight="semibold"
             fontSize="md"
@@ -165,31 +174,55 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
           >
             Evidência Validada
           </Text>)}
-          {is_validated===false && requestForEvidence.evidences.length !== 0 && requestForEvidence.evidences !== undefined && (<Menu>
-            <MenuButton as={Button} bgColor={'#29784E'} color={'#FFF'} variant="solid" size="md">
-              Ações
-            </MenuButton>
-            <MenuList bg={'#58595B'}>
-              <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
-                <Button
-                  bg={'#58595B'}
-                  color={'#FFF'}
-                  width={'100%'}
-                  _hover={{ background: '#FFF', color: '#58595B' }}
-                  onClick={valitadeEvidenceAction}
-                >Validar Evidência</Button>
-              </MenuItem>
-              <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
-                <Button
-                  bg={'#58595B'}
-                  color={'#FFF'}
-                  width={'100%'}
-                  _hover={{ background: '#FFF', color: '#58595B' }}
-                  onClick={invalitadeEvidenceAction}
-                >Invalidar Evidência</Button>
-              </MenuItem>
-            </MenuList>
-          </Menu>)}
+          {is_validated === false &&
+            requestForEvidence.evidences.length !== 0 &&
+            requestForEvidence.evidences !== undefined &&
+            role !== null && (role === 'Administrador' || role === 'Gerente' || role === 'Lider') &&
+            (<Menu>
+              <MenuButton as={Button} bgColor={'#29784E'} color={'#FFF'} variant="solid" size="md">
+                Ações
+              </MenuButton>
+              <MenuList bg={'#58595B'}>
+                <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
+                  <Button
+                    bg={'#58595B'}
+                    color={'#FFF'}
+                    width={'100%'}
+                    _hover={{ background: '#FFF', color: '#58595B' }}
+                    onClick={valitadeEvidenceAction}
+                  >Validar Evidência</Button>
+                </MenuItem>
+                <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
+                  <Button
+                    bg={'#58595B'}
+                    color={'#FFF'}
+                    width={'100%'}
+                    _hover={{ background: '#FFF', color: '#58595B' }}
+                    onClick={invalitadeEvidenceAction}
+                  >Invalidar Evidência</Button>
+                </MenuItem>
+                <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
+                  <BtnDeleteEvidencia evidencia={requestForEvidence} setStep={setStep} step={step}  />
+                </MenuItem>
+                <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
+                <ModalUpdateRequestEvidence requestEvidence={requestForEvidence} setRequestForEvidence={setRequestForEvidence} setStep={setStep} step={step} />
+                </MenuItem>
+                  
+                  
+              </MenuList>
+            </Menu>)}
+          {is_validated === false &&
+            requestForEvidence.evidences.length !== 0 &&
+            requestForEvidence.evidences !== undefined &&
+            role !== null && role === 'Colaborador' && (<Text
+              lineHeight="1.5"
+              fontWeight="semibold"
+              fontSize="md"
+              color="#FF7A00"
+              flex="1"
+            >
+              Evidência ainda não Validada
+            </Text>)}
 
 
 
@@ -291,14 +324,19 @@ export const AccordionRequests = ({ requestForEvidenceI }: AccordionI) => {
               Ações
             </MenuButton>
             <MenuList bg={'#58595B'}>
-              <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
-                <Button
-                  bg={'#58595B'}
-                  color={'#FFF'}
-                  width={'100%'}
-                  _hover={{ background: '#FFF', color: '#58595B' }}
-                >Notificar Responsável</Button>
-              </MenuItem>
+              {role !== null && role !== 'Colaborador' &&
+                <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
+                  <Button
+                    bg={'#58595B'}
+                    color={'#FFF'}
+                    width={'100%'}
+                    _hover={{ background: '#FFF', color: '#58595B' }}
+                  >Notificar Responsável</Button>
+                </MenuItem>}
+              {role !== null && role === 'Colaborador' &&
+                <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
+                  <ViewRequest request={requestForEvidence} setRequestForEvidence={setRequestForEvidence} step={step} setStep={setStep} />
+                </MenuItem>}
             </MenuList>
           </Menu>
         </ VStack>

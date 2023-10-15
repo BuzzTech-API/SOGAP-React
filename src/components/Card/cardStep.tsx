@@ -10,8 +10,7 @@ interface StepCard {
 
 
 
-export const CardStep = (stepI: StepCard) => {
-    const [step] = useState(stepI.step)
+export const CardStep = ({step, onClick}: StepCard) => {
 
     let bgColor: string;
     if (step.priority === 'Alta') {
@@ -23,7 +22,7 @@ export const CardStep = (stepI: StepCard) => {
     }
 
     return (
-        <Card background="#414243" onClick={stepI.onClick} boxShadow="base" opacity="0.9" w={'15.1rem'} h={'17rem'} maxHeight={'17rem'} borderRadius={'0.5rem'}>
+        <Card background="#414243" onClick={onClick} boxShadow="base" opacity="0.9" w={'15.1rem'} h={'17rem'} maxHeight={'17rem'} borderRadius={'0.5rem'}>
             <Stack justify="flex-start" align="center" spacing="23px" opacity={'0.9'}>
                 <Stack
                     justify="flex-start"

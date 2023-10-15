@@ -8,17 +8,26 @@ import { formatDateToBrasil } from "../services/formatDate"
 import { BtnDeleteProcess } from "../components/BtnDeleteProcess"
 import { ModalUpdateProcess } from "../components/Modal/ModalEditarProcesso"
 import { verifyTokenFetch } from "../services/token"
+import { getMyRelatedData } from "../services/users"
+import Step from "../models/Steps"
+import RequestForEvidence from "../models/RequestForEvidence"
 import { CardProcessoPrazo } from "../components/Card/cardProcessoPrazo"
 
 
 export const Home = () => {
     const [processes, setProcesses] = useState(new Array<Process>())
+    const [steps, setSteps] = useState(new Array<Step>())
+    const [requestForEvidence, setRequestForEvidence] = useState(new Array<RequestForEvidence>())
+    const [role, setRole] = useState(localStorage.getItem('cargo'))
     useEffect(() => {
         (async () => {
             await verifyTokenFetch()
-            const processList = await getAllProcess()
-            if (processList) {
-                setProcesses(processList)
+            const userContent = await getMyRelatedData()
+
+            if (userContent) {
+                setProcesses(userContent.processes)
+                setSteps(userContent.steps)
+                setRequestForEvidence(userContent.requests)
             }
         })();
     }, [])
@@ -47,6 +56,8 @@ export const Home = () => {
             gap='1rem'
             marginTop={'1rem'}
             maxHeight='18rem'
+            minHeight='18rem'
+
             maxWidth={'110rem'}
             overflowY={'auto'} >
             {processes.map((process: Process) => {
@@ -69,15 +80,15 @@ export const Home = () => {
                     width={'14rem'}
                     color={'#FFF'}
                 >Meus Processos</Text>
-                <Spacer />
+                {role !== null && (role ==='Gerente'|| role === 'Administrador') && <><Spacer />
+                
                 <Box
                     alignSelf={'center'}
                     display={'flex'}
                     justifyContent={'right'}
                 >
-                    <FormP width={'9rem'} processes={processes} setProcesses={setProcesses} />
-                </Box>
-
+                     <FormP width={'9rem'} processes={processes} setProcesses={setProcesses} />
+                </Box></>}
             </Flex>
 
             <TableContainer
@@ -114,8 +125,8 @@ export const Home = () => {
                                     <Td
                                         display={'flex'}
                                         gap={'0.3rem'}>
-                                        <ModalUpdateProcess process_id={process.id.toString()} processes={processes} setProcesses={setProcesses} />
-                                        <BtnDeleteProcess process={process} processes={processes} setProcess={setProcesses} />
+                                        {role !== null && (role ==='Gerente'|| role === 'Lider' || role === 'Administrador') &&<ModalUpdateProcess process_id={process.id.toString()} processes={processes} setProcesses={setProcesses} />}
+                                        {role !== null && (role ==='Gerente'|| role === 'Administrador') && <BtnDeleteProcess process={process} processes={processes} setProcess={setProcesses} />}
                                         <Link to={`/process/${process.id}`}><Button
                                             bg='#53C4CD'
                                             variant='solid'

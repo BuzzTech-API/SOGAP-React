@@ -16,6 +16,7 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
+  Center,
 } from "@chakra-ui/react"
 import Step from "../../models/Steps"
 import { SetStateAction, useState } from "react"
@@ -25,16 +26,19 @@ import { AccordionRequests } from "../AccordionRequests"
 import { ModalSolicitaEvidencia } from "../Modal/BtnPedirEvidencia"
 import { ModalUpdateStep } from "../Modal/ModalEditarEtapa"
 import { formatDateToBrasil } from "../../services/formatDate"
+import { BtnDeleteEtapa } from "../BtnDeleteEtapa"
 
 interface propsED {
   isOpen: boolean,
   onClose: () => void
   step: Step,
   setStep: React.Dispatch<SetStateAction<Step>>,
+  steps: Step[],
+  setSteps: React.Dispatch<SetStateAction<Step[]>>,
 
 }
 
-export const EtapaDrawer = ({ step, setStep, isOpen, onClose }: propsED) => {
+export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }: propsED) => {
   const [requests, setRequests] = useState(step.requests)
 
   let bgColor: string;
@@ -51,8 +55,8 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose }: propsED) => {
       <DrawerOverlay opacity={0.9}>
         <DrawerContent opacity={0.9}>
           <DrawerBody bg={'#1B1C1E'} opacity={0.9} color={'#FFF'}>
-            <Tabs variant="enclosed" isManual isFitted>
-              <TabList  >
+            <Tabs variant="enclosed" isManual isFitted textColor={'white'}>
+              <TabList>
                 <Tab>Dados</Tab>
                 <Tab>Responsáveis</Tab>
                 <Tab>Requisição de Evidência</Tab>
@@ -222,16 +226,19 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose }: propsED) => {
                   </Accordion>
                 </TabPanel>
                 <TabPanel alignItems={'center'} alignContent={'center'}>
-                  <Accordion  allowToggle>
+                  <Accordion allowToggle>
                     {step.requests.map((requestForEvidence: RequestForEvidence) => {
-                      return(<AccordionRequests requestForEvidenceI={requestForEvidence} />)
-                      })}
+                      return (<AccordionRequests requestForEvidenceI={requestForEvidence} process_id={step.process_id} step={step} setStep={setStep} />)
+                    })}
                   </Accordion>
-                    <ModalSolicitaEvidencia requests={requests} setRequests={setRequests} step={step} setStep={setStep} />
+                  <ModalSolicitaEvidencia requests={requests} setRequests={setRequests} step={step} setStep={setStep} />
                 </TabPanel>
                 <TabPanel>
-                  <ModalUpdateStep step = {step}/>
-                  </TabPanel>
+                  <Center>
+                    <ModalUpdateStep step={step} steps={steps} setSteps={setSteps} setStep={setStep} />
+                    <BtnDeleteEtapa etapa={step} steps={steps} setSteps={setSteps} onCloseD={onClose} />
+                  </Center>
+                </TabPanel>
               </TabPanels>
             </Tabs>
           </DrawerBody>

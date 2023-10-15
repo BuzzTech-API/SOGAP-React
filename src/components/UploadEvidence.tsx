@@ -2,15 +2,21 @@ import {  Input, FormLabel, Button } from "@chakra-ui/react"
 import { ProcessInterface, ProcessUser } from "../interfaces/processInterface";
 import User from "../models/User";
 import { refreshTokenFetch } from "../services/token";
+import Evidence from "../models/Evidence";
+import RequestForEvidence from "../models/RequestForEvidence";
+import Step from "../models/Steps";
+import { SetStateAction } from "react";
 
 
 interface ModalUploadEvidenceI {
-    idRequestForEvidence:number
-    idProcess: number
+    step: Step,
+    setStep: React.Dispatch<SetStateAction<Step>>,
+    requestForEvidence: RequestForEvidence,
+    setRequestForEvidence: React.Dispatch<React.SetStateAction<RequestForEvidence>>
 }
 
 
-export const ModalUploadEvidence = ({idRequestForEvidence, idProcess}:ModalUploadEvidenceI) =>{
+export const ModalUploadEvidence = ({requestForEvidence, step, setStep, setRequestForEvidence}:ModalUploadEvidenceI) =>{
     const token = localStorage.getItem('access_token')
 
         const submit = async (e:any) => {
@@ -21,7 +27,7 @@ export const ModalUploadEvidence = ({idRequestForEvidence, idProcess}:ModalUploa
             await refreshTokenFetch()
 
             
-            const response = await fetch(`http://localhost:8000/users_processes/process_id/${idProcess}`, {
+            const response = await fetch(`http://localhost:8000/users_processes/process_id/${step.process_id}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -73,11 +79,11 @@ export const ModalUploadEvidence = ({idRequestForEvidence, idProcess}:ModalUploa
                     // corpo do json que sera mandado para /evidences
                     const jsonBody = {
                         link: data[0],
-                        idRequestForEvidence: idRequestForEvidence,
+                        idRequestForEvidence: requestForEvidence.id,
                         deliveryDate: formattedDate
                     }
 
-                    await fetch(
+                    const evidenciaResponse = await fetch(
                         `http://localhost:8000/evidences/`,{
                         method: 'POST',
                         headers:{
@@ -87,8 +93,27 @@ export const ModalUploadEvidence = ({idRequestForEvidence, idProcess}:ModalUploa
                         },
                         body: JSON.stringify(jsonBody) // transforma o corpo do json para json
                     })
+                    const evidenciaData: Evidence= await evidenciaResponse.json()
+                    const updateRequestForEvidence = new RequestForEvidence(requestForEvidence.id, requestForEvidence.requiredDocument,
+                        requestForEvidence.description,
+                        requestForEvidence.step_id,
+                        requestForEvidence.user_id,
+                        requestForEvidence.evidenceValidationDate,
+                        requestForEvidence.deliveryDate,
+                        requestForEvidence.is_validated,
+                        requestForEvidence.is_actived,
+                        requestForEvidence.evidences.concat(evidenciaData)
+                        )
 
-
+                    setRequestForEvidence(updateRequestForEvidence)
+                    const newRequests = step.requests.map((item)=>{
+                        if(item.id === requestForEvidence.id){
+                            return updateRequestForEvidence
+                        }
+                        return item
+                    })
+                    step.requests = newRequests
+                    setStep(step)
 
                 }  
             }
@@ -104,7 +129,7 @@ export const ModalUploadEvidence = ({idRequestForEvidence, idProcess}:ModalUploa
             <form onSubmit={submit}>
                     <FormLabel htmlFor="uploadInput" pt={3} color='white'><strong>Insira documento requerido</strong></FormLabel>
                     <Input id='uploadInput' type="file"/>
-                    <Button type="submit" display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='black' colorScheme="#58595B" width='100%'>Enviar</Button>
+                    <Button type="submit" display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='white' colorScheme="#58595B" width='100%'>Enviar</Button>
             </form>
         </>
     )

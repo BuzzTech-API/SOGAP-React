@@ -1,15 +1,20 @@
 import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, useDisclosure } from "@chakra-ui/react";
 import { ModalGeneric } from "./Modal/Modal";
 import { verifyTokenFetch } from "../services/token";
-import { useRef, useState } from "react";
+import { SetStateAction, useRef, useState } from "react";
 import Steps from "../models/Steps";
 import { deleteStep } from "../services/steps";
+import Step from "../models/Steps";
 
 interface DeleteEtapaInterface {
     etapa: Steps
+
+    steps: Step[],
+    setSteps: React.Dispatch<SetStateAction<Step[]>>,
+    onCloseD: ()=>void
 }
 
-export const BtnDeleteEtapa = ({etapa}: DeleteEtapaInterface) => {
+export const BtnDeleteEtapa = ({etapa, setSteps, steps, onCloseD}: DeleteEtapaInterface) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [showSuccessDialog, setShowSuccessDialog] = useState(false)
     const cancelRef = useRef(null)
@@ -31,13 +36,15 @@ export const BtnDeleteEtapa = ({etapa}: DeleteEtapaInterface) => {
 
         }finally{
             onClose()
+            onCloseD()
+                setSteps(steps.filter((item)=>item.id!==etapa.id))
         }
     }
 
     return(
         <>
-        <Button bg='red' variant='solid' 
-            textColor='white' colorScheme="#58595B" width='8rem' 
+        <Button bg='#ff1a1a' variant='solid' 
+            textColor='white' width='10rem' 
             type="submit" onClick={onOpen}
             >Deletar</Button>
 
@@ -69,13 +76,13 @@ export const BtnDeleteEtapa = ({etapa}: DeleteEtapaInterface) => {
                     color='white'
                     mt={3}
                     >
-                        <strong>Tem certeza de que quer deletar a etapa {etapa.name} ?</strong>
+                        <strong>Tem certeza de que quer deletar a etapa: {etapa.name} ?</strong></FormLabel>
                         
-                        <ButtonGroup gap="240" mt={5}>
+                        <ButtonGroup display={'flex'} alignSelf={'center'} gap="240" mt={5}>
                             <Button 
                                 display="flex" 
                                 mb={3} 
-                                bg='red' 
+                                bg='#ff1a1a' 
                                 variant='solid' 
                                 textColor='white' 
                                 colorScheme="#58595B" 
@@ -94,7 +101,7 @@ export const BtnDeleteEtapa = ({etapa}: DeleteEtapaInterface) => {
                                 onClick={onClose}>CANCELAR
                             </Button>
                         </ButtonGroup>
-                    </FormLabel>
+                    
                 </form>
             </ModalGeneric>
             

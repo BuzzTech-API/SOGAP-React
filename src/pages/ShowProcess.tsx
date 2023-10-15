@@ -84,7 +84,7 @@ export const ShowProcess = () => {
                         </CardBase>
                     </Grid>
                 </Box>
-                <EtapaDrawer isOpen={isOpen} onClose={onClose} setStep={setStep} step={step} />
+                <EtapaDrawer isOpen={isOpen} onClose={onClose} setStep={setStep} step={step} steps={steps} setSteps={setSteps} />
             </Flex>
         </Flex>
     </>

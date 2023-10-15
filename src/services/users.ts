@@ -1,3 +1,4 @@
+import { MyRelatedData } from "../interfaces/relatedDataInterface";
 import User from "../models/User";
 
 
@@ -96,7 +97,8 @@ export const getUser = async () => {
       });
 
       if (response.status === 200) {
-        const data = response.json()
+        const data = await response.json()
+        localStorage.setItem('cargo', data.role)
         return data
       }
     } catch (error) {
@@ -125,7 +127,7 @@ export const createProcessUser = async (user_id: number, process_id: number) => 
   return response
 }
 
-export const getUserById = async (id:number) => {
+export const getUserById = async (id: number) => {
   const token = localStorage.getItem('access_token');
   if (token) {
     try {
@@ -139,6 +141,28 @@ export const getUserById = async (id:number) => {
 
       if (response.status === 200) {
         const data = response.json()
+        return data
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+export const getMyRelatedData = async () => {
+  const token = localStorage.getItem('access_token');
+  if (token) {
+    try {
+      const response = await fetch(`http://localhost:8000/user/getall_related_data/`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        const data: MyRelatedData = await response.json()
+
         return data
       }
     } catch (error) {
