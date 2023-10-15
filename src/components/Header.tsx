@@ -2,7 +2,6 @@ import {
     Button,
     Icon,
     Avatar,
-    AvatarBadge,
     Text,
     Box,
     Flex,
@@ -11,13 +10,15 @@ import {
     MenuList,
     MenuItem,
     Spacer,
+    useDisclosure,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { IonicLogo } from './IonicLogo'
 import { useEffect, useState } from 'react'
 import { getUser } from '../services/users'
-import { verifyTokenFetch } from '../services/token'
+import { disable2FA, verifyTokenFetch } from '../services/token'
 import { DrawerCadastro } from './Drawer/Cadastro'
+import TwoAuthModal from "../components/Modal/QrCodeModal"
 
 
 
@@ -25,6 +26,8 @@ export const Header = () => {
 
     const [name, setName] = useState('')
     const [role, setRole] = useState('')
+    const [is_enable2fa, setIs_enable2fa] = useState(false)
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     useEffect(() => {
         (async () => {
@@ -33,6 +36,7 @@ export const Header = () => {
             if (data) {
                 setName(data.name)
                 setRole(data.role)
+                setIs_enable2fa(data.is_2fa_enable)
             }
 
         })();
@@ -40,6 +44,13 @@ export const Header = () => {
 
 
     }, [])
+
+    const deactivated2FA = async () => {
+        const data = await disable2FA()
+        if (data.deactivated===true) {
+            setIs_enable2fa(false)
+        }
+    }
 
 
     return (
@@ -102,13 +113,18 @@ export const Header = () => {
                                 color={'#FFF'}
                                 width={'100%'}
                                 _hover={{ background: '#FFF', color: '#58595B' }}
+                                onClick={()=>{
+                                    localStorage.removeItem('access_token')
+                                    localStorage.removeItem('refresh_token')
+                                    window.location.reload();
+                                }}
                             >Sair</Button>
                         </MenuItem>
 
                     </MenuList>
                 </Menu>
                 <Link to={'/'}>
-                <IonicLogo />
+                    <IonicLogo />
                 </Link>
             </Flex>
             <Spacer />
@@ -142,16 +158,42 @@ export const Header = () => {
                         {role}
                     </Text>
                 </Box>
-                <Avatar
-                    name=""
-                    src="https://i.pinimg.com/originals/10/7a/97/107a97ca5bd4a571edcebec54a66fc32.jpg"
-                    size="xs"
-                    width="3.5rem"
-                    height="3.5rem"
-                    marginLeft={'1rem'}
-                >
-                    <AvatarBadge boxSize="1.25em" background="green.500" />
-                </Avatar>
+                <Menu>
+                    <MenuButton>
+                        <Avatar
+                            name=""
+                            src="https://i.pinimg.com/originals/10/7a/97/107a97ca5bd4a571edcebec54a66fc32.jpg"
+                            size="xs"
+                            width="3.5rem"
+                            height="3.5rem"
+                            marginLeft={'1rem'}
+                        >
+                        </Avatar>
+                    </MenuButton>
+                    <MenuList
+                        color={'#FFF'}
+                        bg={'#58595B'}
+                        padding={'1rem'}
+                    >
+                        {is_enable2fa === true ?
+                            <MenuItem as={Button} bg={'#58595B'}
+                                color={'#FFF'}
+                                width={'100%'}
+                                _hover={{ background: '#FFF', color: '#58595B' }}
+                                onClick={deactivated2FA}
+                            >Desativar Autenticação 2 Fatores</MenuItem> :
+                            <MenuItem
+                                as={Button}
+                                onClick={onOpen}
+                                bg={'#58595B'}
+                                color={'#FFF'}
+                                width={'100%'}
+                                _hover={{ background: '#FFF', color: '#58595B' }}
+                            >Ativar Autenticação 2 Fatores</MenuItem>}
+                        <TwoAuthModal isOpen={isOpen} onClose={onClose} setIs_enable2fa={setIs_enable2fa} />
+                    </MenuList>
+                </Menu>
+
             </Flex>
         </Flex>
     )

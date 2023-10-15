@@ -1,7 +1,7 @@
 import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Icon, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from "@chakra-ui/react"
 import Process from "../models/Process"
 import User from "../models/User"
-import { BtnDeleteEvidence } from "./BtnDeleteEvidence"
+import { BtnDeleteProcess } from "./BtnDeleteProcess"
 import { ModalUpdateProcess } from "./Modal/ModalEditarProcesso"
 import { formatDateToBrasil } from "../services/formatDate"
 interface ProcessTabsI {
@@ -355,8 +355,8 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                 <TabPanel maxWidth={'25rem'}>
                     <Box maxWidth={'25rem'} height={'47.6rem'} padding={0}>
                         <Stack direction="row" justify="center" align="center" spacing="11px" w={'23rem'}>
-                            <ModalUpdateProcess />
-                            <BtnDeleteEvidence process={process} />
+                            <ModalUpdateProcess process={process} setProcess={setProcess} />
+                            <BtnDeleteProcess process={process} />
                         </Stack>
                     </Box>
                 </TabPanel>

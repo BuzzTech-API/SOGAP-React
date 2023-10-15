@@ -79,10 +79,27 @@ export const loginToken = async (email: string, senha: string) => {
 
   });
   const data = await response.json()
+  if(data.is_enabled2fa){
+    localStorage.setItem('login_token',data.login_token)
+    return false
+  }
   localStorage.setItem('access_token', data.access_token)
   localStorage.setItem('refresh_token', data.refresh_token)
 }
 
+export const enableTwoFactor = async () => {
+  const token = localStorage.getItem('access_token');
+  const response = await fetch(`http://localhost:8000/enable-2fa`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },    
+  });
+    const data = await response.json()
+    return data
+}
 
 
 export const refreshTokenFetch = async () => {
@@ -104,6 +121,61 @@ export const refreshTokenFetch = async () => {
       }
       else {
         localStorage.removeItem('refresh_token');
+      }
+    } catch (error) {
+      // Se a verificação falhar (por exemplo, token inválido), você pode lidar com isso aqui
+      console.error('Erro na verificação do token:', error);
+    }
+  }
+}
+
+export const codeVerified = async (verification_code: string) => {
+  const bodyJson = {
+    "verification_code": verification_code,
+  }
+  const token = localStorage.getItem('access_token');
+  const response = await fetch(`http://localhost:8000/verify-2fa-First-Auth`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyJson)    
+  });
+  if (response.status === 200) {
+    const data = await response.json()
+    return data.verify
+  }
+  else{
+    return false
+  }
+}
+
+export const verifyCode = async (verificationCode: string) => {
+  const login_token = localStorage.getItem('login_token')
+
+  const bodyJson = {
+    "verification_code": verificationCode,
+  }
+
+  if (login_token) {
+    try {
+      const response = await fetch(`http://localhost:8000/verify-2fa`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${login_token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyJson)
+      });
+
+      if (response.status === 200) {
+        const data = await response.json()
+        localStorage.setItem('access_token', data.access_token)
+        localStorage.setItem('refresh_token', data.refresh_token)
+        localStorage.removeItem('login_token');
       }
     } catch (error) {
       // Se a verificação falhar (por exemplo, token inválido), você pode lidar com isso aqui
@@ -147,3 +219,20 @@ export const verifyTokenFetch = async () => {
     return await refreshTokenFetch()
   }
 }
+
+
+export const disable2FA = async () => {
+  const token = localStorage.getItem('access_token');
+  const response = await fetch(`http://localhost:8000/deactivate2fa`, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },    
+  });
+    const data = await response.json()
+    return data
+}
+
+

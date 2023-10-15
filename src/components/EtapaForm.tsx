@@ -30,7 +30,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
   const [name, setName] = useState('')
   const [objective, setObjective] = useState('')
   const [endingDate, setEndingDate] = useState(new Date())
-  const [priority, setPriority] = useState('Alta')
+  const [priority, setPriority] = useState('')
   const [usersList, setUsersList] = useState(new Array<User>())
   const [responsibleList, setResponsibleList] = useState(new Array<User>())
 
@@ -130,6 +130,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
         <Select style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
           value={priority}
           onChange={handlePriorityChange}>
+          <option value=""></option>
           <option value="Alta">Alta</option>
           <option value="Média">Média</option>
           <option value="Baixa">Baixa</option>

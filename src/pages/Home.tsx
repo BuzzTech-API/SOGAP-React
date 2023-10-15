@@ -6,10 +6,9 @@ import FormP from "../components/FormProcess"
 import { getAllProcess } from "../services/process"
 import { Link } from "react-router-dom"
 import { formatDateToBrasil } from "../services/formatDate"
-import { BtnDeleteEvidence } from "../components/BtnDeleteEvidence"
+import { BtnDeleteProcess } from "../components/BtnDeleteProcess"
 import { ModalUpdateProcess } from "../components/Modal/ModalEditarProcesso"
 import { verifyTokenFetch } from "../services/token"
-
 
 
 export const Home = () => {
@@ -21,11 +20,8 @@ export const Home = () => {
             if (processList) {
                 setProcesses(processList)
             }
-
-
         })();
     }, [])
-
 
 
     return (<Flex flexDirection={'column'}>
@@ -117,8 +113,8 @@ export const Home = () => {
                                     <Td
                                         display={'flex'}
                                         gap={'0.3rem'}>
-                                        <ModalUpdateProcess />
-                                        <BtnDeleteEvidence process={process} />
+                                        <ModalUpdateProcess process_id={process.id.toString()} processes={processes} setProcesses={setProcesses} />
+                                        <BtnDeleteProcess process={process} processes={processes} setProcess={setProcesses} />
                                         <Link to={`/process/${process.id}`}><Button
                                             bg='#53C4CD'
                                             variant='solid'
