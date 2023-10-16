@@ -4,11 +4,13 @@ import User from "../models/User"
 import { BtnDeleteProcess } from "./BtnDeleteProcess"
 import { ModalUpdateProcess } from "./Modal/ModalEditarProcesso"
 import { formatDateToBrasil } from "../services/formatDate"
+import { useState } from "react";
 interface ProcessTabsI {
     process: Process,
     setProcess: React.Dispatch<React.SetStateAction<Process>>
 }
 export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
+    const [role, setRole] = useState(localStorage.getItem('cargo'))
     let bgColor: string;
     if (process.priority === 'Alta') {
         bgColor = '#FF0000'
@@ -22,7 +24,8 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
             <TabList width={'25rem'}>
                 <Tab>Dados</Tab>
                 <Tab>Responsável</Tab>
-                <Tab>Ações</Tab>
+                {role !== null && (role ==='Gerente'|| role ==='Lider'|| role === 'Administrador') &&
+                <Tab>Ações</Tab>}
             </TabList>
             <TabPanels maxWidth={'25rem'} minWidth={'25rem'} >
                 <TabPanel>
@@ -355,8 +358,10 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                 <TabPanel maxWidth={'25rem'}>
                     <Box maxWidth={'25rem'} height={'47.6rem'} padding={0}>
                         <Stack direction="row" justify="center" align="center" spacing="11px" w={'23rem'}>
-                            <ModalUpdateProcess process={process} setProcess={setProcess} />
-                            <BtnDeleteProcess process={process} />
+                            {role !== null && (role ==='Gerente'|| role ==='Lider'|| role === 'Administrador') &&
+                            <ModalUpdateProcess process={process} setProcess={setProcess} />}
+                            {role !== null && (role ==='Gerente'|| role === 'Administrador') &&
+                            <BtnDeleteProcess process={process} />}
                         </Stack>
                     </Box>
                 </TabPanel>

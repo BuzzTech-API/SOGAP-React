@@ -25,6 +25,7 @@ export const ShowProcess = () => {
     const [steps, setSteps] = useState(new Array<Step>())
     const [step, setStep] = useState(new Step())
     const [gridColumn, setGridColumn] = useState('5')
+    const [role, setRole] = useState(localStorage.getItem('cargo'))
     useEffect(() => {
         (async () => {
             if (id) {
@@ -65,6 +66,7 @@ export const ShowProcess = () => {
 
                             return (<CardStep step={step} onClick={showInfos} />)
                         })}
+                        {role !== null && (role ==='Gerente'|| role ==='Lider'|| role === 'Administrador') &&
                         <CardBase width="242px" height="270px" borderRadius="0.4rem" bgColor="#414243" opacity={'0.9'}>
                             <Box padding='0' width='100%' height='100%' >
                                 <Center margin='45% auto'>
@@ -81,7 +83,7 @@ export const ShowProcess = () => {
 
                                 </Center>
                             </Box>
-                        </CardBase>
+                        </CardBase>}
                     </Grid>
                 </Box>
                 <EtapaDrawer isOpen={isOpen} onClose={onClose} setStep={setStep} step={step} steps={steps} setSteps={setSteps} />
