@@ -40,6 +40,7 @@ interface propsED {
 
 export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }: propsED) => {
   const [requests, setRequests] = useState(step.requests)
+  const [role, setRole] = useState(localStorage.getItem('cargo'))
 
   let bgColor: string;
   if (step.priority === 'Alta') {
@@ -60,7 +61,8 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
                 <Tab>Dados</Tab>
                 <Tab>Responsáveis</Tab>
                 <Tab>Requisição de Evidência</Tab>
-                <Tab>Ações</Tab>
+                {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
+                  <Tab>Ações</Tab>}
               </TabList>
 
               <TabIndicator zIndex={-1} height="4px" bg="green.200" />
@@ -231,14 +233,22 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
                       return (<AccordionRequests requestForEvidenceI={requestForEvidence} setRequests={setRequests} process_id={step.process_id} step={step} setStep={setStep} />)
                     })}
                   </Accordion>
+                  {
+                  role !== null &&
+                  (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
                   <ModalSolicitaEvidencia requests={requests} setRequests={setRequests} step={step} setStep={setStep} />
+                  }
                 </TabPanel>
-                <TabPanel>
-                  <Center>
-                    <ModalUpdateStep step={step} steps={steps} setSteps={setSteps} setStep={setStep} />
-                    <BtnDeleteEtapa etapa={step} steps={steps} setSteps={setSteps} onCloseD={onClose} />
-                  </Center>
-                </TabPanel>
+                {
+                  role !== null &&
+                  (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
+                  <TabPanel>
+                    <Center>
+                      <ModalUpdateStep step={step} steps={steps} setSteps={setSteps} setStep={setStep} />
+                      <BtnDeleteEtapa etapa={step} steps={steps} setSteps={setSteps} onCloseD={onClose} />
+                    </Center>
+                  </TabPanel>
+                }
               </TabPanels>
             </Tabs>
           </DrawerBody>
