@@ -1,7 +1,7 @@
 import { AccordionItem, AccordionButton, AccordionPanel, VStack, Box, Text, Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import RequestForEvidence from "../models/RequestForEvidence";
-import { getUserById } from "../services/users";
+import { getUser, getUserById } from "../services/users";
 import User from "../models/User";
 import Process from "../models/Process";
 import { SetStateAction, useEffect, useState } from "react";
@@ -9,7 +9,6 @@ import { verifyTokenFetch } from "../services/token";
 import { formatDateToBrasil } from "../services/formatDate";
 import { invalidateEvidence, validateEvidence } from "../services/requestEvidence";
 import { ViewRequest } from "./Modal/ViewRequest";
-import { request } from "http";
 import { BtnDeleteEvidencia } from "./BtnDeleteEvidencia";
 import { ModalUpdateRequestEvidence } from "./Modal/ModalEditarRequisiçãoEvidencia";
 import Step from "../models/Steps";
@@ -19,16 +18,20 @@ interface AccordionI {
   process_id: number,
   step: Step,
   setStep: React.Dispatch<SetStateAction<Step>>,
+  setRequests: React.Dispatch<SetStateAction<RequestForEvidence[]>>
 }
-export const AccordionRequests = ({ requestForEvidenceI , process_id, step, setStep }: AccordionI) => {
+export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setStep, setRequests }: AccordionI) => {
   const [user, setUser] = useState(new User('', '', '', false, 0, '', new Array<Process>()))
   const [requestForEvidence, setRequestForEvidence] = useState(requestForEvidenceI)
   const [is_validated, setIs_validated] = useState(requestForEvidence.is_validated)
+  const [myId, setMyId] = useState(0)
   const role = localStorage.getItem('cargo')
   useEffect(() => {
     (async () => {
       await verifyTokenFetch()
       const data: User = await getUserById(requestForEvidence.user_id)
+      const me: User = await getUser()
+      setMyId(me.id)
       setUser(data)
     })();
 
@@ -202,13 +205,13 @@ export const AccordionRequests = ({ requestForEvidenceI , process_id, step, setS
                   >Invalidar Evidência</Button>
                 </MenuItem>
                 <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
-                  <BtnDeleteEvidencia evidencia={requestForEvidence} setStep={setStep} step={step}  />
+                  <BtnDeleteEvidencia evidencia={requestForEvidence} setRequests={setRequests} setStep={setStep} step={step} />
                 </MenuItem>
                 <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
-                <ModalUpdateRequestEvidence requestEvidence={requestForEvidence} setRequestForEvidence={setRequestForEvidence} setStep={setStep} step={step} />
+                  <ModalUpdateRequestEvidence requestEvidence={requestForEvidence} setRequestForEvidence={setRequestForEvidence} setStep={setStep} step={step} />
                 </MenuItem>
-                  
-                  
+
+
               </MenuList>
             </Menu>)}
           {is_validated === false &&
@@ -319,12 +322,12 @@ export const AccordionRequests = ({ requestForEvidenceI , process_id, step, setS
               {user.name}
             </Text>
           </Box>
-          <Menu>
-            <MenuButton as={Button} bgColor={'#29784E'} color={'#FFF'} variant="solid" size="md">
-              Ações
-            </MenuButton>
-            <MenuList bg={'#58595B'}>
-              {role !== null && role !== 'Colaborador' &&
+          {role !== null && role !== 'Colaborador' &&
+            <Menu>
+              <MenuButton as={Button} bgColor={'#29784E'} color={'#FFF'} variant="solid" size="md">
+                Ações
+              </MenuButton>
+              <MenuList bg={'#58595B'}>
                 <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
                   <Button
                     bg={'#58595B'}
@@ -332,13 +335,28 @@ export const AccordionRequests = ({ requestForEvidenceI , process_id, step, setS
                     width={'100%'}
                     _hover={{ background: '#FFF', color: '#58595B' }}
                   >Notificar Responsável</Button>
-                </MenuItem>}
-              {role !== null && role === 'Colaborador' &&
+                </MenuItem>
+                <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
+                  <BtnDeleteEvidencia evidencia={requestForEvidence} setRequests={setRequests} setStep={setStep} step={step} />
+                </MenuItem>
+                <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
+                  <ModalUpdateRequestEvidence requestEvidence={requestForEvidence} setRequestForEvidence={setRequestForEvidence} setStep={setStep} step={step} />
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          }
+          {role !== null && role === 'Colaborador' && requestForEvidence.user_id === myId &&
+            <Menu>
+              <MenuButton as={Button} bgColor={'#29784E'} color={'#FFF'} variant="solid" size="md">
+                Ações
+              </MenuButton>
+              <MenuList bg={'#58595B'}>
                 <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
                   <ViewRequest request={requestForEvidence} setRequestForEvidence={setRequestForEvidence} step={step} setStep={setStep} />
-                </MenuItem>}
-            </MenuList>
-          </Menu>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          }
         </ VStack>
       </AccordionPanel>
     </AccordionItem>

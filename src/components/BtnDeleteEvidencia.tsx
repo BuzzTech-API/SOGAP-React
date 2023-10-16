@@ -10,9 +10,10 @@ interface DeleteEvidencia {
     evidencia: RequestForEvidence
     step: Step,
     setStep: React.Dispatch<SetStateAction<Step>>,
+    setRequests: React.Dispatch<SetStateAction<RequestForEvidence[]>>
 }
 
-export const BtnDeleteEvidencia = ({ evidencia, step, setStep }: DeleteEvidencia) => {
+export const BtnDeleteEvidencia = ({ evidencia, step, setStep, setRequests }: DeleteEvidencia) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [showSuccessDialog, setShowSuccessDialog] = useState(false)
     const cancelRef = useRef(null)
@@ -37,8 +38,10 @@ export const BtnDeleteEvidencia = ({ evidencia, step, setStep }: DeleteEvidencia
                     step.priority, 
                     step.is_active, 
                     step.users, 
-                    newRequests)
+                    step.requests
+                    )
                 setStep(updatedStep)
+                setRequests(updatedStep.requests)
                 setShowSuccessDialog(true)
             }
 
