@@ -113,9 +113,9 @@ export const Login = () => {
                 </Center>
             </Box>
         </form>
-        {is_enable && (<ModalGeneric isOpen={isOpen} onClose={onClose} >
+        {is_enable && (<ModalGeneric widthModal='30rem' isOpen={isOpen} onClose={onClose} >
             <form onSubmit={submitVerification}>
-            <Box width={'30rem'} height={'30rem'} margin={'1rem auto'} justifyContent={'center'} padding={'1rem'}>
+            <Box width={'25rem'} height={'15rem'} margin={'1rem auto'} justifyContent={'center'} padding={'1rem'}>
                 <Center>
                     <FormControl margin={'1rem'}>
                         <FormLabel textAlign={'center'}>Digite o Código de Autenticação</FormLabel>
