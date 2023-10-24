@@ -328,14 +328,14 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
                 Ações
               </MenuButton>
               <MenuList bg={'#58595B'}>
-                <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
+                {/* <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
                   <Button
                     bg={'#58595B'}
                     color={'#FFF'}
                     width={'100%'}
                     _hover={{ background: '#FFF', color: '#58595B' }}
                   >Notificar Responsável</Button>
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
                   <BtnDeleteEvidencia evidencia={requestForEvidence} setRequests={setRequests} setStep={setStep} step={step} />
                 </MenuItem>

@@ -64,7 +64,7 @@ export const ShowProcess = () => {
                                 onOpen()
                             }
 
-                            return (<CardStep step={step} onClick={showInfos} />)
+                            return (<CardStep step={step} onClick={showInfos} key={step.id}/>)
                         })}
                         {role !== null && (role ==='Gerente'|| role ==='Lider'|| role === 'Administrador') &&
                         <CardBase width="242px" height="270px" borderRadius="0.4rem" bgColor="#414243" opacity={'0.9'}>

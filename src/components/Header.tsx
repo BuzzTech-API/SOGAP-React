@@ -162,7 +162,7 @@ export const Header = () => {
                     <MenuButton>
                         <Avatar
                             name=""
-                            src="https://i.pinimg.com/originals/10/7a/97/107a97ca5bd4a571edcebec54a66fc32.jpg"
+                            src=""
                             size="xs"
                             width="3.5rem"
                             height="3.5rem"

@@ -27,6 +27,7 @@ import { ModalSolicitaEvidencia } from "../Modal/BtnPedirEvidencia"
 import { ModalUpdateStep } from "../Modal/ModalEditarEtapa"
 import { formatDateToBrasil } from "../../services/formatDate"
 import { BtnDeleteEtapa } from "../BtnDeleteEtapa"
+import { CardStep } from "../Card/cardStep"
 
 interface propsED {
   isOpen: boolean,
@@ -53,7 +54,8 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
 
   return (
     <Drawer isOpen={isOpen} size={'lg'} onClose={onClose}>
-      <DrawerOverlay opacity={0.9}>
+      <DrawerOverlay opacity={0.9} backgroundColor={"rgba(0, 0, 0, 0.7)"}>
+        <CardStep step={step} onClick={()=>{}} />
         <DrawerContent opacity={0.9}>
           <DrawerBody bg={'#1B1C1E'} opacity={0.9} color={'#FFF'}>
             <Tabs variant="enclosed" isManual isFitted textColor={'white'}>
@@ -179,7 +181,7 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
                 <TabPanel>
                   <Accordion allowToggle>
                     {step.users.map((userStep: StepUser) => {
-                      return (<AccordionItem>
+                      return (<AccordionItem key={userStep.user_id}>
                         <AccordionButton height="44px" alignSelf="stretch">
                           <Text
 
@@ -230,7 +232,7 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
                 <TabPanel alignItems={'center'} alignContent={'center'}>
                   <Accordion allowToggle>
                     {step.requests.map((requestForEvidence: RequestForEvidence) => {
-                      return (<AccordionRequests requestForEvidenceI={requestForEvidence} setRequests={setRequests} process_id={step.process_id} step={step} setStep={setStep} />)
+                      return (<AccordionRequests key={requestForEvidence.id} requestForEvidenceI={requestForEvidence} setRequests={setRequests} process_id={step.process_id} step={step} setStep={setStep} />)
                     })}
                   </Accordion>
                   {

@@ -1,3 +1,5 @@
+import Cookies from "universal-cookie";
+
 export class Authenticated {
   public isAuthenticated: boolean = false
 }
@@ -15,6 +17,9 @@ export const refreshToken = async (authenticated: Authenticated) => {
 
       if (response.status === 200) {
         const data = await response.json()
+        const cookie = new Cookies()
+        cookie.set('access_token', data.access_token)
+        cookie.set('refresh_token', data.refresh_token)
         localStorage.setItem('access_token', data.access_token)
         localStorage.setItem('refresh_token', data.refresh_token)
         return authenticated.isAuthenticated = true;
@@ -81,10 +86,13 @@ export const loginToken = async (email: string, senha: string) => {
 
   });
   const data = await response.json()
-  if(data.is_enabled2fa){
-    localStorage.setItem('login_token',data.login_token)
+  if (data.is_enabled2fa) {
+    localStorage.setItem('login_token', data.login_token)
     return false
   }
+  const cookie = new Cookies()
+  cookie.set('access_token', data.access_token)
+  cookie.set('refresh_token', data.refresh_token)
   localStorage.setItem('access_token', data.access_token)
   localStorage.setItem('refresh_token', data.refresh_token)
 }
@@ -97,10 +105,10 @@ export const enableTwoFactor = async () => {
       'Accept': 'application/json',
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
-    },    
+    },
   });
-    const data = await response.json()
-    return data
+  const data = await response.json()
+  return data
 }
 
 
@@ -118,6 +126,9 @@ export const refreshTokenFetch = async () => {
 
       if (response.status === 200) {
         const data = await response.json()
+        const cookie = new Cookies()
+        cookie.set('access_token', data.access_token)
+        cookie.set('refresh_token', data.refresh_token)
         localStorage.setItem('access_token', data.access_token)
         localStorage.setItem('refresh_token', data.refresh_token)
       }
@@ -143,13 +154,13 @@ export const codeVerified = async (verification_code: string) => {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(bodyJson)    
+    body: JSON.stringify(bodyJson)
   });
   if (response.status === 200) {
     const data = await response.json()
     return data.verify
   }
-  else{
+  else {
     return false
   }
 }
@@ -233,10 +244,10 @@ export const disable2FA = async () => {
       'Accept': 'application/json',
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
-    },    
+    },
   });
-    const data = await response.json()
-    return data
+  const data = await response.json()
+  return data
 }
 
 
