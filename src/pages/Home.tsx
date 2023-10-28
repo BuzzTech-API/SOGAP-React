@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react"
-import { Box, Button, Text, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Spacer } from "@chakra-ui/react"
+import React, { useEffect, useState } from "react"
+import { Box, Button, Text, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Spacer, Input } from "@chakra-ui/react"
 import Process from "../models/Process"
 import FormP from "../components/FormProcess"
+import { getAllProcess } from "../services/process"
 import { Link } from "react-router-dom"
 import { formatDateToBrasil } from "../services/formatDate"
 import { BtnDeleteProcess } from "../components/BtnDeleteProcess"
@@ -23,6 +24,7 @@ export const Home = () => {
     const [requestForEvidence, setRequestForEvidence] = useState(new Array<RequestForEvidence>())
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [role, setRole] = useState(localStorage.getItem('cargo'))
+    const [searchQuery, setSearchQuery] = useState("");
 
     const [sortProcess, setSortProcess] = useState(new Array<Process>())
     const [sortTitle, setSortTitle] = useState(false)
@@ -42,14 +44,16 @@ export const Home = () => {
             }
         })()
     }, [])
+    const filteredProcesses = processes.filter(process => {
+        return process.title.toLowerCase().includes(searchQuery.toLowerCase());
+    });
 
-   
     const sortByTitle = () => {
-        const sortedProcesses = [...processes].sort((a,b) => {
+        const sortedProcesses = [...processes].sort((a, b) => {
             if (a.title < b.title)
-                return sortTitle ? 1:-1
+                return sortTitle ? 1 : -1
             if (a.title > b.title)
-                return sortTitle ? -1:1
+                return sortTitle ? -1 : 1
             return 0
         })
         setSortProcess(sortedProcesses)
@@ -57,11 +61,11 @@ export const Home = () => {
     }
 
     const sortByLastUpdate = () => {
-        const sortedProcesses = [...processes].sort((a,b) => {
+        const sortedProcesses = [...processes].sort((a, b) => {
             if (a.lastUpdate < b.lastUpdate)
-                return sortLastUpdate ? 1:-1
+                return sortLastUpdate ? 1 : -1
             if (a.lastUpdate > b.lastUpdate)
-                return sortLastUpdate ? -1:1
+                return sortLastUpdate ? -1 : 1
             return 0
         })
         setSortProcess(sortedProcesses)
@@ -69,11 +73,11 @@ export const Home = () => {
     }
 
     const sortByStatus = () => {
-        const sortedProcesses = [...processes].sort((a,b) => {
+        const sortedProcesses = [...processes].sort((a, b) => {
             if (a.status < b.status)
-                return sortStatus ? 1:-1
+                return sortStatus ? 1 : -1
             if (a.status > b.status)
-                return sortStatus ? -1:1
+                return sortStatus ? -1 : 1
             return 0
         })
         setSortProcess(sortedProcesses)
@@ -94,13 +98,13 @@ export const Home = () => {
                 width={'14rem'}
                 color={'#FF2828'}
             >Próximo do Prazo</Text>
-            <ModalFilter 
-            setProcess={setProcesses} 
-            processes={processes} 
-            setSteps={steps.length > 0 ? setSteps : undefined} 
-            steps={steps.length > 0 ? steps : undefined} 
-            setRequestForEvidence={requestForEvidence.length > 0 ? setRequestForEvidence : undefined} 
-            requestForEvidence={requestForEvidence.length > 0 ? requestForEvidence : undefined}/>
+            <ModalFilter
+                setProcess={setProcesses}
+                processes={processes}
+                setSteps={steps.length > 0 ? setSteps : undefined}
+                steps={steps.length > 0 ? steps : undefined}
+                setRequestForEvidence={requestForEvidence.length > 0 ? setRequestForEvidence : undefined}
+                requestForEvidence={requestForEvidence.length > 0 ? requestForEvidence : undefined} />
         </Flex>
         <Flex
             width='100.125rem'
@@ -114,7 +118,7 @@ export const Home = () => {
 
             maxWidth={'110rem'}
             overflowY={'auto'} >
-            {processes.map((process: Process) => {
+            {filteredProcesses.map((process: Process) => {
                 return <Link to={`/process/${process.id}`}><CardProcessoPrazo key={process.id}
                     process={process}
                 /></Link>
@@ -134,20 +138,31 @@ export const Home = () => {
                     width={'14rem'}
                     color={'#FFF'}
                 >Meus Processos</Text>
-                {role !== null && (role ==='Gerente'|| role === 'Administrador') && <>
-                <ModalFilter 
-                setProcess={setSortProcess} 
-                processes={processes}/>
-                <Spacer />
-                <Box
-                    alignSelf={'center'}
-                    display={'flex'}
-                    justifyContent={'right'}
-                >
-                     <FormP width={'9rem'} processes={processes} setProcesses={setProcesses} />
-                </Box></>}
+                {role !== null && (role === 'Gerente' || role === 'Administrador') && (
+                    <>
+                        <ModalFilter
+                            setProcess={setSortProcess}
+                            processes={processes} />
+                        <Spacer />
+                        <Box
+                            alignSelf={'center'}
+                            display={'flex'}
+                            justifyContent={'right'}
+                        >
+                            <FormP width={'9rem'} processes={processes} setProcesses={setProcesses} />
+                        </Box>
+                    </>)}
             </Flex>
-
+            <Input
+                placeholder="Pesquisar por nome de processo"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                color={'#FFF'}
+                width="20rem"
+                bg={'#58595B'}
+                borderRadius={'0.75rem'}
+                marginLeft={'2.75rem'}
+            />
             <TableContainer
                 width='100.125rem'
                 height='19rem'
@@ -156,9 +171,8 @@ export const Home = () => {
                 borderRadius={'0.75rem'}
                 overflowY={'auto'}
             >
-                <Table color={'#FFF'} bg={'#58595B'} variant='striped' colorScheme="theme" >
+                <Table color={'#FFF'} bg={'#58595B'} variant='striped' colorScheme="theme">
                     <Thead
-
                         bg={'#58595B'}
                         position="sticky"
                         top="0"
@@ -166,19 +180,19 @@ export const Home = () => {
                     >
                         <Tr >
                             <Th color={'#FFF'} onClick={sortByTitle}>Título
-                                <UpDownIcon boxSize={5} mx={2}/>
+                                <UpDownIcon boxSize={5} mx={2} />
                             </Th>
 
-                            <Th textAlign="center" color={'#FFF'} onClick={sortByLastUpdate}>Última Atualização 
-                                <UpDownIcon boxSize={5} mx={2}/>
+                            <Th textAlign="center" color={'#FFF'} onClick={sortByLastUpdate}>Última Atualização
+                                <UpDownIcon boxSize={5} mx={2} />
                             </Th>
 
                             <Th textAlign="center" color={'#FFF'} onClick={sortByStatus}>Status
-                                <UpDownIcon boxSize={5} mx={2}/>
+                                <UpDownIcon boxSize={5} mx={2} />
 
                             </Th>
                             <Th textAlign="center" color={'#FFF'}>Ações</Th>
-                            
+
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -192,26 +206,17 @@ export const Home = () => {
                                     <Td
                                         display={'flex'}
                                         gap={'0.3rem'}>
-                                        {role !== null && (role ==='Gerente'|| role === 'Lider' || role === 'Administrador') &&<ModalUpdateProcess process_id={process.id.toString()} processes={processes} setProcesses={setProcesses} />}
-                                        {role !== null && (role ==='Gerente'|| role === 'Administrador') && <BtnDeleteProcess process={process} processes={processes} setProcess={setProcesses} />}
-                                        <Link to={`/process/${process.id}`}><Button
-                                            bg='#53C4CD'
-                                            variant='solid'
-                                            textColor='white'
-                                        >Visualizar</Button></Link>
+                                        {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') && <ModalUpdateProcess process_id={process.id.toString()} processes={processes} setProcesses={setProcesses} />}
+                                        {role !== null && (role === 'Gerente' || role === 'Administrador') && <BtnDeleteProcess process={process} processes={processes} setProcess={setProcesses} />}
+                                        <Link to={`/process/${process.id}`}><Button bg='#53C4CD' variant='solid' textColor='white'>Visualizar</Button></Link>
                                     </Td>
-
-
                                 </Tr>
                             )
                         })}
-
-
                     </Tbody>
                 </Table>
             </TableContainer>
         </Flex>
     </Flex>
-
     )
 }
