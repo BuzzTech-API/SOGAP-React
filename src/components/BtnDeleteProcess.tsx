@@ -84,7 +84,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
                     >
                         <strong>Tem certeza de que quer deletar o processo {process.title} ?</strong>
 
-                        <ButtonGroup gap="240" mt={5}>
+                        <ButtonGroup gap={['5rem',"15rem"]} mt={5}>
 
                             <Button
                                 display="flex"

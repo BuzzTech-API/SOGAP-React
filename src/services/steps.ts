@@ -25,7 +25,7 @@ export const createStep = async (name: string,
     "is_active": true
   }
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost:8000/steps/`, {
+  const response = await fetch(`http://${window.location.hostname}:8000/steps/`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -87,7 +87,7 @@ export const updateStep = async (
     }
     
     const token = localStorage.getItem('access_token');
-    const response = await fetch(`http://localhost:8000/steps/`, {
+    const response = await fetch(`http://${window.location.hostname}:8000/steps/`, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -108,7 +108,7 @@ export const deleteStep = async (step_id: number, is_active: boolean) => {
   console.log(bodyJson);
   
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost:8000/steps/delete/`, {
+  const response = await fetch(`http://${window.location.hostname}:8000/steps/delete/`, {
     method: 'DELETE',
     headers: {
       'Accept': 'application/json',
@@ -123,7 +123,7 @@ export const deleteStep = async (step_id: number, is_active: boolean) => {
 
 export const getStepsById = async (id: number) => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost:8000/steps/${id}`, {
+  const response = await fetch(`http://${window.location.hostname}:8000/steps/${id}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',

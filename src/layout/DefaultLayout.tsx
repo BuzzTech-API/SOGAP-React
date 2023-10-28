@@ -10,22 +10,25 @@ function DefaultLayout() {
 
     useEffect(() => {
         // Substitua 'seu_host' e 'sua_rota' pelas informações reais do seu servidor WebSocket
-        const socket = new WebSocket(`ws://localhost/notification/ws`, );
+        const socket = new WebSocket(`ws://${window.location.hostname}/notification/ws`, );
 
         socket.onopen = () => {
             console.log('Conexão WebSocket aberta.');
             
         };
 
-        socket.onmessage = (event) => {
+        socket.onmessage = (event) => {           
             console.log('Mensagem recebida:', event.data);
+
+            
             // Faça o que for necessário com a mensagem recebida do servidor WebSocket
         };
 
         socket.onclose = (event) => {
             console.log('Conexão WebSocket fechada:', event);
+            
         };
-
+        
         setSocket(socket);
 
         // Certifique-se de fechar a conexão ao desmontar o componente ou quando não for mais necessário.

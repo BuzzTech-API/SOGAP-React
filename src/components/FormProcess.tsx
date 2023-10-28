@@ -147,29 +147,29 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
       onClick={onOpen}
     >Novo Processo
     </Button>
-    <Modal size="xxl" isOpen={isOpen} onClose={onClose}>
+    <Modal size={['full',"xxl"]} isOpen={isOpen} onClose={onClose}>
 
       <ModalOverlay />
 
-      <ModalContent style={{ width: "1000px", height: "auto" }}>
+      <ModalContent w={["100%","1000px"]} h={['auto']} >
         <Card bg="#58595B">
           <Box>
             <ModalHeader textAlign="center">
               <CardHeader>
-                <Heading fontSize="30px" fontWeight="bold" color="#53C4CD" size='md'>
+                <Heading fontSize="1.9rem" fontWeight="bold" color="#53C4CD" size={['md','md']}>
                   Novo Processo
                 </Heading>
               </CardHeader>
             </ModalHeader>
           </Box>
-          <ModalCloseButton style={{ width: "40px", height: "40px" }} rounded="100%" bg="#53C4CD" color="#ffffff" mt={7} mr={5}></ModalCloseButton>
+          <ModalCloseButton width={['2rem', '3rem']} height={['2rem', '3rem']} rounded="100%" bg="#53C4CD" color="#ffffff" mt={7} mr={5}></ModalCloseButton>
 
           <ModalBody>
             <CardBody>
               <Box maxW="70%" mx="auto" p={1}>
                 <form onSubmit={handleSubmit}>
                   <FormControl id="title" mb={3}>
-                    <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={5}>Título</FormLabel>
+                    <FormLabel color="#ffffff" fontSize="1.2rem" mb={1} ml={5}>Título</FormLabel>
                     <Input
                       rounded="100px"
                       maxLength={60}
@@ -181,7 +181,7 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
                     />
                   </FormControl>
                   <FormControl id="description" mb={3}>
-                    <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={5}>Descrição</FormLabel>
+                    <FormLabel color="#ffffff" fontSize="1.2rem" mb={1} ml={5}>Descrição</FormLabel>
                     <Input style={{ height: "100px" }}
                       overflowY="auto"
                       maxLength={300}
@@ -194,7 +194,7 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
                     />
                   </FormControl>
                   <FormControl id="objective" mb={3}>
-                    <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={5}>Objetivo</FormLabel>
+                    <FormLabel color="#ffffff" fontSize="1.2rem" mb={1} ml={5}>Objetivo</FormLabel>
                     <Input
                       rounded="100px"
                       bg="#D9D9D9"
@@ -207,7 +207,7 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
                   </FormControl>
                   <Box textAlign="center">
                     <FormControl id="deadline" mb={3}>
-                      <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={210}>Prazo</FormLabel>
+                      <FormLabel color="#ffffff" fontSize="1.2rem" mb={1} ml={5}>Prazo</FormLabel>
                       <Input
                         bg='#D9D9D9'
                         placeholder="Selecione a data"
@@ -219,8 +219,8 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
                     </FormControl>
                     <Flex justifyContent="center" alignItems="center">
                       <FormControl id="priority" mb={5}>
-                        <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={210}>Prioridade</FormLabel>
-                        <Select style={{ width: "37%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
+                        <FormLabel color="#ffffff" fontSize="1.2rem" mb={1} ml={5}>Prioridade</FormLabel>
+                        <Select style={{ width: "100%", height: "40px" }} textAlign={'center'} rounded="100px" color="#000000" bg="#D9D9D9"
                           value={formData.priority}
                           onChange={handleChangePrioridade}>
                           <option value=""></option>
@@ -231,8 +231,8 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
                       </FormControl>
                     </Flex>
                     <FormControl id="responsible" mb={3}>
-                      <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={5}>Responsável</FormLabel>
-                      <Select style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
+                      <FormLabel color="#ffffff" fontSize="1.2rem" mb={1} ml={5}>Responsável</FormLabel>
+                      <Select style={{ width: "100%", height: "40px" }} textAlign={'center'} rounded="100px" color="#000000" bg="#D9D9D9"
                         value={''}
                         onChange={handleChangeResponsible}
                       >

@@ -17,6 +17,8 @@ import {
   AccordionItem,
   AccordionPanel,
   Center,
+  DrawerHeader,
+  CloseButton,
 } from "@chakra-ui/react"
 import Step from "../../models/Steps"
 import { SetStateAction, useState } from "react"
@@ -53,10 +55,10 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
   }
 
   return (
-    <Drawer isOpen={isOpen} size={'lg'} onClose={onClose}>
+    <Drawer isOpen={isOpen} size={['full','lg']} onClose={onClose}>
       <DrawerOverlay opacity={0.9} backgroundColor={"rgba(0, 0, 0, 0.7)"}>
-        <CardStep step={step} onClick={()=>{}} />
         <DrawerContent opacity={0.9}>
+          <DrawerHeader bg={'#1B1C1E'} opacity={0.9}><CloseButton color={'white'} onClick={onClose} /> </DrawerHeader>
           <DrawerBody bg={'#1B1C1E'} opacity={0.9} color={'#FFF'}>
             <Tabs variant="enclosed" isManual isFitted textColor={'white'}>
               <TabList>

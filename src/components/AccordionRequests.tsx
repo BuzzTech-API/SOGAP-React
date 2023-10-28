@@ -12,6 +12,7 @@ import { ViewRequest } from "./Modal/ViewRequest";
 import { BtnDeleteEvidencia } from "./BtnDeleteEvidencia";
 import { ModalUpdateRequestEvidence } from "./Modal/ModalEditarRequisiçãoEvidencia";
 import Step from "../models/Steps";
+import { ModalInvalidarEvidencia } from "./Modal/ModalInvalidarEvidencia";
 
 interface AccordionI {
   requestForEvidenceI: RequestForEvidence,
@@ -45,17 +46,14 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
   }
   const invalitadeEvidenceAction = async () => {
     await verifyTokenFetch()
-    await invalidateEvidence(requestForEvidence.evidences[0].id)
-    requestForEvidence.evidences.pop()
-    requestForEvidence.is_validated = true
-    setIs_validated(requestForEvidence.is_validated)
+    
   }
 
 
 
   if (requestForEvidence.evidences.length !== 0 && requestForEvidence.evidences !== undefined) {
 
-    return (<AccordionItem>
+    return (<AccordionItem key={requestForEvidence.id}>
       <AccordionButton height="44px" alignSelf="stretch">
         {is_validated ? <Text
 
@@ -186,7 +184,7 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
                 Ações
               </MenuButton>
               <MenuList bg={'#58595B'}>
-                <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
+                <MenuItem bg={'#58595B'}>
                   <Button
                     bg={'#58595B'}
                     color={'#FFF'}
@@ -195,7 +193,7 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
                     onClick={valitadeEvidenceAction}
                   >Validar Evidência</Button>
                 </MenuItem>
-                <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
+                <MenuItem bg={'#58595B'}>
                   <Button
                     bg={'#58595B'}
                     color={'#FFF'}
@@ -203,11 +201,12 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
                     _hover={{ background: '#FFF', color: '#58595B' }}
                     onClick={invalitadeEvidenceAction}
                   >Invalidar Evidência</Button>
+                  <ModalInvalidarEvidencia />
                 </MenuItem>
-                <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
+                <MenuItem bg={'#58595B'}>
                   <BtnDeleteEvidencia evidencia={requestForEvidence} setRequests={setRequests} setStep={setStep} step={step} />
                 </MenuItem>
-                <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
+                <MenuItem bg={'#58595B'}>
                   <ModalUpdateRequestEvidence requestEvidence={requestForEvidence} setRequestForEvidence={setRequestForEvidence} setStep={setStep} step={step} />
                 </MenuItem>
 
@@ -328,18 +327,14 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
                 Ações
               </MenuButton>
               <MenuList bg={'#58595B'}>
-                {/* <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
-                  <Button
-                    bg={'#58595B'}
-                    color={'#FFF'}
-                    width={'100%'}
-                    _hover={{ background: '#FFF', color: '#58595B' }}
-                  >Notificar Responsável</Button>
-                </MenuItem> */}
-                <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
+                { role !== null && role !== 'Colaborador' && requestForEvidence.user_id === myId && 
+                <MenuItem bg={'#58595B'}>
+                  <ViewRequest request={requestForEvidence} setRequestForEvidence={setRequestForEvidence} step={step} setStep={setStep} />
+                </MenuItem>}
+                <MenuItem bg={'#58595B'}>
                   <BtnDeleteEvidencia evidencia={requestForEvidence} setRequests={setRequests} setStep={setStep} step={step} />
                 </MenuItem>
-                <MenuItem bg={'#58595B'} key={'InvalidarEvidencia'}>
+                <MenuItem bg={'#58595B'} >
                   <ModalUpdateRequestEvidence requestEvidence={requestForEvidence} setRequestForEvidence={setRequestForEvidence} setStep={setStep} step={step} />
                 </MenuItem>
               </MenuList>
@@ -351,7 +346,7 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
                 Ações
               </MenuButton>
               <MenuList bg={'#58595B'}>
-                <MenuItem bg={'#58595B'} key={'ValidarEvidencia'}>
+                <MenuItem bg={'#58595B'}>
                   <ViewRequest request={requestForEvidence} setRequestForEvidence={setRequestForEvidence} step={step} setStep={setStep} />
                 </MenuItem>
               </MenuList>

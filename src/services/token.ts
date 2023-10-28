@@ -7,7 +7,7 @@ export const refreshToken = async (authenticated: Authenticated) => {
   const refresh_token = localStorage.getItem('refresh_token')
   if (refresh_token) {
     try {
-      const response = await fetch(`http://localhost:8000/refresh_token`, {
+      const response = await fetch(`http://${window.location.hostname}:8000/refresh_token`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -43,7 +43,7 @@ export const verifyToken = async (authenticated: Authenticated) => {
   const refresh_token = localStorage.getItem('refresh_token')
   if (token) {
     try {
-      const response = await fetch(`http://localhost:8000/users/get/me`, {
+      const response = await fetch(`http://${window.location.hostname}:8000/users/get/me`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -76,7 +76,7 @@ export const verifyToken = async (authenticated: Authenticated) => {
 }
 
 export const loginToken = async (email: string, senha: string) => {
-  const response = await fetch(`http://localhost:8000/login`, {
+  const response = await fetch(`http://${window.location.hostname}:8000/login`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -99,7 +99,7 @@ export const loginToken = async (email: string, senha: string) => {
 
 export const enableTwoFactor = async () => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost:8000/enable-2fa`, {
+  const response = await fetch(`http://${window.location.hostname}:8000/enable-2fa`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -116,7 +116,7 @@ export const refreshTokenFetch = async () => {
   const refresh_token = localStorage.getItem('refresh_token')
   if (refresh_token) {
     try {
-      const response = await fetch(`http://localhost:8000/refresh_token`, {
+      const response = await fetch(`http://${window.location.hostname}:8000/refresh_token`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -147,7 +147,7 @@ export const codeVerified = async (verification_code: string) => {
     "verification_code": verification_code,
   }
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost:8000/verify-2fa-First-Auth`, {
+  const response = await fetch(`http://${window.location.hostname}:8000/verify-2fa-First-Auth`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -174,7 +174,7 @@ export const verifyCode = async (verificationCode: string) => {
 
   if (login_token) {
     try {
-      const response = await fetch(`http://localhost:8000/verify-2fa`, {
+      const response = await fetch(`http://${window.location.hostname}:8000/verify-2fa`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -204,7 +204,7 @@ export const verifyTokenFetch = async () => {
   const refresh_token = localStorage.getItem('refresh_token')
   if (token) {
     try {
-      const response = await fetch(`http://localhost:8000/users/get/me`, {
+      const response = await fetch(`http://${window.location.hostname}:8000/users/get/me`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -238,7 +238,7 @@ export const verifyTokenFetch = async () => {
 
 export const disable2FA = async () => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://localhost:8000/deactivate2fa`, {
+  const response = await fetch(`http://${window.location.hostname}:8000/deactivate2fa`, {
     method: 'PUT',
     headers: {
       'Accept': 'application/json',

@@ -86,7 +86,7 @@ export const Home = () => {
 
     return (<Flex flexDirection={'column'}>
 
-        <Flex width='100.125rem' alignSelf={'center'} marginTop='1rem'>
+        <Flex width={['100%']} maxWidth={'100.125rem'} alignSelf={'center'} marginTop='1rem'>
             <Text
                 fontFamily={'Poppins'}
                 fontSize='1.5rem'
@@ -107,16 +107,16 @@ export const Home = () => {
                 requestForEvidence={requestForEvidence.length > 0 ? requestForEvidence : undefined} />
         </Flex>
         <Flex
-            width='100.125rem'
+            width={['100%']}
             alignSelf={'center'}
             flexDirection='row'
-            flexWrap="wrap"
+            flexWrap={["nowrap","wrap"]}
             gap='1rem'
             marginTop={'1rem'}
             maxHeight='18rem'
             minHeight='18rem'
 
-            maxWidth={'110rem'}
+            maxWidth={'100.125rem'}
             overflowY={'auto'} >
             {filteredProcesses.map((process: Process) => {
                 return <Link to={`/process/${process.id}`}><CardProcessoPrazo key={process.id}
@@ -126,7 +126,7 @@ export const Home = () => {
         </Flex>
         <Flex flexDirection={'column'} gap={'0.25rem'}>
 
-            <Flex width='100.125rem' alignSelf={'center'} marginTop='1rem'>
+            <Flex width={['100%']} maxWidth={'100.125rem'} alignSelf={'center'} marginTop='1rem'>
                 <Text
                     fontFamily={'Poppins'}
                     fontSize='1.5rem'
@@ -164,11 +164,13 @@ export const Home = () => {
                 marginLeft={'2.75rem'}
             />
             <TableContainer
-                width='100.125rem'
+                width={['100%']}
+                maxW={'100.125rem'}
                 height='19rem'
                 alignSelf={'center'}
                 bg={'#58595B'}
                 borderRadius={'0.75rem'}
+                overflowX={['auto']}
                 overflowY={'auto'}
             >
                 <Table color={'#FFF'} bg={'#58595B'} variant='striped' colorScheme="theme">

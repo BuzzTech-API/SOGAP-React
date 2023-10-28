@@ -26,6 +26,7 @@ export const Header = () => {
 
     const [name, setName] = useState('')
     const [role, setRole] = useState('')
+    const [photo_link, setPhoto_link] = useState('')
     const [is_enable2fa, setIs_enable2fa] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -37,6 +38,7 @@ export const Header = () => {
                 setName(data.name)
                 setRole(data.role)
                 setIs_enable2fa(data.is_2fa_enable)
+                setPhoto_link(data.photo_link)
             }
 
         })();
@@ -58,7 +60,7 @@ export const Header = () => {
         <Flex
             flexDirection={'row'}
             padding='0rem'
-            width="120rem"
+            width={["120rem", "100%"]}
             maxWidth="100%"
             height='5rem'
             background="#292A2D"
@@ -69,7 +71,7 @@ export const Header = () => {
                 flexDirection={'row'}
                 padding='0.5rem'
                 background="#292A2D"
-
+                alignItems={'center'}
             >
                 <Menu>
                     <MenuButton
@@ -78,7 +80,7 @@ export const Header = () => {
                         bg={'#292A2D'}
                         width="3.5rem"
                         height="3.5rem"
-                        marginRight={'2rem'}
+                        marginRight={['0.5rem','2rem']}
                         marginTop={'0.2rem'}
                         padding={'0.5rem 0.5rem 0rem 0.7rem'}
                         leftIcon={
@@ -130,11 +132,12 @@ export const Header = () => {
             <Spacer />
             <Flex
                 flexDirection={'row'}
-                width="15rem"
+                width={['4rem',"15rem"]}
                 marginLeft={0}
             >
                 <Box flexDirection={'column'}
-                    marginRight={'0.2rem'}
+                    marginRight={['0','0.2rem']}
+                    display={['none', 'flex']}
                 >
 
                     <Text
@@ -159,14 +162,18 @@ export const Header = () => {
                     </Text>
                 </Box>
                 <Menu>
-                    <MenuButton>
+                    <MenuButton
+                    width={['2.5rem',"3.5rem"]}
+                    height={['2.5rem',"3.5rem"]}
+                    >
                         <Avatar
-                            name=""
-                            src=""
+                            name={name}
+                            src={'https://storage.cloud.google.com/buzz_tech/buzz_tech/this is fine.jpg'}
                             size="xs"
-                            width="3.5rem"
-                            height="3.5rem"
+                            width={['2.5rem',"3.5rem"]}
+                            height={['2.5rem',"3.5rem"]}
                             marginLeft={'1rem'}
+                            
                         >
                         </Avatar>
                     </MenuButton>

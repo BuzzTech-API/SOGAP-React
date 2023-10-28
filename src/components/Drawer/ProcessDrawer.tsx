@@ -1,15 +1,42 @@
-import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Icon, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from "@chakra-ui/react"
-import Process from "../models/Process"
-import User from "../models/User"
-import { BtnDeleteProcess } from "./BtnDeleteProcess"
-import { ModalUpdateProcess } from "./Modal/ModalEditarProcesso"
-import { formatDateToBrasil } from "../services/formatDate"
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { ProcessTabs } from "../TabsProcesso";
+import Process from "../../models/Process";
+import { Accordion, Text, AccordionButton, AccordionItem, AccordionPanel, Box, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, VStack, CloseButton } from "@chakra-ui/react";
+import User from "../../models/User"
+import { formatDateToBrasil } from "../../services/formatDate";
+import { BtnDeleteProcess } from "../BtnDeleteProcess";
+import { ModalUpdateProcess } from "../Modal/ModalEditarProcesso";
+import { ArrowRightIcon } from "@chakra-ui/icons";
+
 interface ProcessTabsI {
     process: Process,
     setProcess: React.Dispatch<React.SetStateAction<Process>>
 }
-export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
+
+interface ProcessTabsI {
+    process: Process,
+    setProcess: React.Dispatch<React.SetStateAction<Process>>
+    displayOpen: string,
+    displayTabs: string,
+    setDisplayOpen: React.Dispatch<React.SetStateAction<string>>
+    setDisplayTabs: React.Dispatch<React.SetStateAction<string>>
+    
+}
+
+export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, setDisplayOpen, setDisplayTabs }: ProcessTabsI) => {
+    const [isOpen, setIsOpen] = useState(true)
+    const [widthBox, setWidthBox] = useState('auto')
+    const [widthPanel, setWidthPanel] = useState('auto')
+    
+    useEffect(() => {
+        if (window.innerWidth<660) {
+            setWidthBox('full')
+            setWidthPanel('100vw')
+        }else{
+            setWidthPanel('25rem')
+            setWidthBox('auto')
+        }
+    }, [window.innerWidth])
     const [role, setRole] = useState(localStorage.getItem('cargo'))
     let bgColor: string;
     if (process.priority === 'Alta') {
@@ -19,19 +46,32 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
     } else {
         bgColor = '#00750C'
     }
+    
     return (
-        <Tabs height="52.6rem" variant="enclosed" width={['100%','100%', '25rem']} isManual isFitted textColor={'white'} alignSelf="stretch" boxShadow={'4px 0 4px 0 rgba(0,0,0,0.25)'}>
-            <TabList width={['100%','25rem']}>
+        <>
+        <Box display={displayOpen} height={'100%'} padding={'0.5rem'} backgroundColor={'rgba(255,255,255,0.1)'}>
+            <ArrowRightIcon opacity={1} color={'white'} width={['']} onClick={()=>{
+                setDisplayOpen('none')
+                setDisplayTabs('flex')
+            }} />
+        </Box>
+        <Box width={widthBox} h={'100%'} display={displayTabs} flexDir={'column'}>
+            <CloseButton alignSelf={'right'} color={'white'} onClick={()=>{
+                setDisplayOpen('flex')
+                setDisplayTabs('none')
+            }} />
+        <Tabs height="52.6rem" variant="enclosed" width={widthPanel} isManual isFitted textColor={'white'} alignSelf="stretch" boxShadow={'4px 0 4px 0 rgba(0,0,0,0.25)'}>
+            <TabList width={widthPanel}>
                 <Tab>Dados</Tab>
                 <Tab>Responsável</Tab>
                 {role !== null && (role ==='Gerente'|| role ==='Lider'|| role === 'Administrador') &&
                 <Tab>Ações</Tab>}
             </TabList>
-            <TabPanels maxWidth={['25rem']} width={['100%', '25rem']} minWidth={['100%','25rem']} >
-                <TabPanel width={['100%', '25rem']}>
+            <TabPanels maxWidth={['25rem']} width={widthPanel} minWidth={widthPanel} >
+                <TabPanel width={widthPanel}>
                     <VStack
                         spacing={'1rem'}
-                    >
+                        >
                         <Stack
                             justify="flex-start"
                             align="center"
@@ -39,7 +79,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                             height="5rem"
                             alignSelf="stretch"
                             textAlign={'center'}
-                        >
+                            >
                             <Text
                                 fontFamily="Poppins"
                                 lineHeight="1.43"
@@ -47,7 +87,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                 fontSize="0.9rem"
                                 color="#65FFF1"
                                 textAlign="center"
-                            >
+                                >
                                 Titulo
                             </Text>
                             <Stack
@@ -62,7 +102,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                 width={'20rem'}
                                 height={'4rem'}
                                 background="#444444"
-                            >
+                                >
                                 <Text
                                     fontFamily="Poppins"
                                     lineHeight="1.43"
@@ -82,7 +122,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                             spacing="0.5rem"
                             height="12.9rem"
                             alignSelf="stretch"
-                        >
+                            >
                             <Text
                                 fontFamily="Poppins"
                                 lineHeight="1.43"
@@ -90,7 +130,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                 fontSize="0.9rem"
                                 color="#65FFF1"
                                 textAlign="center"
-                            >
+                                >
                                 Descrição
                             </Text>
                             <Stack
@@ -108,7 +148,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                 background="#414243"
                                 width={'20rem'}
                                 height={'12rem'}
-                            >
+                                >
                                 <Text
                                     fontFamily="Poppins"
                                     lineHeight="1.43"
@@ -118,7 +158,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                     width="19rem"
                                     maxWidth="100%"
                                     textAlign="center"
-                                >
+                                    >
                                     {process.description}
                                 </Text>
                             </Stack>
@@ -130,7 +170,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                             spacing="10px"
                             height="9rem"
                             alignSelf="stretch"
-                        >
+                            >
                             <Text
                                 fontFamily="Poppins"
                                 lineHeight="1.43"
@@ -138,7 +178,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                 fontSize="0.9rem"
                                 color="#65FFF1"
                                 textAlign="center"
-                            >
+                                >
                                 Objetivo
                             </Text>
                             <Stack
@@ -152,7 +192,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                 width={'20rem'}
                                 height={'8rem'}
                                 background="#414243"
-                            >
+                                >
                                 <Text
                                     fontFamily="Poppins"
                                     lineHeight="1.43"
@@ -161,7 +201,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                     color="#65FFF1"
                                     flex="1"
                                     textAlign="center"
-                                >
+                                    >
                                     {process.objective}
                                 </Text>
                             </Stack>
@@ -173,7 +213,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                             spacing="0.5rem "
                             height="4rem"
                             alignSelf="stretch"
-                        >
+                            >
                             <Text
                                 fontFamily="Poppins"
                                 lineHeight="1.43"
@@ -181,7 +221,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                 fontSize="0.9rem"
                                 color="#65FFF1"
                                 textAlign="center"
-                            >
+                                >
                                 Status
                             </Text>
                             <Stack
@@ -196,7 +236,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                 width="20rem"
                                 height={'3rem'}
                                 background="#444444"
-                            >
+                                >
                                 <Text
                                     fontFamily="Poppins"
                                     lineHeight="1.43"
@@ -303,7 +343,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
 
                 </TabPanel>
 
-                <TabPanel maxWidth={['25rem']} width={['100%', '25rem']} minWidth={['100%','25rem']} minH={'47.6rem'} maxH={'47.6rem'}>
+                <TabPanel maxWidth={['25rem']} width={widthPanel} minWidth={widthPanel} minH={'47.6rem'} maxH={'47.6rem'}>
                     <Accordion allowToggle overflowY={'auto'}>
                         {process.users.map((user: User) => {
                             return (<AccordionItem key={user.id}>
@@ -319,7 +359,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                         {user.name}
                                     </Text>
                                 </AccordionButton>
-                                <AccordionPanel width={['100%','25rem']}>
+                                <AccordionPanel width={[widthBox,'25rem']}>
                                     <Text
                                         fontFamily="Poppins"
                                         lineHeight="1.5"
@@ -355,8 +395,8 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                     </Accordion>
                 </TabPanel>
 
-                <TabPanel maxWidth={['25rem']} width={['100%', '25rem']}>
-                    <Box maxWidth={['25rem']} width={['100%', '25rem']} height={'47.6rem'} padding={0}>
+                <TabPanel maxWidth={['25rem']} width={widthPanel}>
+                    <Box maxWidth={['25rem']} width={widthPanel} height={'47.6rem'} padding={0}>
                         <Stack direction="row" justify="center" align="center" spacing="11px" w={'23rem'}>
                             {role !== null && (role ==='Gerente'|| role ==='Lider'|| role === 'Administrador') &&
                             <ModalUpdateProcess process={process} setProcess={setProcess} />}
@@ -370,6 +410,10 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
 
             </TabPanels>
         </Tabs>
+
+
+        </Box>
+        </>
+
     )
 }
-

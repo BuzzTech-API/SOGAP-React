@@ -27,7 +27,7 @@ export const ModalUploadEvidence = ({requestForEvidence, step, setStep, setReque
             await refreshTokenFetch()
 
             
-            const response = await fetch(`http://localhost:8000/users_processes/process_id/${step.process_id}`, {
+            const response = await fetch(`http://${window.location.hostname}:8000/users_processes/process_id/${step.process_id}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -47,7 +47,7 @@ export const ModalUploadEvidence = ({requestForEvidence, step, setStep, setReque
                 formData.append('file', file);
 
 
-                let host = `http://localhost:8000/uploadfile/`
+                let host = `http://${window.location.hostname}:8000/uploadfile/`
                 
                 usersList.map((user : User) => {
                     host = host + user.email + "&"
@@ -84,7 +84,7 @@ export const ModalUploadEvidence = ({requestForEvidence, step, setStep, setReque
                     }
 
                     const evidenciaResponse = await fetch(
-                        `http://localhost:8000/evidences/`,{
+                        `http://${window.location.hostname}:8000/evidences/`,{
                         method: 'POST',
                         headers:{
                             'Accept': 'application/json',
