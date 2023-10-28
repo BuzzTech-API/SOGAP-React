@@ -40,7 +40,7 @@ export const Home = () => {
                 setRequestForEvidence(userContent.requests)
                 setSortProcess(userContent.processes)
             }
-        })();
+        })()
     }, [])
 
    
@@ -94,6 +94,13 @@ export const Home = () => {
                 width={'14rem'}
                 color={'#FF2828'}
             >Próximo do Prazo</Text>
+            <ModalFilter 
+            setProcess={setProcesses} 
+            processes={processes} 
+            setSteps={steps.length > 0 ? setSteps : undefined} 
+            steps={steps.length > 0 ? steps : undefined} 
+            setRequestForEvidence={requestForEvidence.length > 0 ? setRequestForEvidence : undefined} 
+            requestForEvidence={requestForEvidence.length > 0 ? requestForEvidence : undefined}/>
         </Flex>
         <Flex
             width='100.125rem'
@@ -128,7 +135,9 @@ export const Home = () => {
                     color={'#FFF'}
                 >Meus Processos</Text>
                 {role !== null && (role ==='Gerente'|| role === 'Administrador') && <>
-                <ModalFilter setSortProcess={setSortProcess} processes={processes}/>
+                <ModalFilter 
+                setProcess={setSortProcess} 
+                processes={processes}/>
                 <Spacer />
                 <Box
                     alignSelf={'center'}
