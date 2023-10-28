@@ -49,7 +49,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
     
     return (
         <>
-        <Box display={displayOpen} height={'100%'} padding={'0.5rem'} backgroundColor={'rgba(255,255,255,0.1)'}>
+        <Box display={displayOpen} height={'100%'} padding={'0.5rem'}>
             <ArrowRightIcon opacity={1} color={'white'} width={['']} onClick={()=>{
                 setDisplayOpen('none')
                 setDisplayTabs('flex')

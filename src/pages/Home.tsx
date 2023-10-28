@@ -16,6 +16,7 @@ import { ModalFilter } from "../components/Modal/ModalFilters"
 import { UpDownIcon } from "@chakra-ui/icons"
 
 
+
 export const Home = () => {
     const [processes, setProcesses] = useState(new Array<Process>())
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -152,17 +153,17 @@ export const Home = () => {
                             <FormP width={'9rem'} processes={processes} setProcesses={setProcesses} />
                         </Box>
                     </>)}
-            </Flex>
             <Input
                 placeholder="Pesquisar por nome de processo"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 color={'#FFF'}
-                width="20rem"
+                width={['100%',"20rem"]}
                 bg={'#58595B'}
                 borderRadius={'0.75rem'}
                 marginLeft={'2.75rem'}
             />
+            </Flex>
             <TableContainer
                 width={['100%']}
                 maxW={'100.125rem'}

@@ -5,20 +5,21 @@ export const IonicLogo = () => {
         <Stack
             direction={["row"]} // Stack becomes a column on smaller screens
             justify="flex-start"
-            align="flex-start"
-            spacing="0px"
-            w={['14rem', '17rem']}
+            align="flex-end"
+            spacing="0.1rem"
+            alignSelf={'center'}
+            w={['12rem', '16rem']}
         >
             <Stack
                 direction="row"
                 justify="flex-start"
                 align="flex-end"
                 spacing="0.19rem"
-                w={['12rem', '15rem']}
+                w={['10.5rem', '15rem']}
             >
                 <svg
-                    width="7.35"
-                    height="27.79"
+                    width="7.35%"
+                    height="27.79%"
                     viewBox="0 0 7.35 27.79"
                     fill="#FFFFFF"
                     xmlns="http://www.w3.org/2000/svg"
@@ -30,8 +31,8 @@ export const IonicLogo = () => {
                 </svg>
 
                 <svg
-                    width="28.39"
-                    height="29.31"
+                    width="28.39%"
+                    height="29.31%"
                     viewBox="0 0 28.39 29.31"
                     fill="#FFFFFF"
                     xmlns="http://www.w3.org/2000/svg"
@@ -42,8 +43,8 @@ export const IonicLogo = () => {
                     />
                 </svg>
                 <svg
-                    width="25.17"
-                    height="28.59"
+                    width="25.17%"
+                    height="28.59%"
                     viewBox="0 0 25.17 28.59"
                     fill="#FFFFFF"
                     xmlns="http://www.w3.org/2000/svg"
@@ -54,8 +55,8 @@ export const IonicLogo = () => {
                     />
                 </svg>
                 <svg
-                    width="7.35"
-                    height="27.79"
+                    width="7.35%"
+                    height="27.79%"
                     viewBox="0 0 7.35 27.79"
                     fill="#FFFFFF"
                     xmlns="http://www.w3.org/2000/svg"
@@ -66,8 +67,8 @@ export const IonicLogo = () => {
                     />
                 </svg>
                 <svg
-                    width="25.63"
-                    height="29.27"
+                    width="25.63%"
+                    height="29.27%"
                     viewBox="0 0 25.63 29.27"
                     fill="#FFFFFF"
                     xmlns="http://www.w3.org/2000/svg"
@@ -78,8 +79,8 @@ export const IonicLogo = () => {
                     />
                 </svg>
                 <svg
-                    width="25.17"
-                    height="37.96"
+                    width="25.17%"
+                    height="37.96%"
                     viewBox="0 0 25.17 37.96"
                     fill="#FFFFFF"
                     xmlns="http://www.w3.org/2000/svg"
@@ -90,8 +91,8 @@ export const IonicLogo = () => {
                     />
                 </svg>
                 <svg
-                    width="26.53"
-                    height="29.27"
+                    width="26.53%"
+                    height="29.27%"
                     viewBox="0 0 26.53 29.27"
                     fill="#FFFFFF"
                     xmlns="http://www.w3.org/2000/svg"
@@ -102,8 +103,8 @@ export const IonicLogo = () => {
                     />
                 </svg>
                 <svg
-                    width="24.93"
-                    height="29.27"
+                    width="24.93%"
+                    height="29.27%"
                     viewBox="0 0 24.93 29.27"
                     fill="#FFFFFF"
                     xmlns="http://www.w3.org/2000/svg"
@@ -114,8 +115,8 @@ export const IonicLogo = () => {
                     />
                 </svg>
                 <svg
-                    width="7.35"
-                    height="37.96"
+                    width="7.35%"
+                    height="37.96%"
                     viewBox="0 0 7.35 37.96"
                     fill="#FFFFFF"
                     xmlns="http://www.w3.org/2000/svg"
@@ -126,8 +127,8 @@ export const IonicLogo = () => {
                     />
                 </svg>
                 <svg
-                    width="22.57"
-                    height="36.04"
+                    width="22.57%"
+                    height="36.04%"
                     viewBox="0 0 22.57 36.04"
                     fill="#FFFFFF"
                     xmlns="http://www.w3.org/2000/svg"
@@ -138,8 +139,8 @@ export const IonicLogo = () => {
                     />
                 </svg>
                 <svg
-                    width="25.17"
-                    height="37.96"
+                    width="25.17%"
+                    height="37.96%"
                     viewBox="0 0 25.17 37.96"
                     fill="#FFFFFF"
                     xmlns="http://www.w3.org/2000/svg"
@@ -148,11 +149,11 @@ export const IonicLogo = () => {
                         d="M 17.80481949368841 37.95632517415298 L 17.80481949368841 20.72719189245824 C 17.80481949368841 18.622024458171275 17.440336456410407 17.18164759403799 16.70342139824727 16.406059601863234 C 15.96650634008413 15.638385765172368 14.754157473939525 15.25059252383839 13.058460388298654 15.25059252383839 C 12.155145173994022 15.25059252383839 11.338986110006308 15.432618524516682 10.62584252970889 15.788755851496408 C 9.912698949411473 16.144893178476135 9.302565940922376 16.635568742905544 8.819213045692312 17.260787639370104 C 8.32793634025022 17.878092333178685 7.9634533029722165 18.598283501226405 7.717814950251171 19.40552811533673 C 7.472176597530125 20.212772729447053 7.353301922155363 21.091244554224048 7.353301922155363 22.033030000248875 L 7.353301922155363 37.96424102783203 L 0 37.96424102783203 L 0 0 L 7.353301922155363 0 L 7.337462991984024 13.786473570630134 C 7.598948988743944 13.184997187789337 8.003062719186952 12.607262280786376 8.549806143342876 12.061185033504906 C 9.0965495674988 11.515107786223435 9.722518577921907 11.056086320022901 10.443586015660987 10.676206503005458 C 11.156729595958405 10.304240841471906 11.949127808748125 9.995587456781688 12.812823971992616 9.773990890958336 C 13.676520135237107 9.552394325134983 14.57982174740705 9.433683148592758 15.522756107231093 9.433683148592758 C 18.383254238632794 9.433683148592758 20.70494744450688 10.217184541498007 22.49573025269209 11.776274681331413 C 24.27858925066527 13.343278976648712 25.17398452758789 15.511758711365054 25.17398452758789 18.29754408333173 L 25.17398452758789 37.95632517415298 L 17.80481949368841 37.95632517415298 L 17.80481949368841 37.95632517415298 Z"
                         fillRule="nonzero"
                     />
-                s</svg>
+                    s</svg>
             </Stack>
             <svg
-                width="28.54"
-                height="28.57"
+                width="18.54%"
+                height="18.57%"
                 viewBox="0 0 28.54 28.57"
                 fill="#54C5CE"
                 xmlns="http://www.w3.org/2000/svg"
