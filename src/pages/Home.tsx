@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react"
-import { Box, Button, Text, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Spacer, FormLabel, Input, Select, Textarea, useDisclosure, IconButton, Checkbox, Tab, ButtonGroup } from "@chakra-ui/react"
+import { useEffect, useState } from "react"
+import { Box, Button, Text, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Spacer } from "@chakra-ui/react"
 import Process from "../models/Process"
 import FormP from "../components/FormProcess"
-import { getAllProcess } from "../services/process"
 import { Link } from "react-router-dom"
 import { formatDateToBrasil } from "../services/formatDate"
 import { BtnDeleteProcess } from "../components/BtnDeleteProcess"
@@ -12,31 +11,23 @@ import { getMyRelatedData } from "../services/users"
 import Step from "../models/Steps"
 import RequestForEvidence from "../models/RequestForEvidence"
 import { CardProcessoPrazo } from "../components/Card/cardProcessoPrazo"
-import { AddIcon, HamburgerIcon, UpDownIcon } from "@chakra-ui/icons"
-import { ModalGeneric } from "../components/Modal/Modal"
-import User from "../models/User"
 import { ModalFilter } from "../components/Modal/ModalFilters"
+import { UpDownIcon } from "@chakra-ui/icons"
 
 
 export const Home = () => {
     const [processes, setProcesses] = useState(new Array<Process>())
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [steps, setSteps] = useState(new Array<Step>())
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [requestForEvidence, setRequestForEvidence] = useState(new Array<RequestForEvidence>())
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [role, setRole] = useState(localStorage.getItem('cargo'))
-    const { isOpen, onOpen, onClose } = useDisclosure()
 
     const [sortProcess, setSortProcess] = useState(new Array<Process>())
     const [sortTitle, setSortTitle] = useState(false)
     const [sortLastUpdate, setSortLastUpdate] = useState(false)
     const [sortStatus, setSortStatus] = useState(false)
-
-    const [filterDate, setFilterDate] = useState("")
-    const [filterStatus, setFilterStatus] = useState("")
-
-    const [selectedDates, setSelectedDates] = useState<string[]>([])
-    const [selectedStatus, setSelectedStatus] = useState<string[]>([])
-
-
 
     useEffect(() => {
         (async () => {
@@ -52,10 +43,7 @@ export const Home = () => {
         })();
     }, [])
 
-
-    
-    
-
+   
     const sortByTitle = () => {
         const sortedProcesses = [...processes].sort((a,b) => {
             if (a.title < b.title)
@@ -91,25 +79,6 @@ export const Home = () => {
         setSortProcess(sortedProcesses)
         setSortStatus(!sortStatus)
     }
-
-
-    
-    const filterProcesses = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setSortProcess(processes)
-
-        const filteredProcesses = processes.filter((process) => {
-            return (
-                (selectedDates.length === 0 || selectedDates.includes(process.lastUpdate.toString())) &&
-                (selectedStatus.length === 0 || selectedStatus.includes(process.status))
-            )
-        })
-        console.log(selectedDates)
-        setSortProcess(filteredProcesses)
-        onClose()
-    }
-    
-
 
     return (<Flex flexDirection={'column'}>
 
