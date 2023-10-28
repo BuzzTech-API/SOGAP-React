@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, Button, Text, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Spacer } from "@chakra-ui/react"
+import { Box, Button, Text, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Spacer, FormLabel, Input, Select, Textarea, useDisclosure, IconButton, Checkbox, Tab, ButtonGroup } from "@chakra-ui/react"
 import Process from "../models/Process"
 import FormP from "../components/FormProcess"
 import { getAllProcess } from "../services/process"
@@ -12,6 +12,10 @@ import { getMyRelatedData } from "../services/users"
 import Step from "../models/Steps"
 import RequestForEvidence from "../models/RequestForEvidence"
 import { CardProcessoPrazo } from "../components/Card/cardProcessoPrazo"
+import { AddIcon, HamburgerIcon, UpDownIcon } from "@chakra-ui/icons"
+import { ModalGeneric } from "../components/Modal/Modal"
+import User from "../models/User"
+import { ModalFilter } from "../components/Modal/ModalFilters"
 
 
 export const Home = () => {
@@ -19,6 +23,21 @@ export const Home = () => {
     const [steps, setSteps] = useState(new Array<Step>())
     const [requestForEvidence, setRequestForEvidence] = useState(new Array<RequestForEvidence>())
     const [role, setRole] = useState(localStorage.getItem('cargo'))
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const [sortProcess, setSortProcess] = useState(new Array<Process>())
+    const [sortTitle, setSortTitle] = useState(false)
+    const [sortLastUpdate, setSortLastUpdate] = useState(false)
+    const [sortStatus, setSortStatus] = useState(false)
+
+    const [filterDate, setFilterDate] = useState("")
+    const [filterStatus, setFilterStatus] = useState("")
+
+    const [selectedDates, setSelectedDates] = useState<string[]>([])
+    const [selectedStatus, setSelectedStatus] = useState<string[]>([])
+
+
+
     useEffect(() => {
         (async () => {
             await verifyTokenFetch()
@@ -28,9 +47,68 @@ export const Home = () => {
                 setProcesses(userContent.processes)
                 setSteps(userContent.steps)
                 setRequestForEvidence(userContent.requests)
+                setSortProcess(userContent.processes)
             }
         })();
     }, [])
+
+
+    
+    
+
+    const sortByTitle = () => {
+        const sortedProcesses = [...processes].sort((a,b) => {
+            if (a.title < b.title)
+                return sortTitle ? 1:-1
+            if (a.title > b.title)
+                return sortTitle ? -1:1
+            return 0
+        })
+        setSortProcess(sortedProcesses)
+        setSortTitle(!sortTitle)
+    }
+
+    const sortByLastUpdate = () => {
+        const sortedProcesses = [...processes].sort((a,b) => {
+            if (a.lastUpdate < b.lastUpdate)
+                return sortLastUpdate ? 1:-1
+            if (a.lastUpdate > b.lastUpdate)
+                return sortLastUpdate ? -1:1
+            return 0
+        })
+        setSortProcess(sortedProcesses)
+        setSortLastUpdate(!sortLastUpdate)
+    }
+
+    const sortByStatus = () => {
+        const sortedProcesses = [...processes].sort((a,b) => {
+            if (a.status < b.status)
+                return sortStatus ? 1:-1
+            if (a.status > b.status)
+                return sortStatus ? -1:1
+            return 0
+        })
+        setSortProcess(sortedProcesses)
+        setSortStatus(!sortStatus)
+    }
+
+
+    
+    const filterProcesses = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        setSortProcess(processes)
+
+        const filteredProcesses = processes.filter((process) => {
+            return (
+                (selectedDates.length === 0 || selectedDates.includes(process.lastUpdate.toString())) &&
+                (selectedStatus.length === 0 || selectedStatus.includes(process.status))
+            )
+        })
+        console.log(selectedDates)
+        setSortProcess(filteredProcesses)
+        onClose()
+    }
+    
 
 
     return (<Flex flexDirection={'column'}>
@@ -80,8 +158,9 @@ export const Home = () => {
                     width={'14rem'}
                     color={'#FFF'}
                 >Meus Processos</Text>
-                {role !== null && (role ==='Gerente'|| role === 'Administrador') && <><Spacer />
-                
+                {role !== null && (role ==='Gerente'|| role === 'Administrador') && <>
+                <ModalFilter setSortProcess={setSortProcess} processes={processes}/>
+                <Spacer />
                 <Box
                     alignSelf={'center'}
                     display={'flex'}
@@ -108,14 +187,24 @@ export const Home = () => {
                         zIndex="sticky"
                     >
                         <Tr >
-                            <Th color={'#FFF'}>Título</Th>
-                            <Th textAlign="center" color={'#FFF'}>Última Atualização</Th>
-                            <Th textAlign="center" color={'#FFF'}>Status</Th>
+                            <Th color={'#FFF'} onClick={sortByTitle}>Título
+                                <UpDownIcon boxSize={5} mx={2}/>
+                            </Th>
+
+                            <Th textAlign="center" color={'#FFF'} onClick={sortByLastUpdate}>Última Atualização 
+                                <UpDownIcon boxSize={5} mx={2}/>
+                            </Th>
+
+                            <Th textAlign="center" color={'#FFF'} onClick={sortByStatus}>Status
+                                <UpDownIcon boxSize={5} mx={2}/>
+
+                            </Th>
                             <Th textAlign="center" color={'#FFF'}>Ações</Th>
+                            
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {processes.map((process: Process) => {
+                        {sortProcess.map((process: Process) => {
                             return (
                                 <Tr>
 
