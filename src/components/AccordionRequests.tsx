@@ -21,7 +21,7 @@ interface AccordionI {
   setRequests: React.Dispatch<SetStateAction<RequestForEvidence[]>>
 }
 export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setStep, setRequests }: AccordionI) => {
-  const [user, setUser] = useState(new User('', '', '', false, 0, '', new Array<Process>()))
+  const [user, setUser] = useState(new User('', '', '', '', false, 0, '', new Array<Process>()))
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [requestForEvidence, setRequestForEvidence] = useState(requestForEvidenceI)
   const [is_validated, setIs_validated] = useState(requestForEvidence.is_validated)
