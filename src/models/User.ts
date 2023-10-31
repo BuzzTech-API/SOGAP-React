@@ -3,6 +3,7 @@ import Process from "./Process"
 export default class User {
     private _name: string
     private _role: string
+    private _photo_link: string
     private _team: string
     private _email: string
     private _is_active: boolean
@@ -10,8 +11,10 @@ export default class User {
     
     private _processes: Array<Process> = []
     
-    constructor(name: string,
+    constructor(
+        name: string,
         role: string,
+        photo_link: string,
         team: string,
         is_active: boolean,
         id: number,
@@ -21,6 +24,7 @@ export default class User {
         this._id = id
         this._name = name
         this._role = role
+        this._photo_link = photo_link
         this._team = team
         this._is_active = is_active
         this._email = email
@@ -57,6 +61,14 @@ export default class User {
 
     public set role(value: string) {
         this._role = value
+    }
+
+    public get photo_link(): string {
+        return this._photo_link
+    }
+
+    public set photo_link(value: string) {
+        this._photo_link = value
     }
 
     public get team(): string {
