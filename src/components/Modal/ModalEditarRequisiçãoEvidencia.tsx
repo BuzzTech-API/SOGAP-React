@@ -1,13 +1,12 @@
 import { useDisclosure, FormLabel, Input, Button, Select } from "@chakra-ui/react"
 import React, { SetStateAction, useEffect, useState } from "react"
-import { verifyTokenFetch } from "../../services/token"
 import { ModalGeneric } from "./Modal"
 import User from "../../models/User"
 import { getAllUsers } from "../../services/users"
 import RequestForEvidence from "../../models/RequestForEvidence"
 import { formatData } from "../../services/formatDate"
 import { UpdateRequestEvidenceInterface } from "../../interfaces/requestEvidenceInterface"
-import { getRequestEvidenceById, updateRequestEvidence } from "../../services/requestEvidence"
+import { updateRequestEvidence } from "../../services/requestEvidence"
 import Step from "../../models/Steps"
 
 interface UpdateRequestEvidence {
@@ -25,7 +24,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
 
     useEffect(() => {
         (async () => {
-            await verifyTokenFetch()
+            
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
@@ -93,7 +92,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
     //Função para submeter os dados ao servidor BackEnd
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        await verifyTokenFetch()
+        
 
         try {
 
@@ -142,7 +141,6 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
         <>
             <Button
                 display="flex"
-                mb={3}
                 variant='solid'
                 bg={'#58595B'}
                 color={'#FFF'}

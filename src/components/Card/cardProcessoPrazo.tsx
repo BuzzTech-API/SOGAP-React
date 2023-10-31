@@ -1,24 +1,15 @@
-import { useState } from "react"
 import Process from "../../models/Process"
 import { Card, Stack, Text } from "@chakra-ui/react";
 import { checkDeadline } from "../../services/checkDeadline";
+import { formatDateToBrasil } from "../../services/formatDate";
 
 
 interface processCardInterface {
     process: Process
 }
 
-function formatDateToBrasil(data: string) {
-    // função para pegar a data atual e formatar para "ano/mes/dia"
-    const year = data.split('-')[0]
-    const month = data.split('-')[1] // getMonth() retorna um valor de 0-11 por isso o +1
-    const day = data.split('-')[2]
-    const formattedDate = `${day}/${month}/${year}`
-    return formattedDate
-}
 
-export const CardProcessoPrazo = (processI: processCardInterface) => {
-    const [process] = useState(processI.process)
+export const CardProcessoPrazo = ({ process }: processCardInterface) => {
 
     const evento = () => {
         console.log('Evento card:' + process.title);
@@ -86,7 +77,7 @@ export const CardProcessoPrazo = (processI: processCardInterface) => {
                     textAlign="center"
                 >
 
-                    {formatDateToBrasil(process.endingDate.toLocaleString('pt-BR'))}
+                    {formatDateToBrasil(process.endingDate.toString())}
                 </Text>
             </Stack>
             <Stack

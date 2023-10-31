@@ -8,7 +8,6 @@ import {
     FormControl,
     FormLabel,
     Center,
-    Heading,
     useDisclosure
 
 } from '@chakra-ui/react'

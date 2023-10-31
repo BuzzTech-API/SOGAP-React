@@ -1,6 +1,6 @@
 import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, useDisclosure } from "@chakra-ui/react";
 import { ModalGeneric } from "./Modal/Modal";
-import { verifyTokenFetch } from "../services/token";
+
 import { SetStateAction, useRef, useState } from "react";
 import Steps from "../models/Steps";
 import { deleteStep } from "../services/steps";
@@ -21,7 +21,7 @@ export const BtnDeleteEtapa = ({etapa, setSteps, steps, onCloseD}: DeleteEtapaIn
     
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        await verifyTokenFetch()
+        
 
         try{
             const response = await deleteStep(etapa.id, false)

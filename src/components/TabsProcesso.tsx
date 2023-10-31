@@ -250,7 +250,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                     flex="1"
                                     textAlign="center"
                                 >
-                                    {process.createDate === undefined ? <></> : <Text>{formatDateToBrasil(process.createDate.toString())}</Text>}
+                                    {process.createDate === undefined ? <></> : <>{formatDateToBrasil(process.createDate.toString())}</>}
                                 </Text>
                             </Stack>
                         </Stack>

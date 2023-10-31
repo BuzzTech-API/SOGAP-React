@@ -1,10 +1,9 @@
 
 import { useDisclosure, FormLabel, Input, Textarea, Button, Select, FormControl, Box, Tag, TagLabel, TagCloseButton, Flex } from "@chakra-ui/react"
 import React, { SetStateAction, useEffect, useState } from "react"
-import { verifyTokenFetch } from "../../services/token"
 import { ModalGeneric } from "./Modal"
 import Step from "../../models/Steps"
-import { getStepsById, updateStep } from "../../services/steps"
+import { updateStep } from "../../services/steps"
 import User from "../../models/User"
 import { createUserStep, deleteUserStep, getAllUsers } from "../../services/users"
 import { StepUser } from "../../interfaces/stepInterface"
@@ -48,7 +47,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
     //Função para submeter os dados ao servidor BackEnd
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        await verifyTokenFetch()
+        
 
         try {
 
@@ -144,7 +143,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
 
     useEffect(() => {
         (async () => {
-            await verifyTokenFetch()
+            
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)

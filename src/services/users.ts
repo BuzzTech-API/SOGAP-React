@@ -1,10 +1,11 @@
 import { MyRelatedData } from "../interfaces/relatedDataInterface";
 import User from "../models/User";
+import fetchWithRefresh from "./fetchWithRefresh";
 
 
 export const getAllUsers = async () => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/users`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/users`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -27,7 +28,7 @@ export const createUserStep = async (user_id: number, step_id: number) => {
     "step_id": step_id
   }
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/stepes_users/`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/stepes_users/`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -47,7 +48,7 @@ export const deleteUserStep = async (user_id: number, step_id: number) => {
   }
 
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/stepes_users/`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/stepes_users/`, {
     method: 'DELETE',
     headers: {
       'Accept': 'application/json',
@@ -70,7 +71,7 @@ export const createUser = async (name: string, email: string, role: string, team
     password: password
   }
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/users/`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/users/`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -88,7 +89,7 @@ export const getUser = async () => {
   const token = localStorage.getItem('access_token');
   if (token) {
     try {
-      const response = await fetch(`http://${window.location.hostname}:8000/users/get/me`, {
+      const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/users/get/me`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -114,7 +115,7 @@ export const createProcessUser = async (user_id: number, process_id: number) => 
     "process_id": process_id
   }
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/users_processes/`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/users_processes/`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -131,7 +132,7 @@ export const getUserById = async (id: number) => {
   const token = localStorage.getItem('access_token');
   if (token) {
     try {
-      const response = await fetch(`http://${window.location.hostname}:8000/users/${id}`, {
+      const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/users/${id}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -152,7 +153,7 @@ export const getMyRelatedData = async () => {
   const token = localStorage.getItem('access_token');
   if (token) {
     try {
-      const response = await fetch(`http://${window.location.hostname}:8000/user/getall_related_data/`, {
+      const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/user/getall_related_data/`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',

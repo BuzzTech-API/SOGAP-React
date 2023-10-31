@@ -18,18 +18,20 @@ import {
     DrawerHeader,
     DrawerOverlay,
     Stack,
-    useDisclosure
 
 } from '@chakra-ui/react'
 import { useState } from "react";
-import { refreshTokenFetch } from "../../services/token";
 import { createUser } from '../../services/users';
-import { AddIcon } from '@chakra-ui/icons';
 import React from 'react';
 
+interface propsI{
+isOpen: boolean
+onOpen: ()=>void
+onClose: ()=>void
 
-export function DrawerCadastro() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+}
+export function DrawerCadastro({ isOpen, onOpen, onClose }:propsI) {
+    
     const [show, setShow] = useState(false)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -40,7 +42,6 @@ export function DrawerCadastro() {
     const handleClick = () => setShow(!show)
     const submit = async (e: any) => {
         e.preventDefault();
-        await refreshTokenFetch()
 
         try {
             console.log(
@@ -62,11 +63,7 @@ export function DrawerCadastro() {
 
 
     return (
-        <><Center width={'100%'}>
-            <Button bg={'#58595B'} _hover={{ background: '#FFF', color: '#58595B' }} color={'#FFF'} onClick={onOpen} width={'100%'}>
-                Cadastrar Usuário
-            </Button>
-        </Center>
+        <>
             <Drawer
                 isOpen={isOpen}
                 placement='right'
@@ -173,7 +170,6 @@ export const Cadastro = () => {
     const handleClick = () => setShow(!show)
     const submit = async (e: any) => {
         e.preventDefault();
-        await refreshTokenFetch()
 
         try {
             console.log(

@@ -1,34 +1,42 @@
 
 import { Flex } from "@chakra-ui/react"
+import * as React from "react";
 import { Outlet } from "react-router-dom"
 import { Header } from "../components/Header"
 import { useEffect, useState } from "react"
+import { useOutletContext } from "react-router";
 
-function DefaultLayout() {
+type ContextType = { socket: WebSocket | null };
+
+export default function DefaultLayout() {
 
     const [socket, setSocket] = useState<WebSocket | null>(null);
 
+
+
+
     useEffect(() => {
         // Substitua 'seu_host' e 'sua_rota' pelas informações reais do seu servidor WebSocket
-        const socket = new WebSocket(`ws://${window.location.hostname}/notification/ws`, );
+        let socket = new WebSocket(`ws://${window.location.hostname}/notification/ws`,);
 
         socket.onopen = () => {
             console.log('Conexão WebSocket aberta.');
-            
+
         };
 
-        socket.onmessage = (event) => {           
+        socket.onmessage = (event) => {
             console.log('Mensagem recebida:', event.data);
 
-            
+
             // Faça o que for necessário com a mensagem recebida do servidor WebSocket
         };
 
         socket.onclose = (event) => {
             console.log('Conexão WebSocket fechada:', event);
-            
+            socket = new WebSocket(`ws://${window.location.hostname}/notification/ws`,);
+            setSocket(socket)
         };
-        
+
         setSocket(socket);
 
         // Certifique-se de fechar a conexão ao desmontar o componente ou quando não for mais necessário.
@@ -41,9 +49,12 @@ function DefaultLayout() {
     return (
         <Flex flexDirection="column">
             <Header />
-            <Outlet />
+            <Outlet context={{ socket } satisfies ContextType} />
         </Flex>
     )
 }
 
-export default DefaultLayout
+
+export function useSocket() {
+    return useOutletContext<ContextType>();
+}

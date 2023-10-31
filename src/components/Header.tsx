@@ -16,14 +16,13 @@ import { Link } from 'react-router-dom'
 import { IonicLogo } from './IonicLogo'
 import { useEffect, useState } from 'react'
 import { getUser } from '../services/users'
-import { disable2FA, verifyTokenFetch } from '../services/token'
+import { disable2FA,  } from '../services/token'
 import { DrawerCadastro } from './Drawer/Cadastro'
 import TwoAuthModal from "../components/Modal/QrCodeModal"
 
 
 
 export const Header = () => {
-
     const [name, setName] = useState('')
     const [role, setRole] = useState('')
     const [photo_link, setPhoto_link] = useState('')
@@ -32,7 +31,6 @@ export const Header = () => {
 
     useEffect(() => {
         (async () => {
-            verifyTokenFetch()
             const data = await getUser()
             if (data) {
                 setName(data.name)
@@ -49,7 +47,7 @@ export const Header = () => {
 
     const deactivated2FA = async () => {
         const data = await disable2FA()
-        if (data.deactivated===true) {
+        if (data.deactivated === true) {
             setIs_enable2fa(false)
         }
     }
@@ -80,7 +78,7 @@ export const Header = () => {
                         bg={'#292A2D'}
                         width="3.5rem"
                         height="3.5rem"
-                        marginRight={['0.5rem','2rem']}
+                        marginRight={['0.5rem', '2rem']}
                         marginTop={'0.2rem'}
                         padding={'0.5rem 0.5rem 0rem 0.7rem'}
                         leftIcon={
@@ -97,30 +95,35 @@ export const Header = () => {
                             </Icon>
                         } >
                     </MenuButton>
-                    <MenuList color={'#FFF'} bg={'#58595B'}>
-                        {role==='Administrador' && <MenuItem bg={'#58595B'}><DrawerCadastro /></MenuItem>}
+                    <MenuList 
+                    color={'#FFF'} bg={'#58595B'} padding={'1rem'}>
+                        {role === 'Administrador' && 
+                        <MenuItem bg={'#58595B'} 
+                        _hover={{ background: '#FFF', color: '#58595B' }} color={'#FFF'} onClick={onOpen} width={'100%'} as={Button}>Cadastrar Usuários<DrawerCadastro isOpen={isOpen} onOpen={onOpen} onClose={onClose} /></MenuItem>}
                         <Link to={'/'}>
-                            <MenuItem bg={'#58595B'}>
-                                <Button
-                                    bg={'#58595B'}
-                                    color={'#FFF'}
-                                    width={'100%'}
-                                    _hover={{ background: '#FFF', color: '#58595B' }}
-                                >Meus Processos</Button>
-                            </MenuItem>
-                        </Link>
-                        <MenuItem bg={'#58595B'}>
-                            <Button
+                            <MenuItem
                                 bg={'#58595B'}
                                 color={'#FFF'}
                                 width={'100%'}
                                 _hover={{ background: '#FFF', color: '#58595B' }}
-                                onClick={()=>{
-                                    localStorage.removeItem('access_token')
-                                    localStorage.removeItem('refresh_token')
-                                    window.location.reload();
-                                }}
-                            >Sair</Button>
+                                as={Button}
+                            >
+                                Meus Processos
+                            </MenuItem>
+                        </Link>
+                        <MenuItem 
+                        as={Button}
+                        bg={'#58595B'}
+                        color={'#FFF'}
+                        width={'100%'}
+                        _hover={{ background: '#FFF', color: '#58595B' }}
+                        onClick={() => {
+                            localStorage.removeItem('access_token')
+                            localStorage.removeItem('refresh_token')
+                            window.location.reload();
+                        }}
+                        >
+                            Sair
                         </MenuItem>
 
                     </MenuList>
@@ -132,11 +135,11 @@ export const Header = () => {
             <Spacer />
             <Flex
                 flexDirection={'row'}
-                width={['4rem',"15rem"]}
+                width={['4rem', "15rem"]}
                 marginLeft={0}
             >
                 <Box flexDirection={'column'}
-                    marginRight={['0','0.2rem']}
+                    marginRight={['0', '0.2rem']}
                     display={['none', 'flex']}
                 >
 
@@ -163,17 +166,17 @@ export const Header = () => {
                 </Box>
                 <Menu>
                     <MenuButton
-                    width={['2.5rem',"3.5rem"]}
-                    height={['2.5rem',"3.5rem"]}
+                        width={['2.5rem', "3.5rem"]}
+                        height={['2.5rem', "3.5rem"]}
                     >
                         <Avatar
                             name={name}
-                            src={'https://storage.cloud.google.com/buzz_tech/buzz_tech/this is fine.jpg'}
+                            src={photo_link}
                             size="xs"
-                            width={['2.5rem',"3.5rem"]}
-                            height={['2.5rem',"3.5rem"]}
+                            width={['2.5rem', "3.5rem"]}
+                            height={['2.5rem', "3.5rem"]}
                             marginLeft={'1rem'}
-                            
+
                         >
                         </Avatar>
                     </MenuButton>

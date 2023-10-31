@@ -37,7 +37,7 @@ export const DonutChart: React.FC<DonutChartProps> = ({ processes }: DonutChartP
             }
             statusCounts[process.status]++
         }
-        const order = ["Não iniciado", "Em andamento", "Concluido"]
+        const order = ["Não iniciado", "Em andamento", "Concluído"]
 
         const data = {
             labels: order, //Pega o "nome" dos status

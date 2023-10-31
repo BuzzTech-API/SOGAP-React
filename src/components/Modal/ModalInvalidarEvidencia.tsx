@@ -1,18 +1,53 @@
-import { Box, Button, Flex, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure } from "@chakra-ui/react"
+import { 
+    Box,
+    Button, 
+    Flex, 
+    FormLabel, 
+    Modal, 
+    ModalBody, 
+    ModalCloseButton, 
+    ModalContent,
+    ModalOverlay, 
+    Textarea
+} from "@chakra-ui/react"
 import React, { useState } from "react";
+import { useSocket } from "../../layout/DefaultLayout";
+import RequestForEvidence from "../../models/RequestForEvidence";
+interface PropsInvalidar{
+    process_id: number,
+    isOpen: boolean,
+    onClose: ()=>void,
+    requestForEvidence: RequestForEvidence,
+    step_id: number,
+    myId: number,
+}
+export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestForEvidence, step_id, myId}:PropsInvalidar) => {
 
-export const ModalInvalidarEvidencia = () => {
-    const [isOpen, setIsOpen] = useState(true)
     const [reason, setReason] = useState('')
-
+    const {socket} = useSocket()
     const submit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        
+        const lastEvidenceIndex = requestForEvidence.evidences.length -1
+        if (socket) {
+                if (lastEvidenceIndex >=0) {
+                const data = {
+                    event: 'Invalidar evidência',
+                    data: {
+                        process_id: process_id,
+                        step_id: step_id,
+                        evidece_id: requestForEvidence.evidences[lastEvidenceIndex].id,
+                        request_for_evidence_id: requestForEvidence.id,
+                        reason: reason,
+                        sender: myId
+                    }
+                }
+                socket.send(JSON.stringify(data))
+            }
+        }
 
     }
     return (
-        <Modal size={['full', 'md']} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <Modal size={['full', 'md']} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent
                 textColor={'white'}

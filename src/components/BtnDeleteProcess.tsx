@@ -1,7 +1,7 @@
 import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, useDisclosure } from "@chakra-ui/react";
 import Process from "../models/Process";
 import { ModalGeneric } from "./Modal/Modal";
-import { verifyTokenFetch } from "../services/token";
+
 import { deleteProcess } from "../services/process";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -19,7 +19,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        await verifyTokenFetch()
+        
 
         try {
             const response = await deleteProcess(process.id, false)
@@ -40,7 +40,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
     return (
         <>
             <Button bg='#ff1a1a' variant='solid'
-                textColor='white' colorScheme="#58595B" width='8rem'
+                textColor='white' colorScheme="#58595B" width={['auto','8rem']}
                 type="submit" onClick={onOpen}
             >Deletar</Button>
 

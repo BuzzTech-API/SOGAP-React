@@ -2,12 +2,7 @@ import { Box, Button, useDisclosure, Text, Heading, Center } from "@chakra-ui/re
 import { ModalGeneric } from "./Modal"
 import RequestForEvidence from "../../models/RequestForEvidence"
 import { ModalUploadEvidence } from "../UploadEvidence"
-import { ModalUpdateRequestEvidence } from "./ModalEditarRequisiçãoEvidencia"
-import { formatData } from "../../services/formatDate"
-import { SetStateAction, useEffect, useState } from "react"
-import { verifyTokenFetch } from "../../services/token"
-import { getAllUsers } from "../../services/users"
-import { BtnDeleteEvidencia } from "../BtnDeleteEvidencia"
+import { SetStateAction } from "react"
 import Step from "../../models/Steps"
 
 interface ViewRequestI {
@@ -21,23 +16,6 @@ export const ViewRequest: React.FC<ViewRequestI> = ({
     request, step, setRequestForEvidence, setStep
 }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const [responsibleName, setResponsibleName] = useState('')
-
-    useEffect(() => {
-        (async () => {
-            await verifyTokenFetch()
-            const listOfUsers = await getAllUsers()
-            if (listOfUsers) {
-                const responsibleUser = listOfUsers.find(user =>
-                    user.id === request.user_id)
-                if (responsibleUser) {
-                    setResponsibleName(responsibleUser.name)
-                }
-            }
-
-
-        })()
-    }, [request])
 
 
     return (

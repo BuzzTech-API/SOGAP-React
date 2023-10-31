@@ -1,11 +1,11 @@
 import {  Input, FormLabel, Button } from "@chakra-ui/react"
-import { ProcessInterface, ProcessUser } from "../interfaces/processInterface";
+import { ProcessUser } from "../interfaces/processInterface";
 import User from "../models/User";
-import { refreshTokenFetch } from "../services/token";
 import Evidence from "../models/Evidence";
 import RequestForEvidence from "../models/RequestForEvidence";
 import Step from "../models/Steps";
 import { SetStateAction } from "react";
+import fetchWithRefresh from "../services/fetchWithRefresh";
 
 
 interface ModalUploadEvidenceI {
@@ -24,10 +24,10 @@ export const ModalUploadEvidence = ({requestForEvidence, step, setStep, setReque
 
             const uploadInput = document.getElementById('uploadInput') as HTMLInputElement //pega o arquivo enviado atraves de <input...>
             e.preventDefault()
-            await refreshTokenFetch()
+            
 
             
-            const response = await fetch(`http://${window.location.hostname}:8000/users_processes/process_id/${step.process_id}`, {
+            const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/users_processes/process_id/${step.process_id}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -54,7 +54,7 @@ export const ModalUploadEvidence = ({requestForEvidence, step, setStep, setReque
                     return host
                 }) //separa o email de todos os responsáveis pelo processo e coloca depois de "uploadfile/""
                 
-                const response2 = await fetch (
+                const response2 = await fetchWithRefresh (
                     host,{
                     method: 'POST',
                     headers:{
@@ -83,7 +83,7 @@ export const ModalUploadEvidence = ({requestForEvidence, step, setStep, setReque
                         deliveryDate: formattedDate
                     }
 
-                    const evidenciaResponse = await fetch(
+                    const evidenciaResponse = await fetchWithRefresh(
                         `http://${window.location.hostname}:8000/evidences/`,{
                         method: 'POST',
                         headers:{

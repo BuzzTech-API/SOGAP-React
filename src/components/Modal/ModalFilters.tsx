@@ -2,7 +2,6 @@ import { Box, Button, ButtonGroup, Checkbox, Flex, Table, useDisclosure, Text } 
 import { ModalGeneric } from "./Modal"
 import { useEffect, useState } from "react"
 import Process from "../../models/Process"
-import { verifyTokenFetch } from "../../services/token"
 import { getMyRelatedData } from "../../services/users"
 import Step from "../../models/Steps"
 import RequestForEvidence from "../../models/RequestForEvidence"
@@ -28,7 +27,7 @@ export const ModalFilter = ({ setProcess, processes, setSteps, steps, setRequest
 
     useEffect(() => {
         (async () => {
-            await verifyTokenFetch()
+            
             const userContent = await getMyRelatedData()
 
             if (userContent && setProcess) {
@@ -101,6 +100,7 @@ export const ModalFilter = ({ setProcess, processes, setSteps, steps, setRequest
                 aria-label="Btn Add Processo"
                 bg="#29784E"
                 color="white"
+                width={'5rem'}
                 _hover={{ color: "#29784E", bg: "white" }}
                 onClick={onOpen}
             >Filtros</Button>
@@ -121,6 +121,7 @@ export const ModalFilter = ({ setProcess, processes, setSteps, steps, setRequest
                         align={'top'}>
                         <Box
                             width={'40%'}
+                            key={1}
                             >
                             <Text
                                 alignSelf={'center'}
@@ -137,8 +138,8 @@ export const ModalFilter = ({ setProcess, processes, setSteps, steps, setRequest
                                 overflowY={'auto'}>
                                 {[...(filterProcess.map(process => process.lastUpdate))].filter((value,
                                     index, self) => self.indexOf(value) === index).sort((a, b) =>
-                                        new Date(a).getTime() - new Date(b).getTime()).map((date) => (
-                                            <Table>
+                                        new Date(a).getTime() - new Date(b).getTime()).map((date, key) => (
+                                            <Table key={key}>
                                                 <Checkbox size={"lg"}
                                                     isChecked={selectedDates.includes(date.toString())}
                                                     onChange={() => handleDateSelect(date.toString())}>
@@ -149,7 +150,7 @@ export const ModalFilter = ({ setProcess, processes, setSteps, steps, setRequest
                             </Flex>
                         </Box>
 
-                        <Box>
+                        <Box key={2}>
                             <Text
                                 alignSelf={'center'}
                                 fontFamily={'Poppins'}
@@ -180,7 +181,7 @@ export const ModalFilter = ({ setProcess, processes, setSteps, steps, setRequest
                             </Flex>
                         </Box>
                         {(steps !== undefined || requestForEvidence !== undefined) && (
-                            <Box>
+                            <Box key={3}>
                                 <Text
                                     alignSelf={'center'}
                                     fontFamily={'Poppins'}
