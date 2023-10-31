@@ -12,6 +12,7 @@ import RequestForEvidence from "../models/RequestForEvidence"
 import { CardProcessoPrazo } from "../components/Card/cardProcessoPrazo"
 import { ModalFilter } from "../components/Modal/ModalFilters"
 import { UpDownIcon } from "@chakra-ui/icons"
+import { CardRequestEvidence } from "../components/Card/cardRequestEvidence"
 
 
 
@@ -33,14 +34,14 @@ export const Home = () => {
         (async () => {
             
             const userContent = await getMyRelatedData()
-
+            
             if (userContent) {
                 setProcesses(userContent.processes)
                 setSteps(userContent.steps)
                 setRequestForEvidence(userContent.requests)
                 setSortProcess(userContent.processes)
-                setFilteredProcesses(processes)
             }
+                
         })()
     }, [])
 
@@ -123,6 +124,12 @@ export const Home = () => {
                     process={process}
                 /></Link>
             })}
+            {requestForEvidence.map((requestForEvidence: RequestForEvidence) => {
+                return <CardRequestEvidence key={requestForEvidence.id}
+                    requestEvidence={requestForEvidence}
+                />
+            })}
+
         </Flex>
         <Flex flexDirection={'column'} gap={'0.25rem'} key={3}>
 
