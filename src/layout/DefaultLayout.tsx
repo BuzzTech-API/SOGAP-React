@@ -17,7 +17,7 @@ export default function DefaultLayout() {
 
     useEffect(() => {
         // Substitua 'seu_host' e 'sua_rota' pelas informações reais do seu servidor WebSocket
-        let socket = new WebSocket(`ws://${window.location.hostname}/notification/ws`,);
+        const socket = new WebSocket(`ws://${window.location.hostname}/notification/ws`);
 
         socket.onopen = () => {
             console.log('Conexão WebSocket aberta.');
@@ -33,8 +33,6 @@ export default function DefaultLayout() {
 
         socket.onclose = (event) => {
             console.log('Conexão WebSocket fechada:', event);
-            socket = new WebSocket(`ws://${window.location.hostname}/notification/ws`,);
-            setSocket(socket)
         };
 
         setSocket(socket);
