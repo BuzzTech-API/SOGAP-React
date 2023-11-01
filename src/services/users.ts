@@ -61,10 +61,11 @@ export const deleteUserStep = async (user_id: number, step_id: number) => {
   return response
 }
 
-export const createUser = async (name: string, email: string, role: string, team: string, password: string) => {
+export const createUser = async (name: string, email: string, role: string, team: string, password: string, photo_link: string) => {
   const bodyJson = {
     name: name,
     email: email,
+    photo_link: photo_link,
     role: role,
     team: team,
     is_active: true,
@@ -83,6 +84,20 @@ export const createUser = async (name: string, email: string, role: string, team
   })
   const user: User = await response.json()
   return user
+}
+
+export const uploadPhoto = async (form: FormData) => {
+  const token = localStorage.getItem('access_token')
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/uploadphoto/`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+
+    body: form
+  })
+  return response.json()
 }
 
 export const getUser = async () => {
