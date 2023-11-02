@@ -23,6 +23,7 @@ import {
 import { useState } from "react";
 import { createUser, uploadPhoto } from '../../services/users';
 import React from 'react';
+import { verifyTokenFetch } from '../../services/token';
 
 interface propsI {
     isOpen: boolean
@@ -48,7 +49,7 @@ export function DrawerCadastro({ isOpen, onOpen, onClose }: propsI) {
     const handleClick = () => setShow(!show)
     const submit = async (e: any) => {
         e.preventDefault();
-
+        await verifyTokenFetch()
         try {
             if (selectedFile?.size !== 0 && selectedFile !== undefined) {
                 const formData = new FormData()
@@ -197,7 +198,7 @@ export const Cadastro = () => {
     const handleClick = () => setShow(!show)
     const submit = async (e: any) => {
         e.preventDefault();
-
+        await verifyTokenFetch()
         try {
             if (selectedFile?.size !== 0 && selectedFile !== undefined) {
                 const formData = new FormData()

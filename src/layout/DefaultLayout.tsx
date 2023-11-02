@@ -1,6 +1,5 @@
 
 import { Flex } from "@chakra-ui/react"
-import * as React from "react";
 import { Outlet } from "react-router-dom"
 import { Header } from "../components/Header"
 import { useEffect, useState } from "react"
@@ -33,6 +32,7 @@ export default function DefaultLayout() {
 
         socket.onclose = (event) => {
             console.log('Conexão WebSocket fechada:', event);
+            
         };
 
         setSocket(socket);

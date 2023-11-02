@@ -4,6 +4,7 @@ import { getProcessById } from "../services/process";
 import Process from "../models/Process";
 import {
     Box,
+    Card,
     Center,
     Flex,
     useDisclosure
@@ -15,6 +16,8 @@ import { ModalEtapaForm } from "../components/Modal/ModalEtapaForm";
 import { EtapaDrawer } from "../components/Drawer/EtapaDrawer";
 
 import { ProcessDrawer } from "../components/Drawer/ProcessDrawer";
+import { CardStepShowProcess } from "../components/Card/cardStepShowProcess";
+import ProgressBar from "../components/ProgressBar";
 
 
 export const ShowProcess = () => {
@@ -24,8 +27,8 @@ export const ShowProcess = () => {
     const [steps, setSteps] = useState(new Array<Step>())
     const [step, setStep] = useState(new Step())
     const [role] = useState(localStorage.getItem('cargo'))
-    const [displayOpen, setDisplayOpen] = useState('none')
-    const [displayTabs, setDisplayTabs] = useState('flex')
+    const [displayOpen, setDisplayOpen] = useState('flex')
+    const [displayTabs, setDisplayTabs] = useState('none')
 
 
     useEffect(() => {
@@ -94,12 +97,22 @@ export const ShowProcess = () => {
                                 onOpen()
                             }
 
-                            return (<CardStep step={step} onClick={showInfos} key={step.id} />)
+                            return (<CardStepShowProcess step={step} onClick={showInfos} key={step.id} />)
                         })}
                         {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
-                            <CardBase width="242px" height="270px" borderRadius="0.4rem" bgColor="#414243" opacity={'0.9'}>
+                            <Card  w={'15rem'}
+                            maxW={'15rem'}
+                            h={'22rem'}
+                            maxHeight={'22rem'}
+                            borderRadius={'0.5rem'}
+                            borderTopRadius={'7.5rem'} 
+                            bgColor="#414243" 
+                            opacity={'0.9'}
+                            verticalAlign={'center'}
+                            justify={'center'}
+                            >
                                 <Box padding='0' width='100%' height='100%' >
-                                    <Center margin='45% auto'>
+                                    <Center margin='65% auto'>
 
                                         <ModalEtapaForm
                                             sizeIcon="3rem"
@@ -113,7 +126,7 @@ export const ShowProcess = () => {
 
                                     </Center>
                                 </Box>
-                            </CardBase>}
+                            </Card>}
                     </Flex>
                 </Box>
                 <EtapaDrawer isOpen={isOpen} onClose={onClose} setStep={setStep} step={step} steps={steps} setSteps={setSteps} />

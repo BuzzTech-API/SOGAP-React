@@ -84,7 +84,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                 </Button>
 
             </Box>
-            <Box width={widthBox} h={'100%'} display={displayTabs} flexDir={'column'}  boxShadow={'4px 0 4px 0 rgba(0,0,0,0.25)'}>
+            <Box width={widthBox} minH={'100%'} h={'100%'} display={displayTabs} flexDir={'column'}  boxShadow={'4px 0 4px 0 rgba(0,0,0,0.25)'}>
                 <CloseButton
                     m={'0.5rem 0.1rem'}
                     bg={'#292A2D'}
@@ -96,7 +96,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                     }}
                     as={Button}
                 />
-                <Tabs height="52.6rem" variant="enclosed" width={widthPanel} isManual isFitted textColor={'white'} alignSelf="stretch" boxShadow={'4px 0 4px 0 rgba(0,0,0,0.25)'}>
+                <Tabs height="52.6rem" variant="enclosed" width={widthPanel} isManual isFitted textColor={'white'} alignSelf="stretch">
                     <TabList width={widthPanel}>
                         <Tab>Dados</Tab>
                         <Tab>Responsável</Tab>

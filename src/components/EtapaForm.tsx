@@ -17,6 +17,7 @@ import { createUserStep, getAllUsers } from '../services/users';
 import Step from '../models/Steps';
 import { createStep } from '../services/steps';
 import { StepUser } from '../interfaces/stepInterface';
+import { verifyTokenFetch } from '../services/token';
 
 interface EtapaFormI {
   steps: Array<Step>;
@@ -57,7 +58,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
   //Função para submeter os dados ao servidor BackEnd
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+    await verifyTokenFetch()
     const newStep = await createStep(name, endingDate, endingDate, processId, objective, priority, steps.length + 1)
 
     if (newStep !== null) {
@@ -90,7 +91,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
   };
   useEffect(() => {
     (async () => {
-      
+      await verifyTokenFetch()
       const listOfUsers = await getAllUsers()
       if (listOfUsers) {
         setUsersList(listOfUsers)

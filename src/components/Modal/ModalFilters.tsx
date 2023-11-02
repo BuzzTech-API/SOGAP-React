@@ -5,6 +5,7 @@ import Process from "../../models/Process"
 import { getMyRelatedData } from "../../services/users"
 import Step from "../../models/Steps"
 import RequestForEvidence from "../../models/RequestForEvidence"
+import { verifyTokenFetch } from "../../services/token"
 
 interface FilterSettings {
     setProcess?: React.Dispatch<React.SetStateAction<Process[]>>
@@ -27,7 +28,7 @@ export const ModalFilter = ({ setProcess, processes, setSteps, steps, setRequest
 
     useEffect(() => {
         (async () => {
-            
+            await verifyTokenFetch()
             const userContent = await getMyRelatedData()
 
             if (userContent && setProcess) {

@@ -1,4 +1,4 @@
-import { AccordionItem, AccordionButton, AccordionPanel, VStack, Box, Text, Button, Menu, MenuButton, MenuItem, MenuList, useDisclosure } from "@chakra-ui/react";
+import { AccordionItem, AccordionButton, AccordionPanel, VStack, Box, Text, Button, Menu, MenuButton, MenuItem, MenuList, useDisclosure, useToast, Accordion, AccordionIcon } from "@chakra-ui/react";
 import RequestForEvidence from "../models/RequestForEvidence";
 import { getUser, getUserById } from "../services/users";
 import User from "../models/User";
@@ -7,11 +7,12 @@ import { SetStateAction, useEffect, useState } from "react";
 
 import { formatDateToBrasil } from "../services/formatDate";
 import { validateEvidence } from "../services/requestEvidence";
-import { ViewRequest } from "./Modal/ViewRequest";
+import { AddEvidence } from "./Modal/AddEvidence";
 import { BtnDeleteEvidencia } from "./BtnDeleteEvidencia";
 import { ModalUpdateRequestEvidence } from "./Modal/ModalEditarRequisiçãoEvidencia";
 import Step from "../models/Steps";
 import { ModalInvalidarEvidencia } from "./Modal/ModalInvalidarEvidencia";
+import { verifyTokenFetch } from "../services/token";
 
 interface AccordionI {
   requestForEvidenceI: RequestForEvidence,
@@ -26,10 +27,11 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
   const [requestForEvidence, setRequestForEvidence] = useState(requestForEvidenceI)
   const [is_validated, setIs_validated] = useState(requestForEvidence.is_validated)
   const [myId, setMyId] = useState(0)
+  const toast = useToast()
   const role = localStorage.getItem('cargo')
   useEffect(() => {
     (async () => {
-
+      await verifyTokenFetch()
       const data: User = await getUserById(requestForEvidence.user_id)
       const me: User = await getUser()
       setMyId(me.id)
@@ -39,8 +41,12 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
   }, [requestForEvidence.user_id])
 
   const valitadeEvidenceAction = async () => {
-
-    await validateEvidence(requestForEvidence.id)
+    toast.promise(validateEvidence(requestForEvidence.id), {
+      success: { title: 'Promise resolved', description: 'Looks great' },
+      error: { title: 'Promise rejected', description: 'Something wrong' },
+      loading: { title: 'Promise pending', description: 'Please wait' },
+    }
+    )
     requestForEvidence.is_validated = true
     setIs_validated(requestForEvidence.is_validated)
   }
@@ -141,7 +147,7 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
               href={requestForEvidence.evidences[0].link}
               target="_blank"
               rel="noreferrer"
-            >{requestForEvidence.evidences[0].link}</a>
+            >Link</a>
 
             </Text>
           </Box>
@@ -175,9 +181,45 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
           >
             Evidência Validada
           </Text>)}
+          <Accordion allowToggle>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex='1' textAlign='left'>
+                    Evidencias
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                commodo consequat.
+              </AccordionPanel>
+            </AccordionItem>
+
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex='1' textAlign='left'>
+                    Section 2 title
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                commodo consequat.
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
           {is_validated === false &&
             requestForEvidence.evidences.length !== 0 &&
             requestForEvidence.evidences !== undefined &&
+            requestForEvidence.evidences[0].validation !== undefined &&
             role !== null && (role === 'Administrador' || role === 'Gerente' || role === 'Lider') &&
             (<Menu>
               <MenuButton as={Button} bgColor={'#29784E'} color={'#FFF'} variant="solid" size="md">
@@ -346,7 +388,7 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
               <MenuList bg={'#58595B'}>
                 {role !== null && role !== 'Colaborador' && requestForEvidence.user_id === myId &&
                   <MenuItem bg={'#58595B'}>
-                    <ViewRequest request={requestForEvidence} setRequestForEvidence={setRequestForEvidence} step={step} setStep={setStep} />
+                    <AddEvidence request={requestForEvidence} setRequestForEvidence={setRequestForEvidence} step={step} setStep={setStep} />
                   </MenuItem>}
                 <MenuItem bg={'#58595B'}>
                   <BtnDeleteEvidencia evidencia={requestForEvidence} setRequests={setRequests} setStep={setStep} step={step} />
@@ -364,7 +406,7 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
               </MenuButton>
               <MenuList bg={'#58595B'}>
                 <MenuItem bg={'#58595B'}>
-                  <ViewRequest request={requestForEvidence} setRequestForEvidence={setRequestForEvidence} step={step} setStep={setStep} />
+                  <AddEvidence request={requestForEvidence} setRequestForEvidence={setRequestForEvidence} step={step} setStep={setStep} />
                 </MenuItem>
               </MenuList>
             </Menu>

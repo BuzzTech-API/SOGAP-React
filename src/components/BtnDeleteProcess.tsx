@@ -5,6 +5,7 @@ import { ModalGeneric } from "./Modal/Modal";
 import { deleteProcess } from "../services/process";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { verifyTokenFetch } from "../services/token";
 
 interface DeleteProcessInterface {
     process: Process,
@@ -20,7 +21,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         
-
+        await verifyTokenFetch()
         try {
             const response = await deleteProcess(process.id, false)
             if (response) {

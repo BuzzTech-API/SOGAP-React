@@ -10,9 +10,10 @@ import {
     ModalOverlay, 
     Textarea
 } from "@chakra-ui/react"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSocket } from "../../layout/DefaultLayout";
 import RequestForEvidence from "../../models/RequestForEvidence";
+import Validation from "../../models/Validation";
 interface PropsInvalidar{
     process_id: number,
     isOpen: boolean,
@@ -25,8 +26,33 @@ export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestFor
 
     const [reason, setReason] = useState('')
     const {socket} = useSocket()
+
+    useEffect(() => {
+        if (socket) {
+            socket.onmessage =(event)=>{
+                const validation = new Validation(
+                    event.data.validation.id,
+                    event.data.validation.evidence_id,
+                    event.data.validation.reason,
+                    event.data.validation.user_id,
+                    event.data.validation.is_validated
+                )
+                
+            }
+            
+        }
+
+    
+      return () => {
+        
+      }
+    }, [])
+    
+
+
     const submit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        
         const lastEvidenceIndex = requestForEvidence.evidences.length -1
         if (socket) {
                 if (lastEvidenceIndex >=0) {
@@ -35,7 +61,7 @@ export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestFor
                     data: {
                         process_id: process_id,
                         step_id: step_id,
-                        evidece_id: requestForEvidence.evidences[lastEvidenceIndex].id,
+                        evidence_id: requestForEvidence.evidences[lastEvidenceIndex].id,
                         request_for_evidence_id: requestForEvidence.id,
                         reason: reason,
                         sender: myId

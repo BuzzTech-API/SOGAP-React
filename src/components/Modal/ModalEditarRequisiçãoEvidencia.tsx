@@ -8,6 +8,7 @@ import { formatData } from "../../services/formatDate"
 import { UpdateRequestEvidenceInterface } from "../../interfaces/requestEvidenceInterface"
 import { updateRequestEvidence } from "../../services/requestEvidence"
 import Step from "../../models/Steps"
+import { verifyTokenFetch } from "../../services/token"
 
 interface UpdateRequestEvidence {
     requestEvidence: RequestForEvidence
@@ -24,7 +25,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
 
     useEffect(() => {
         (async () => {
-            
+            await verifyTokenFetch()
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
@@ -92,7 +93,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
     //Função para submeter os dados ao servidor BackEnd
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
+        await verifyTokenFetch()
 
         try {
 

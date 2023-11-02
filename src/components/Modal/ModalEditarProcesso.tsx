@@ -9,6 +9,7 @@ import { deleteUserProcess, getProcessById, updateProcess } from "../../services
 import { useParams } from "react-router-dom"
 import { formatData } from "../../services/formatDate"
 import { UpdateProcessInterface } from "../../interfaces/processInterface"
+import { verifyTokenFetch } from "../../services/token"
 
 interface props {
     process_id?: string
@@ -32,6 +33,7 @@ export const ModalUpdateProcess = (props: props) => {
     }
     useEffect(() => {
         (async () => {
+            await verifyTokenFetch()
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
@@ -107,7 +109,7 @@ export const ModalUpdateProcess = (props: props) => {
     //Função para submeter os dados ao servidor BackEnd
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
+        await verifyTokenFetch()
 
         try {
             if (!formData) { //Verificar

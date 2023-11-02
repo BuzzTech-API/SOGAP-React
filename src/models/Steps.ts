@@ -6,6 +6,7 @@ export default class Step {
     private _id!: number
     private _process_id!: number
     private _name!: string
+    private _status!: string
     private _order!: number
     private _objective!: string
     private _endingDate!: Date
@@ -20,6 +21,7 @@ export default class Step {
         id:number,
         process_id:number,
         name:string,
+        status:string,
         order:number,
         objective:string,
         endingDate:Date,
@@ -34,6 +36,7 @@ export default class Step {
         id?:number,
         process_id?:number,
         name?:string,
+        status?:string,
         order?:number,
         objective?:string,
         endingDate?:Date,
@@ -46,6 +49,7 @@ export default class Step {
         if( id!==undefined &&
             process_id!==undefined &&
             name!==undefined &&
+            status!==undefined &&
             order!==undefined &&
             objective!==undefined &&
             endingDate!==undefined &&
@@ -58,6 +62,7 @@ export default class Step {
                 this._id = id
                 this._process_id = process_id
                 this._name = name
+                this._status = status
                 this._order = order
                 this._objective = objective
                 this._endingDate = endingDate
@@ -134,5 +139,11 @@ export default class Step {
     }
     public set is_active(value: boolean) {
         this._is_active = value
+    }
+    public get status(): string {
+        return this._status
+    }
+    public set status(value: string) {
+        this._status = value
     }
 }

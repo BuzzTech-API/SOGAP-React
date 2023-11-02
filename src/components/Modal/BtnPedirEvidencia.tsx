@@ -8,6 +8,7 @@ import { ModalGeneric } from "./Modal";
 import { AddIcon } from "@chakra-ui/icons";
 import RequestForEvidence from "../../models/RequestForEvidence";
 import Step from "../../models/Steps";
+import { verifyTokenFetch } from "../../services/token";
 
 interface requestEvidence {
     step: Step,
@@ -51,6 +52,7 @@ export const ModalSolicitaEvidencia = ({ step, setStep, requests, setRequests }:
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         const deliveryDate = new Date()
         e.preventDefault();
+        await verifyTokenFetch()
         console.log(responsibleName);
         
         const newRequest = await createRequestEvidence(requiredDocument, description, step.id, Number.parseInt(responsibleName), evidenceValidationDate, deliveryDate)
@@ -66,6 +68,7 @@ export const ModalSolicitaEvidencia = ({ step, setStep, requests, setRequests }:
 
     useEffect(() => {
         (async () => {
+            await verifyTokenFetch()
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)

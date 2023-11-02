@@ -5,14 +5,14 @@ import { ModalUploadEvidence } from "../UploadEvidence"
 import { SetStateAction } from "react"
 import Step from "../../models/Steps"
 
-interface ViewRequestI {
+interface AddEvidenceI {
     request: RequestForEvidence,
     setRequestForEvidence: React.Dispatch<React.SetStateAction<RequestForEvidence>>
     step: Step,
     setStep: React.Dispatch<SetStateAction<Step>>,
 }
 
-export const ViewRequest: React.FC<ViewRequestI> = ({
+export const AddEvidence: React.FC<AddEvidenceI> = ({
     request, step, setRequestForEvidence, setStep
 }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()

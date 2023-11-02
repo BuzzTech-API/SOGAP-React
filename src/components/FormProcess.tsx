@@ -28,6 +28,7 @@ import User from "../models/User";
 import { createProcessUser, getAllUsers } from "../services/users";
 import { formatData } from "../services/formatDate";
 import Process from "../models/Process";
+import { verifyTokenFetch } from "../services/token";
 
 //Interface para manipulação dos dados
 export interface FormDataStructure {
@@ -56,7 +57,7 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
   const [responsibleList, setResponsibleList] = useState(new Array<User>())
   useEffect(() => {
     (async () => {
-      
+      await verifyTokenFetch()
       const listOfUsers = await getAllUsers()
       if (listOfUsers) {
         setUsersList(listOfUsers)
@@ -116,6 +117,7 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
 
   //Função para submeter os dados ao servidor BackEnd
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    await verifyTokenFetch()
     e.preventDefault();
     try {
       const response: Process = await sendFormData(formData);
