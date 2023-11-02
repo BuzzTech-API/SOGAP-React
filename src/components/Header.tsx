@@ -11,6 +11,8 @@ import {
     MenuItem,
     Spacer,
     useDisclosure,
+    Checkbox,
+    flexbox,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { IonicLogo } from './IonicLogo'
@@ -19,6 +21,7 @@ import { getUser } from '../services/users'
 import { disable2FA,  } from '../services/token'
 import { DrawerCadastro } from './Drawer/Cadastro'
 import TwoAuthModal from "../components/Modal/QrCodeModal"
+import { BellIcon } from '@chakra-ui/icons'
 
 
 
@@ -133,6 +136,35 @@ export const Header = () => {
                 </Link>
             </Flex>
             <Spacer />
+            <Menu>
+                <MenuButton
+                    as={Button}
+                        bg="transparent" 
+                        size="lg"
+                        width="3.5rem"
+                        height="3.5rem"
+                        marginRight={'2rem'}
+                        marginTop={'0.2rem'}
+                        padding={'0.5rem 1rem 0.7rem 0.5rem'}
+                    rightIcon={<BellIcon 
+                        width={'2.5rem'}
+                        height={'2.5rem'}
+                        margin={'0'}
+                        padding={'0'}
+                        color={"#FFFFFF"}
+                    /> } 
+                    >
+                    </MenuButton>
+                    <MenuList
+                        bg={'#58595B'}
+                    >
+                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 1 <Checkbox marginLeft={'4.7rem'}></Checkbox></MenuItem>
+                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 2 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
+                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 3 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
+                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 4 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
+                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 5 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
+                    </MenuList>
+                </Menu>
             <Flex
                 flexDirection={'row'}
                 width={['4rem', "15rem"]}
