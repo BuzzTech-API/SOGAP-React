@@ -24,7 +24,7 @@ export default function InformProcesso({ process }: processCardInterface) {
                 color='#54C5CE'
                 textAlign='center'
                 fontFamily='Poppins, sans-serif'
-                fontSize='25px'
+                fontSize='1.6em'
                 fontStyle='normal'
                 fontWeight='700'
                 lineHeight='normal'>
@@ -48,7 +48,7 @@ export default function InformProcesso({ process }: processCardInterface) {
                     <Text
                         color='#54C5CE'
                         fontFamily='Poppins, sans-serif'
-                        fontSize='21px'
+                        fontSize='1.4rem'
                         fontStyle='normal'
                         fontWeight='700'
                         lineHeight='normal'>
@@ -57,7 +57,7 @@ export default function InformProcesso({ process }: processCardInterface) {
                     <Text
                         color='#FFF'
                         fontFamily='Poppins, sans-serif'
-                        fontSize='18px'
+                        fontSize='1.1rem'
                         fontStyle='normal'
                         fontWeight='400'
                         lineHeight='normal'>
@@ -71,7 +71,7 @@ export default function InformProcesso({ process }: processCardInterface) {
                     <Text
                         color='#54C5CE'
                         fontFamily='Poppins, sans-serif'
-                        fontSize='21px'
+                        fontSize='1.4rem'
                         fontStyle='normal'
                         fontWeight='700'
                         lineHeight='normal'>
@@ -80,7 +80,7 @@ export default function InformProcesso({ process }: processCardInterface) {
                     <Text
                         color='#FFF'
                         fontFamily='Poppins, sans-serif'
-                        fontSize='18px'
+                        fontSize='1.1rem'
                         fontStyle='normal'
                         fontWeight='400'
                         lineHeight='normal'>
@@ -96,7 +96,7 @@ export default function InformProcesso({ process }: processCardInterface) {
                         <Text
                             color='#54C5CE'
                             fontFamily='Poppins, sans-serif'
-                            fontSize='21px'
+                            fontSize='1.4rem'
                             fontStyle='normal'
                             fontWeight='700'
                             lineHeight='normal'>
@@ -105,7 +105,7 @@ export default function InformProcesso({ process }: processCardInterface) {
                         <Text
                             color='#FFF'
                             fontFamily='Poppins, sans-serif'
-                            fontSize='18px'
+                            fontSize='1.1rem'
                             fontStyle='normal'
                             fontWeight='400'
                             lineHeight='normal'>
@@ -117,7 +117,7 @@ export default function InformProcesso({ process }: processCardInterface) {
                         <Text
                             color='#54C5CE'
                             fontFamily='Poppins, sans-serif'
-                            fontSize='21px'
+                            fontSize='1.4rem'
                             fontStyle='normal'
                             fontWeight='700'
                             lineHeight='normal'>
@@ -126,7 +126,7 @@ export default function InformProcesso({ process }: processCardInterface) {
                         <Text
                             color='#FFF'
                             fontFamily='Poppins, sans-serif'
-                            fontSize='18px'
+                            fontSize='1.1rem'
                             fontStyle='normal'
                             fontWeight='400'
                             lineHeight='normal'>
@@ -144,7 +144,7 @@ export default function InformProcesso({ process }: processCardInterface) {
                 <Text
                     color='white'
                     fontFamily='Poppins'
-                    fontSize='18px'
+                    fontSize='1.3rem'
                     fontWeight='400'
                     lineHeight='normal'
                     fontStyle='normal'>
