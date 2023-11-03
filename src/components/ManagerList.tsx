@@ -28,8 +28,8 @@ export const ManagerList = ({AllUsers}: ManagerListInterface) => {
             color="white"
             padding="6"
             borderRadius="md"
-            maxWidth={'400px'}
-            maxHeight={'500px'}
+            maxWidth={'21rem'}
+            maxHeight={'30rem'}
             boxShadow="base"
             opacity="0.9"
         >
@@ -65,7 +65,7 @@ export const ManagerList = ({AllUsers}: ManagerListInterface) => {
                 }}
                 
                 overflowY="scroll"
-                width={'100%'}
+                width={'21rem'}
             >
             
             {managers.map((manager) => (

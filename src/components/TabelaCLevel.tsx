@@ -14,9 +14,10 @@ interface propsTabela {
     setSortProcess: React.Dispatch<React.SetStateAction<Process[]>>,
     processes: Process[],
     setProcesses: React.Dispatch<React.SetStateAction<Process[]>>,
+    setProcess?: React.Dispatch<React.SetStateAction<Process>>,
 }
 
-export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, setProcesses }: propsTabela) => {
+export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, setProcesses, setProcess }: propsTabela) => {
     const [sortTitle, setSortTitle] = useState(false)
     const [sortLastUpdate, setSortLastUpdate] = useState(false)
     const [sortStatus, setSortStatus] = useState(false)
@@ -92,10 +93,11 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                             <UpDownIcon boxSize={5} mx={2} />
 
                         </Th>
-                        <Th textAlign="center" color={'#FFF'} key={4}>Ações</Th>
+                        {role !== null && role !== 'C-Level' && <Th textAlign="center" color={'#FFF'} key={4}>Ações</Th>}
 
                     </Tr>
                 </Thead>
+                {setProcess !== undefined ? 
                 <Tbody>
                     {sortProcess.map((process: Process) => {
                         let bgColorStatus = ''
@@ -107,11 +109,11 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                             bgColorStatus = '#00afff'
                         }
                         return (
-                            <Tr key={process.id}>
+                            <Tr key={process.id} onClick={()=>setProcess(process)}>
 
                                 <Td minWidth='30rem'>{process.title}</Td>
                                 <Td minWidth='20rem'><Flex flexDirection={'column'}>
-                <Text textColor={'#FFF'}>Etapas Concluídas 2/4</Text><ProgressBar process={process} /></Flex></Td>
+                                    <Text textColor={'#FFF'}>Etapas Concluídas 2/4</Text><ProgressBar process={process} /></Flex></Td>
                                 <Td textAlign="center">{formatDateToBrasil(process.endingDate.toString())}</Td>
                                 <Td><Box
                                     width={'9rem'}
@@ -128,12 +130,12 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                                         color="#FFFFFF"
                                         textAlign="center"
                                         paddingTop={'0.2rem'}
-                                        
+
                                     >
                                         {process.status}
                                     </Text>
                                 </Box></Td>
-                                <Td
+                                {role !== null && role !== 'C-Level' && <Td
                                     display={'flex'}
                                     gap={'0.3rem'}
                                     h={'6.3rem'}
@@ -142,11 +144,62 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                                     {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') && <ModalUpdateProcess process_id={process.id.toString()} processes={processes} setProcesses={setProcesses} />}
                                     {role !== null && (role === 'Gerente' || role === 'Administrador') && <BtnDeleteProcess process={process} processes={processes} setProcess={setProcesses} />}
                                     <Link to={`/process/${process.id}`}><Button bg='#53C4CD' variant='solid' textColor='white'>Visualizar</Button></Link>
-                                </Td>
+                                </Td>}
                             </Tr>
                         )
                     })}
-                </Tbody>
+                </Tbody> : 
+                <Tbody>
+                    {sortProcess.map((process: Process) => {
+                        let bgColorStatus = ''
+                        if (process.status === 'Concluído') {
+                            bgColorStatus = '#159900'
+                        } else if (process.status === 'Iniciado') {
+                            bgColorStatus = '#e2ce14'
+                        } else {
+                            bgColorStatus = '#00afff'
+                        }
+                        return (
+                            <Tr key={process.id}>
+
+                                <Td minWidth='30rem'>{process.title}</Td>
+                                <Td minWidth='20rem'><Flex flexDirection={'column'}>
+                                    <Text textColor={'#FFF'}>Etapas Concluídas 2/4</Text><ProgressBar process={process} /></Flex></Td>
+                                <Td textAlign="center">{formatDateToBrasil(process.endingDate.toString())}</Td>
+                                <Td><Box
+                                    width={'9rem'}
+                                    h={'2rem'}
+                                    bg={bgColorStatus}
+                                    borderRadius={'0.2rem'}
+                                    alignItems={'center'}
+                                    padding={'0.2rem'}
+                                >
+                                    <Text
+                                        fontFamily="Poppins"
+                                        fontWeight="bold"
+                                        fontSize="1rem"
+                                        color="#FFFFFF"
+                                        textAlign="center"
+                                        paddingTop={'0.2rem'}
+
+                                    >
+                                        {process.status}
+                                    </Text>
+                                </Box></Td>
+                                {role !== null && role !== 'C-Level' && <Td
+                                    display={'flex'}
+                                    gap={'0.3rem'}
+                                    h={'6.3rem'}
+                                    alignItems={'center'}
+                                >
+                                    {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') && <ModalUpdateProcess process_id={process.id.toString()} processes={processes} setProcesses={setProcesses} />}
+                                    {role !== null && (role === 'Gerente' || role === 'Administrador') && <BtnDeleteProcess process={process} processes={processes} setProcess={setProcesses} />}
+                                    <Link to={`/process/${process.id}`}><Button bg='#53C4CD' variant='solid' textColor='white'>Visualizar</Button></Link>
+                                </Td>}
+                            </Tr>
+                        )
+                    })}
+                </Tbody>}
             </Table>
         </TableContainer>
     )

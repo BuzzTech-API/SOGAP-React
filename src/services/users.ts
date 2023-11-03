@@ -88,7 +88,7 @@ export const createUser = async (name: string, email: string, role: string, team
 
 export const uploadPhoto = async (form: FormData) => {
   const token = localStorage.getItem('access_token')
-  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/uploadphoto/`, {
+  const response = await fetch(`http://${window.location.hostname}:8000/uploadphoto/`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

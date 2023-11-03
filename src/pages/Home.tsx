@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Box, Button, Text, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Spacer, Input } from "@chakra-ui/react"
 import Process from "../models/Process"
 import FormP from "../components/FormProcess"
-import { Link } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 import { formatDateToBrasil } from "../services/formatDate"
 import { BtnDeleteProcess } from "../components/BtnDeleteProcess"
 import { ModalUpdateProcess } from "../components/Modal/ModalEditarProcesso"
@@ -86,6 +86,9 @@ export const Home = () => {
 
     return (<Flex flexDirection={'column'}>
 
+        {role === 'C-Level' && (
+            <Navigate to="/clevel" replace={true} />
+        )}
         <Flex width={['100%']} maxWidth={'100.125rem'} alignSelf={'center'} marginTop='1rem' key={1}>
             <Text
                 fontFamily={'Poppins'}
@@ -123,13 +126,13 @@ export const Home = () => {
             overflowY={'auto'} >
             {requestForEvidence.map((requestForEvidence: RequestForEvidence) => {
                 if (requestForEvidence.is_validated) {
-                    return 
+                    return
                 }
                 return <Link to={''}>
-                <CardRequestEvidence key={'request:' + requestForEvidence.id}
-                    requestEvidence={requestForEvidence}
+                    <CardRequestEvidence key={'request:' + requestForEvidence.id}
+                        requestEvidence={requestForEvidence}
                     />
-                    </Link>
+                </Link>
             })}
             {filteredProcesses.map((process: Process) => {
                 return <Link to={`/process/${process.id}`} key={process.id}><CardProcessoPrazo key={"process:" + process.id}
@@ -265,15 +268,15 @@ export const Home = () => {
 
             </Flex>
             {role !== null &&
-            
+
                 <TabelaCLevel
                     processes={processes}
                     setProcesses={setProcesses}
                     sortProcess={sortProcess}
                     setSortProcess={setSortProcess}
                     role={role} />
-                   
-                    }
+
+            }
         </Flex>
     </Flex>
     )

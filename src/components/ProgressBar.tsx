@@ -83,7 +83,7 @@ function ProgressBar({ process }: propsBar) {
     
     
     
-  }, [breakpoint])
+  }, [])
   
   const data = {
     labels: [''],
@@ -100,7 +100,7 @@ function ProgressBar({ process }: propsBar) {
   };
 
 
-  return <Bar redraw={true} options={options} data={data} width={'30%'} height={'5%'} key={process.id} />;
+  return <Bar options={options} data={data} width={'30%'} height={'5%'} key={process.id} />;
 }
 
 export default ProgressBar;

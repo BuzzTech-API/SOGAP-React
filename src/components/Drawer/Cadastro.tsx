@@ -18,6 +18,9 @@ import {
     DrawerHeader,
     DrawerOverlay,
     Stack,
+    useDisclosure,
+    MenuItem,
+    useToast,
 
 } from '@chakra-ui/react'
 import { useState } from "react";
@@ -25,14 +28,9 @@ import { createUser, uploadPhoto } from '../../services/users';
 import React from 'react';
 import { verifyTokenFetch } from '../../services/token';
 
-interface propsI {
-    isOpen: boolean
-    onOpen: () => void
-    onClose: () => void
 
-}
-export function DrawerCadastro({ isOpen, onOpen, onClose }: propsI) {
-
+export function DrawerCadastro() {
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const [show, setShow] = useState(false)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -41,7 +39,7 @@ export function DrawerCadastro({ isOpen, onOpen, onClose }: propsI) {
     const [senha, setSenha] = useState('')
     const [selectedFile, setSelectedFile] = useState<File | undefined>()
     const [link, setLink] = useState('')
-
+    const toast = useToast()
     const handleUploadClick = (e: any) => {
         setSelectedFile(e.target.files[0])
     }
@@ -54,7 +52,13 @@ export function DrawerCadastro({ isOpen, onOpen, onClose }: propsI) {
             if (selectedFile?.size !== 0 && selectedFile !== undefined) {
                 const formData = new FormData()
                 formData.append('file', selectedFile)
-                const photoLink = await uploadPhoto(formData)
+                const promise = uploadPhoto(formData)
+                toast.promise(promise, {
+                    success: { title: 'Usuário Cadastrado', description: 'Usuário cadastrado com sucesso' },
+                    error: { title: 'Promise rejected', description: 'Something wrong' },
+                    loading: { title: 'Cadastrando Usuário', description: 'Por favor, espere' },
+                })
+                const photoLink = await promise
                 setLink(photoLink)
 
 
@@ -79,6 +83,13 @@ export function DrawerCadastro({ isOpen, onOpen, onClose }: propsI) {
 
     return (
         <>
+            <MenuItem 
+            bg={'#58595B'}
+                _hover={{ background: '#FFF', color: '#58595B' }} 
+                color={'#FFF'} 
+                onClick={onOpen} 
+                width={'100%'} 
+                as={Button}>Cadastrar Usuários</MenuItem>
             <Drawer
                 isOpen={isOpen}
                 placement='right'

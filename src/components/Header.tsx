@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom'
 import { IonicLogo } from './IonicLogo'
 import { useEffect, useState } from 'react'
 import { getUser } from '../services/users'
-import { disable2FA,  } from '../services/token'
+import { disable2FA, } from '../services/token'
 import { DrawerCadastro } from './Drawer/Cadastro'
 import TwoAuthModal from "../components/Modal/QrCodeModal"
 import { BellIcon } from '@chakra-ui/icons'
@@ -98,11 +98,10 @@ export const Header = () => {
                             </Icon>
                         } >
                     </MenuButton>
-                    <MenuList 
-                    color={'#FFF'} bg={'#58595B'} padding={'1rem'}>
-                        {role === 'Administrador' && 
-                        <MenuItem bg={'#58595B'} 
-                        _hover={{ background: '#FFF', color: '#58595B' }} color={'#FFF'} onClick={onOpen} width={'100%'} as={Button}>Cadastrar Usuários<DrawerCadastro isOpen={isOpen} onOpen={onOpen} onClose={onClose} /></MenuItem>}
+                    <MenuList
+                        color={'#FFF'} bg={'#58595B'} padding={'1rem'}>
+                        {role === 'Administrador' && <DrawerCadastro />
+                            }
                         <Link to={'/'}>
                             <MenuItem
                                 bg={'#58595B'}
@@ -114,17 +113,17 @@ export const Header = () => {
                                 Meus Processos
                             </MenuItem>
                         </Link>
-                        <MenuItem 
-                        as={Button}
-                        bg={'#58595B'}
-                        color={'#FFF'}
-                        width={'100%'}
-                        _hover={{ background: '#FFF', color: '#58595B' }}
-                        onClick={() => {
-                            localStorage.removeItem('access_token')
-                            localStorage.removeItem('refresh_token')
-                            window.location.reload();
-                        }}
+                        <MenuItem
+                            as={Button}
+                            bg={'#58595B'}
+                            color={'#FFF'}
+                            width={'100%'}
+                            _hover={{ background: '#FFF', color: '#58595B' }}
+                            onClick={() => {
+                                localStorage.removeItem('access_token')
+                                localStorage.removeItem('refresh_token')
+                                window.location.reload();
+                            }}
                         >
                             Sair
                         </MenuItem>
@@ -139,40 +138,47 @@ export const Header = () => {
             <Menu>
                 <MenuButton
                     as={Button}
-                        bg="transparent" 
-                        size="lg"
-                        width="3.5rem"
-                        height="3.5rem"
-                        marginRight={'2rem'}
-                        marginTop={'0.2rem'}
-                        padding={'0.5rem 1rem 0.7rem 0.5rem'}
-                    rightIcon={<BellIcon 
+                    bg="transparent"
+                    size="lg"
+                    width="3.5rem"
+                    height="3.5rem"
+                    marginRight={['0', '0', '2rem']}
+                    marginTop={'0.2rem'}
+                    marginLeft={['1rem', '0']}
+                    padding={'0.5rem 1rem 0.7rem 0.5rem'}
+                    rightIcon={<BellIcon
                         width={'2.5rem'}
                         height={'2.5rem'}
                         margin={'0'}
                         padding={'0'}
                         color={"#FFFFFF"}
-                    /> } 
-                    >
-                    </MenuButton>
-                    <MenuList
-                        bg={'#58595B'}
-                    >
-                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 1 <Checkbox marginLeft={'4.7rem'}></Checkbox></MenuItem>
-                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 2 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
-                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 3 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
-                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 4 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
-                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 5 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
-                    </MenuList>
-                </Menu>
+                    />}
+                >
+                </MenuButton>
+                <MenuList
+                    bg={'#58595B'}
+                >
+                    <MenuItem bg={'#58595B'} color={'#FFFFFF'}>
+                        <Box width={'14rem'} h={'6rem'} overflowY={'auto'}><Text>Titulo bem bolado</Text>
+                            <Text>
+
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut velit augue. Duis sagittis fermentum suscipit. Cras facilisis neque non nisl condimentum, sit amet iaculis nisi maximus. Nulla vestibulum cursus aliquet. Proin at erat sed dui aliquet pulvinar ut sed massa. Vivamus et ipsum dui. Vestibulum sit amet arcu ac felis egestas iaculis. Donec ornare feugiat cursus. Cras eget nunc condimentum, elementum sapien hendrerit, pharetra enim. Nunc ut elit sit amet sem accumsan dictum. Phasellus in dignissim dui, a ullamcorper felis. Fusce vestibulum urna sit amet nulla hendrerit, et dapibus eros ultricies. Nunc vel nunc non mi euismod pharetra non non nunc. Donec congue tincidunt lectus ac consectetur. Maecenas enim ipsum, scelerisque consectetur tincidunt in, bibendum ultrices ex. Sed finibus, odio vel malesuada placerat, velit mauris sollicitudin metus, nec posuere ante ligula et urna. </Text>
+                            <Checkbox marginLeft={'4.7rem'}></Checkbox></Box>
+                    </MenuItem>
+                    <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 2 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
+                    <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 3 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
+                    <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 4 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
+                    <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 5 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
+                </MenuList>
+            </Menu>
             <Flex
                 flexDirection={'row'}
-                width={['4rem', "15rem"]}
+                width={['4rem', '4rem', "15rem"]}
                 marginLeft={0}
             >
                 <Box flexDirection={'column'}
                     marginRight={['0', '0.2rem']}
-                    display={['none', 'flex']}
+                    display={['none', 'none', 'flex']}
                 >
 
                     <Text
@@ -200,6 +206,7 @@ export const Header = () => {
                     <MenuButton
                         width={['2.5rem', "3.5rem"]}
                         height={['2.5rem', "3.5rem"]}
+                        display={['none', 'inherit']}
                     >
                         <Avatar
                             name={name}
@@ -207,7 +214,7 @@ export const Header = () => {
                             size="xs"
                             width={['2.5rem', "3.5rem"]}
                             height={['2.5rem', "3.5rem"]}
-                            marginLeft={'1rem'}
+                            marginLeft={'0.5rem'}
 
                         >
                         </Avatar>

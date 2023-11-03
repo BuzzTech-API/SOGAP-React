@@ -186,6 +186,9 @@ export const verifyCode = async (verificationCode: string) => {
 
       if (response.status === 200) {
         const data = await response.json()
+        const cookie = new Cookies()
+        cookie.set('access_token', data.access_token,{sameSite:'lax'})
+        cookie.set('refresh_token', data.refresh_token,{sameSite:'lax'})
         localStorage.setItem('access_token', data.access_token)
         localStorage.setItem('refresh_token', data.refresh_token)
         localStorage.removeItem('login_token');

@@ -12,7 +12,7 @@ export default function InformProcesso({ process }: processCardInterface) {
     return (
         <Flex
             w='65rem'
-            h='38rem'
+            h='30rem'
             background='linear-gradient(109deg, #58595B 0%, rgba(88, 89, 91, 0.00) 100%)'
             boxShadow='5px 4px 4px 0px rgba(0, 0, 0, 0.50)'
             borderRadius='10px'
@@ -34,7 +34,7 @@ export default function InformProcesso({ process }: processCardInterface) {
 
             <Flex
                 w='60rem'
-                h='25rem'
+                h='20rem'
                 background='linear-gradient(279deg, #929292 -63.4%, rgba(146, 146, 146, 0.00) 106.18%)'
                 boxShadow='3px 4px 4px 0px rgba(0, 0, 0, 0.25)'
                 borderRadius='10px'
