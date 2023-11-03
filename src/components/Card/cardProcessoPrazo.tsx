@@ -10,10 +10,14 @@ interface processCardInterface {
 
 
 export const CardProcessoPrazo = ({ process }: processCardInterface) => {
+    let fontColor: string;
+    fontColor = '#ffffff'
+    const daysLeft = checkDeadline(process.endingDate);
 
     const evento = () => {
         console.log('Evento card:' + process.title);
     }
+
     let bgColor: string;
     if (process.priority === 'Alta') {
         bgColor = '#ff1a1a'
@@ -22,6 +26,16 @@ export const CardProcessoPrazo = ({ process }: processCardInterface) => {
     } else {
         bgColor = '#00750C'
     }
+    let bgDayColor: string;
+    if (daysLeft > 30) {
+        bgDayColor = '#00A3FF';
+    } else if (daysLeft > 15) {
+        bgDayColor = '#E2CE14';
+        //fontColor = '#000000';
+    } else {
+        bgDayColor = '#FF2323';
+    }
+
     return <Card background="#58595B" onClick={evento} boxShadow="base" opacity="0.9" w={'15.1rem'} h={'18rem'} maxHeight={'17rem'} borderRadius={'0.5rem'}>
         <Stack justify="flex-start" align="center" spacing="23px" opacity={'0.9'}>
             <Stack
@@ -43,7 +57,7 @@ export const CardProcessoPrazo = ({ process }: processCardInterface) => {
                     textAlign="center"
                     paddingBottom='1rem'
                 >
-                    Processo
+                    Processo #{process.id}
                 </Text>
                 <Text
                     //Decrição
@@ -52,16 +66,44 @@ export const CardProcessoPrazo = ({ process }: processCardInterface) => {
                     fontWeight="medium"
                     fontSize="0.9rem"
                     color="#FFFFFF"
-                    minHeight="6rem"
+                    minHeight="1rem"
                     textAlign="center"
                 >
                     {process.title}
                 </Text>
                 <Text
-
+                    //Prioridade
+                    fontFamily="Poppins"
+                    lineHeight="1.43"
+                    fontWeight="bold"
+                    fontSize="0.9rem"
+                    color="#FFFFFF"
+                    textAlign="center"
+                >
+                    Prioridade
+                </Text>
+                <div style={{
+                    border: '1px solid #111111',
+                    borderRadius: '0.5rem',
+                    backgroundColor: bgColor,
+                    width: '120%',
+                    height: '12%' }}> 
+                <Text
                     fontFamily="Poppins"
                     lineHeight="1.43"
                     fontWeight="medium"
+                    fontSize="0.9rem"
+                    color="#FFFFFF"
+                    textAlign="center"
+                >
+                    {process.priority}
+                </Text>
+                </div>
+                <Text
+
+                    fontFamily="Poppins"
+                    lineHeight="1.43"
+                    fontWeight="bold"
                     fontSize="0.9rem"
                     color="#FFFFFF"
                     textAlign="center"
@@ -70,13 +112,12 @@ export const CardProcessoPrazo = ({ process }: processCardInterface) => {
                 </Text>
                 <Text
                     fontFamily="Poppins"
-                    lineHeight="1.5"
-                    fontWeight="bold"
+                    lineHeight="0"
+                    fontWeight="medium"
                     fontSize="1rem"
                     color="#FFFFFF"
                     textAlign="center"
                 >
-
                     {formatDateToBrasil(process.endingDate.toString())}
                 </Text>
             </Stack>
@@ -91,7 +132,7 @@ export const CardProcessoPrazo = ({ process }: processCardInterface) => {
                 align="center"
                 spacing="10px"
                 overflow="hidden"
-                background={bgColor}
+                background={bgDayColor}
                 margin={0}
                 opacity="0.9"
                 width={'15.1rem'}
@@ -101,12 +142,12 @@ export const CardProcessoPrazo = ({ process }: processCardInterface) => {
                     lineHeight="1.5rem"
                     fontWeight="bold"
                     fontSize="18px"
-                    color="#FFFFFF"
+                    color={fontColor}
                     maxHeight='1.5rem'
                     minWidth='14rem'
                     textAlign="center"
                 >
-                    {checkDeadline(process.endingDate)} Dias Restantes
+                    {daysLeft} Dias Restantes
                 </Text>
             </Stack>
         </Stack>
