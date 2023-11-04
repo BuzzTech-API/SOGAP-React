@@ -1,3 +1,4 @@
+import Cookies from "universal-cookie";
 import { MyRelatedData } from "../interfaces/relatedDataInterface";
 import User from "../models/User";
 
@@ -115,6 +116,8 @@ export const getUser = async () => {
       if (response.status === 200) {
         const data = await response.json()
         localStorage.setItem('cargo', data.role)
+        const cookie = new Cookies()
+        cookie.set('myId',data.id,{sameSite:'lax'})
         return data
       }
     } catch (error) {

@@ -75,7 +75,7 @@ export const CLevel = () => {
                     </TabPanel>
                 </TabPanels>
             </Tabs>
-            <Flex flexDir={'row'} gap={'1rem'} alignSelf={'center'} display={displayBox}>
+            <Flex flexDir={'row'} gap={'1rem'} alignSelf={'center'} display={displayBox} w={'100%'} overflowX={'auto'}>
                 <ManagerList AllUsers={users} />
                 <InformProcesso process={process} />
                 <Box

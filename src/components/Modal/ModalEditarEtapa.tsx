@@ -168,7 +168,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                 type="submit" onClick={onOpen}
                 margin={'0.5rem'}
             >Editar</Button>
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem">
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="lg">
                 <form onSubmit={handleSubmit}>
                     <FormLabel textAlign="center" fontSize="large" color='white'><strong>Edição de Etapa</strong></FormLabel>
 

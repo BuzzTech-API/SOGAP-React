@@ -4,16 +4,19 @@ import RequestForEvidence from "../../models/RequestForEvidence"
 import { ModalUploadEvidence } from "../UploadEvidence"
 import { SetStateAction } from "react"
 import Step from "../../models/Steps"
+import Evidence from "../../models/Evidence"
 
 interface AddEvidenceI {
     request: RequestForEvidence,
     setRequestForEvidence: React.Dispatch<React.SetStateAction<RequestForEvidence>>
     step: Step,
     setStep: React.Dispatch<SetStateAction<Step>>,
+    evidences: Evidence[]
+    setEvidences: React.Dispatch<SetStateAction<Evidence[]>>
 }
 
 export const AddEvidence: React.FC<AddEvidenceI> = ({
-    request, step, setRequestForEvidence, setStep
+    request, step, setRequestForEvidence, setStep, evidences, setEvidences
 }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -52,7 +55,15 @@ export const AddEvidence: React.FC<AddEvidenceI> = ({
                     <Text  display={'flex'} fontSize={'1.3rem'}>{request.requiredDocument}</Text>
                 </Center>
                 <Box>
-                    <ModalUploadEvidence requestForEvidence={request} setRequestForEvidence={setRequestForEvidence} step={step} setStep={setStep}  />
+                    <ModalUploadEvidence 
+                    requestForEvidence={request} 
+                    onClose={onClose}
+                    setRequestForEvidence={setRequestForEvidence} 
+                    step={step} 
+                    setStep={setStep}  
+                    evidences={evidences}
+                    setEvidences={setEvidences}
+                    />
                 </Box>
             </ModalGeneric>
         </>

@@ -158,13 +158,6 @@ export const Header = () => {
                 <MenuList
                     bg={'#58595B'}
                 >
-                    <MenuItem bg={'#58595B'} color={'#FFFFFF'}>
-                        <Box width={'14rem'} h={'6rem'} overflowY={'auto'}><Text>Titulo bem bolado</Text>
-                            <Text>
-
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut velit augue. Duis sagittis fermentum suscipit. Cras facilisis neque non nisl condimentum, sit amet iaculis nisi maximus. Nulla vestibulum cursus aliquet. Proin at erat sed dui aliquet pulvinar ut sed massa. Vivamus et ipsum dui. Vestibulum sit amet arcu ac felis egestas iaculis. Donec ornare feugiat cursus. Cras eget nunc condimentum, elementum sapien hendrerit, pharetra enim. Nunc ut elit sit amet sem accumsan dictum. Phasellus in dignissim dui, a ullamcorper felis. Fusce vestibulum urna sit amet nulla hendrerit, et dapibus eros ultricies. Nunc vel nunc non mi euismod pharetra non non nunc. Donec congue tincidunt lectus ac consectetur. Maecenas enim ipsum, scelerisque consectetur tincidunt in, bibendum ultrices ex. Sed finibus, odio vel malesuada placerat, velit mauris sollicitudin metus, nec posuere ante ligula et urna. </Text>
-                            <Checkbox marginLeft={'4.7rem'}></Checkbox></Box>
-                    </MenuItem>
                     <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 2 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
                     <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 3 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
                     <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 4 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>

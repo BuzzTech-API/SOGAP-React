@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import {
     Chart,
     DoughnutController,
@@ -30,21 +30,28 @@ export const DonutChart: React.FC<DonutChartProps> = ({ processes }: DonutChartP
 
     useEffect(() => {
         const statusCounts: Record<string, number> = {}
-
-        for (const process of processes) {
-            if (!statusCounts[process.status]) {
-                statusCounts[process.status] = 0
+        let naoIniciado =0
+        let iniciado =0
+        let concluido = 0
+        processes.forEach((process)=>
+        {
+            if (process.status === 'Concluído') {
+                concluido++             
+            } else if ( process.status === 'Não iniciado' ) {
+                naoIniciado++
+            } else if( process.status === 'Iniciado') {
+                iniciado++
             }
-            statusCounts[process.status]++
         }
-        const order = ["Não iniciado", "Em andamento", "Concluído"]
+        ) 
+        const order = ["Não iniciado", "Iniciado", "Concluído"]
 
         const data = {
             labels: order, //Pega o "nome" dos status
             datasets: [
                 {
                     label: 'Processos', //Nome do conjunto de dados
-                    data: Object.values(statusCounts), //Quantidade de processos para cada status
+                    data: [naoIniciado,iniciado,concluido], //Quantidade de processos para cada status
                     backgroundColor: ['red', 'yellow', 'green'], //Cores correspondentes para cada status
                     borderColor: 'black', //Cor da borda
                     borderWidth: 1.5, //Tamanho da borda

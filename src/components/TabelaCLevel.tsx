@@ -69,7 +69,7 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
             overflowX={['auto']}
             overflowY={'auto'}
         >
-            <Table color={'#FFF'} bg={'#58595B'} variant='striped' colorScheme="theme">
+            <Table color={'#FFF'} bg={'#58595B'} colorScheme="theme">
                 <Thead
                     bg={'#58595B'}
                     position="sticky"
@@ -109,11 +109,10 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                             bgColorStatus = '#00afff'
                         }
                         return (
-                            <Tr key={process.id} onClick={()=>setProcess(process)}>
+                            <Tr key={process.id} onClick={()=>setProcess(process)} maxHeight={'3rem'}  _selection={{backgroundColor:"#FFFFFF"}}>
 
                                 <Td minWidth='30rem'>{process.title}</Td>
-                                <Td minWidth='20rem'><Flex flexDirection={'column'}>
-                                    <Text textColor={'#FFF'}>Etapas Concluídas 2/4</Text><ProgressBar process={process} /></Flex></Td>
+                                <Td minWidth='20rem' maxH={'3rem'}><ProgressBar process={process} /></Td>
                                 <Td textAlign="center">{formatDateToBrasil(process.endingDate.toString())}</Td>
                                 <Td><Box
                                     width={'9rem'}
@@ -160,11 +159,10 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                             bgColorStatus = '#00afff'
                         }
                         return (
-                            <Tr key={process.id}>
+                            <Tr key={process.id} maxHeight={'3rem'}  _selection={{backgroundColor:"#FFFFFF"}}>
 
                                 <Td minWidth='30rem'>{process.title}</Td>
-                                <Td minWidth='20rem'><Flex flexDirection={'column'}>
-                                    <Text textColor={'#FFF'}>Etapas Concluídas 2/4</Text><ProgressBar process={process} /></Flex></Td>
+                                <Td minWidth='20rem' maxH={'3rem'}><ProgressBar process={process} /></Td>
                                 <Td textAlign="center">{formatDateToBrasil(process.endingDate.toString())}</Td>
                                 <Td><Box
                                     width={'9rem'}

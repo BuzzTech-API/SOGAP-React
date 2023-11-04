@@ -105,7 +105,7 @@ export const ModalFilter = ({ setProcess, processes, setSteps, steps, setRequest
                 _hover={{ color: "#29784E", bg: "white" }}
                 onClick={onOpen}
             >Filtros</Button>
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="50rem">
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="50rem" heightModal="lg">
                 <form onSubmit={filterProcesses}>
                     <Text
                         fontFamily={'Poppins'}

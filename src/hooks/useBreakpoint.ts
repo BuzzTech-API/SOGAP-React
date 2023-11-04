@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 const breakpoints = {
     0: 'xs',
     660: 'sm',
-    960: 'md',
+    990: 'md',
     1280: 'lg',
     1920: 'xl',
 };
@@ -30,11 +30,11 @@ const useBreakpoint = () => {
     if (0 < windowSize.width && windowSize.width < 660) {
       setBreakPoint(breakpoints[0]);
     }
-    if (660 < windowSize.width && windowSize.width < 960) {
+    if (660 < windowSize.width && windowSize.width < 990) {
       setBreakPoint(breakpoints[660]);
     }
-    if (960 < windowSize.width && windowSize.width < 1280) {
-      setBreakPoint(breakpoints[960]);
+    if (990 < windowSize.width && windowSize.width < 1280) {
+      setBreakPoint(breakpoints[990]);
     }
     if (1280 < windowSize.width && windowSize.width < 1920) {
       setBreakPoint(breakpoints[1280]);

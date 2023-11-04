@@ -14,17 +14,20 @@ interface ModalUploadEvidenceI {
     setStep: React.Dispatch<SetStateAction<Step>>,
     requestForEvidence: RequestForEvidence,
     setRequestForEvidence: React.Dispatch<React.SetStateAction<RequestForEvidence>>
+    onClose: ()=>void
+    evidences: Evidence[]
+    setEvidences: React.Dispatch<SetStateAction<Evidence[]>>
 }
 
 
-export const ModalUploadEvidence = ({ requestForEvidence, step, setStep, setRequestForEvidence }: ModalUploadEvidenceI) => {
+export const ModalUploadEvidence = ({ requestForEvidence, step, setStep, setRequestForEvidence, onClose, evidences, setEvidences }: ModalUploadEvidenceI) => {
     const token = localStorage.getItem('access_token')
     const toast = useToast()
     const submit = async (e: any) => {
+        e.preventDefault()
         try {
             await verifyTokenFetch()
             const uploadInput = document.getElementById('uploadInput') as HTMLInputElement //pega o arquivo enviado atraves de <input...>
-            e.preventDefault()
 
 
 
@@ -118,6 +121,7 @@ export const ModalUploadEvidence = ({ requestForEvidence, step, setStep, setRequ
                     )
 
                     setRequestForEvidence(updateRequestForEvidence)
+                    setEvidences(updateRequestForEvidence.evidences)
                     const newRequests = step.requests.map((item) => {
                         if (item.id === requestForEvidence.id) {
                             return updateRequestForEvidence
@@ -132,6 +136,8 @@ export const ModalUploadEvidence = ({ requestForEvidence, step, setStep, setRequ
         }
         catch (error) {
             console.error("Erro: ", error); //bloco para tratar caso algum erro ocorra
+        }finally{
+            onClose()
         }
     }
 

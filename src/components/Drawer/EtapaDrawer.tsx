@@ -21,14 +21,16 @@ import {
   CloseButton,
 } from "@chakra-ui/react"
 import Step from "../../models/Steps"
-import { SetStateAction, useState } from "react"
+import { SetStateAction, useEffect, useState } from "react"
 import { StepUser } from "../../interfaces/stepInterface"
 import RequestForEvidence from "../../models/RequestForEvidence"
-import { AccordionRequests } from "../AccordionRequests"
+import { AccordionRequests } from "../Accordion/AccordionRequests"
 import { ModalSolicitaEvidencia } from "../Modal/BtnPedirEvidencia"
 import { ModalUpdateStep } from "../Modal/ModalEditarEtapa"
 import { formatDateToBrasil } from "../../services/formatDate"
 import { BtnDeleteEtapa } from "../BtnDeleteEtapa"
+import { CardStepShowProcess } from "../Card/cardStepShowProcess"
+import useBreakpoint from "../../hooks/useBreakpoint"
 
 interface propsED {
   isOpen: boolean,
@@ -43,7 +45,9 @@ interface propsED {
 export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }: propsED) => {
   const [requests, setRequests] = useState(step.requests)
   const [role] = useState(localStorage.getItem('cargo'))
-
+  const breakpoint = useBreakpoint()
+  const [size, setSize] = useState('lg')
+  const [displayCard, setDisplayCard] = useState('flex')
   let bgColor: string;
   if (step.priority === 'Alta') {
     bgColor = '#FF2828'
@@ -53,19 +57,47 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
     bgColor = '#38A169'
   }
 
+  useEffect(() => {
+    if (breakpoint ==='xs') {
+      setSize('full')
+      setDisplayCard('none')
+    } else if (breakpoint ==='sm') {
+      setSize('full')
+      setDisplayCard('none')
+    } else {
+      setSize('lg')
+      setDisplayCard('flex')
+    }
+  
+    return () => {
+      
+    }
+  }, [breakpoint])
+  
+
   return (
-    <Drawer isOpen={isOpen} size={['full', 'lg']} onClose={onClose}>
-      <DrawerOverlay opacity={0.9} backgroundColor={"rgba(0, 0, 0, 0.7)"}>
+    <Drawer isOpen={isOpen} size={size} onClose={onClose}>
+      <DrawerOverlay backgroundColor={"rgba(0, 0, 0, 0.9)"}>
+     
+        <Center
+        w={'35%'}
+        h={'100%'}
+        display={displayCard}
+        >
+           <CardStepShowProcess step={step} onClick={function (): void {
+            ''
+          }} />
+        </Center>
         <DrawerContent opacity={0.9}>
           <DrawerHeader bg={'#1B1C1E'} opacity={0.9} padding={['0.2rem', 'auto']}><CloseButton color={'white'} onClick={onClose} /> </DrawerHeader>
-          <DrawerBody 
-          bg={'#1B1C1E'} 
-          opacity={0.9}
-          color={'#FFF'} 
-          w={['100vw', '100%']} 
-          padding={['0.1rem', 'auto']} 
-          overflowY={'auto'} 
-          h={['100vh','auto']}
+          <DrawerBody
+            bg={'#1B1C1E'}
+            opacity={0.9}
+            color={'#FFF'}
+            w={['100vw', '100%']}
+            padding={['0.1rem', 'auto']}
+            overflowY={'auto'}
+            h={['100vh', 'auto']}
           >
             <Tabs
               variant="enclosed"
@@ -74,7 +106,7 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
               textColor={'white'}
               w={['100vw', '100%']}
               padding={['0.3rem 0.1rem', 'auto']}
-              h={['95vh','auto']}
+              h={['95vh', 'auto']}
             >
               <TabList w={['100vw', '100%']} overflowX={'auto'}>
                 <Tab>Dados</Tab>
@@ -89,10 +121,10 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
               <TabPanels
                 w={['100vw', '100%']}
                 padding={['0.3rem 0.1rem', 'auto']}
-                
+
               >
                 <TabPanel w={['100vw', '100%']} maxH={'100%'} overflowY={'auto'} >
-                  <VStack spacing={['1rem','2rem']}>
+                  <VStack spacing={['1rem', '2rem']}>
                     <Box
                       textAlign={'center'}
                     >

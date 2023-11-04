@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom"
 import { Header } from "../components/Header"
 import { useEffect, useState } from "react"
 import { useOutletContext } from "react-router";
+import { getUser } from "../services/users";
 
 type ContextType = { socket: WebSocket | null };
 
@@ -16,6 +17,7 @@ export default function DefaultLayout() {
 
     useEffect(() => {
         // Substitua 'seu_host' e 'sua_rota' pelas informações reais do seu servidor WebSocket
+        (async ()=>await getUser())();
         const socket = new WebSocket(`ws://${window.location.hostname}/notification/ws`);
 
         socket.onopen = () => {
@@ -32,7 +34,7 @@ export default function DefaultLayout() {
 
         socket.onclose = (event) => {
             console.log('Conexão WebSocket fechada:', event);
-            
+
         };
 
         setSocket(socket);

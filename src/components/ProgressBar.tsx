@@ -13,6 +13,7 @@ import Process from '../models/Process';
 import Step from '../models/Steps';
 import useBreakpoint from '../hooks/useBreakpoint';
 import { getProcessById } from '../services/process';
+import { Flex, Text } from '@chakra-ui/react';
 
 ChartJS.register(
   CategoryScale,
@@ -100,7 +101,9 @@ function ProgressBar({ process }: propsBar) {
   };
 
 
-  return <Bar options={options} data={data} width={'30%'} height={'5%'} key={process.id} />;
+  return <Flex flexDirection={'column'}>
+    <Text textColor={'#FFF'}>Etapas Concluídas {filteredStep.length}/{totalEtapas}</Text><Bar options={options} data={data} width={'30%'} height={'5%'} key={process.id} />
+  </Flex>
 }
 
 export default ProgressBar;

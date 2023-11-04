@@ -10,10 +10,11 @@ import {
     ModalOverlay, 
     Textarea
 } from "@chakra-ui/react"
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { useSocket } from "../../layout/DefaultLayout";
 import RequestForEvidence from "../../models/RequestForEvidence";
 import Validation from "../../models/Validation";
+import Evidence from "../../models/Evidence";
 interface PropsInvalidar{
     process_id: number,
     isOpen: boolean,
@@ -21,8 +22,11 @@ interface PropsInvalidar{
     requestForEvidence: RequestForEvidence,
     step_id: number,
     myId: number,
+    evidence: Evidence
+    evidences: Evidence[]
+    setEvidences: React.Dispatch<SetStateAction<Evidence[]>>
 }
-export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestForEvidence, step_id, myId}:PropsInvalidar) => {
+export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestForEvidence, step_id, myId, evidence, evidences, setEvidences}:PropsInvalidar) => {
 
     const [reason, setReason] = useState('')
     const {socket} = useSocket()
@@ -30,14 +34,21 @@ export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestFor
     useEffect(() => {
         if (socket) {
             socket.onmessage =(event)=>{
+                const data = JSON.parse(event.data)
                 const validation = new Validation(
-                    event.data.validation.id,
-                    event.data.validation.evidence_id,
-                    event.data.validation.reason,
-                    event.data.validation.user_id,
-                    event.data.validation.is_validated
+                    data.validation.id,
+                    data.validation.evidence_id,
+                    data.validation.reason,
+                    data.validation.user_id,
+                    data.validation.is_validated
                 )
-                
+                evidence.validation.push(validation)
+                setEvidences(evidences.map(evidenceMap=>{
+                    if (evidenceMap.id === evidence.id) {
+                        return evidence
+                    }
+                    return evidenceMap
+                }))
             }
             
         }
@@ -61,7 +72,7 @@ export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestFor
                     data: {
                         process_id: process_id,
                         step_id: step_id,
-                        evidence_id: requestForEvidence.evidences[lastEvidenceIndex].id,
+                        evidence_id: evidence.id,
                         request_for_evidence_id: requestForEvidence.id,
                         reason: reason,
                         sender: myId
