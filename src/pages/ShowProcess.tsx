@@ -16,8 +16,9 @@ import { ModalEtapaForm } from "../components/Modal/ModalEtapaForm";
 import { EtapaDrawer } from "../components/Drawer/EtapaDrawer";
 
 import { ProcessDrawer } from "../components/Drawer/ProcessDrawer";
-import { CardStepShowProcess } from "../components/Card/cardStepShowProcess";
+import { CardShowStepHome } from "../components/Card/cardShowStepHome";
 import ProgressBar from "../components/ProgressBar";
+import { CardStepShowProcess } from "../components/Card/cardStepShowProcess";
 
 
 export const ShowProcess = () => {

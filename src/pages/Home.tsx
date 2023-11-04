@@ -9,12 +9,16 @@ import { ModalUpdateProcess } from "../components/Modal/ModalEditarProcesso"
 import { getMyRelatedData } from "../services/users"
 import Step from "../models/Steps"
 import RequestForEvidence from "../models/RequestForEvidence"
-import { CardProcessoPrazo } from "../components/Card/cardProcessoPrazo"
+
+import { CardProcessoPrazo } from "../components/Card/cardProcessHome"
+import { CardShowStepHome } from "../components/Card/cardShowStepHome"
+
 import { ModalFilter } from "../components/Modal/ModalFilters"
 import { UpDownIcon } from "@chakra-ui/icons"
 import { CardRequestEvidence } from "../components/Card/cardRequestEvidence"
 import ProgressBar from "../components/ProgressBar"
 import { TabelaCLevel } from "../components/TabelaCLevel"
+
 
 
 
@@ -47,6 +51,8 @@ export const Home = () => {
         })()
     }, [])
 
+    const handleClick = () => {
+};
 
     const sortByTitle = () => {
         const sortedProcesses = [...processes].sort((a, b) => {
@@ -137,6 +143,11 @@ export const Home = () => {
             {filteredProcesses.map((process: Process) => {
                 return <Link to={`/process/${process.id}`} key={process.id}><CardProcessoPrazo key={"process:" + process.id}
                     process={process}
+                /></Link>
+            })}
+            {steps.map((step: Step) => {
+                return <Link to={`/process/${step.process_id}`} key={step.process_id}><CardShowStepHome key={"Etapa:" + step.id} onClick={handleClick}
+                    step={step}
                 /></Link>
             })}
         </Flex>
