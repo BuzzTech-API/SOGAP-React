@@ -79,12 +79,12 @@ export const CardProcessoPrazo = ({process}: processCardInterface) => {
         bgDayColor = '#FF2323';
     }
 
-    return <Card background="#58595B" onClick={evento} boxShadow="base" opacity="0.9" w={'15.1rem'} h={'18.5rem'} maxHeight={'18.5rem'} borderRadius={'0.5rem'}>
+    return <Card background="#58595B" onClick={evento} boxShadow="base" opacity="0.9" w={'15.1rem'} h={'22rem'} maxHeight={'22rem'} borderRadius={'0.5rem'}>
         <Stack justify="flex-start" align="center" spacing="23px" opacity={'0.9'}>
             <Stack
                 justify="flex-start"
                 align="center"
-                spacing="5px"
+                spacing="10px"
                 height="209.56px"
                 opacity={'0.9'}
                 padding={'0.5rem'}
@@ -114,11 +114,11 @@ export const CardProcessoPrazo = ({process}: processCardInterface) => {
                 >
                     {process.title}
                 </Text>
-                <Box width= '6rem' bg = "#ffffff" borderRadius="6rem">
-                    <Box width= '6rem' borderRadius="6rem" marginTop = "-1.2rem" display = "flex">
-                        <Doughnut width= '20%' height='20%' data={data} options={options}/>
+                <Box width= '8rem' bg = "#ffffff" borderRadius="6rem">
+                    <Box width= '8rem' borderRadius="8rem" marginTop = "-1.7rem" display = "flex">
+                        <Doughnut width= '100%' height='100%' data={data} options={options}/>
                     </Box>
-                    <Box paddingBottom='1rem' marginTop= '-2.5rem' alignItems='center' display="flex" flexDirection="column" zIndex='4'>
+                    <Box paddingBottom='2rem' marginTop= '-4.1rem' alignItems='center' display="flex" flexDirection="column" zIndex='4'>
                         <Text
                             fontFamily="Poppins"
                             lineHeight="1.43"
@@ -127,6 +127,7 @@ export const CardProcessoPrazo = ({process}: processCardInterface) => {
                             color="#000"
                             textAlign="center"
                         >
+                        <br />
                             Etapa
                         </Text>
                         <Text
@@ -177,7 +178,7 @@ export const CardProcessoPrazo = ({process}: processCardInterface) => {
                     fontSize="0.9rem"
                     color="#FFFFFF"
                     textAlign="center"
-                    paddingBottom='0.5rem'
+                    paddingBottom='0.1rem'
                 >
                     Prazo
                 </Text>

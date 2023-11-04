@@ -16,7 +16,7 @@ import { ModalEtapaForm } from "../components/Modal/ModalEtapaForm";
 import { EtapaDrawer } from "../components/Drawer/EtapaDrawer";
 
 import { ProcessDrawer } from "../components/Drawer/ProcessDrawer";
-import { CardStepShowProcess } from "../components/Card/cardStepShowProcess";
+import { CardShowStepHome } from "../components/Card/cardShowStepHome";
 import ProgressBar from "../components/ProgressBar";
 
 
@@ -100,7 +100,7 @@ export const ShowProcess = () => {
                             onOpen()
                         }
 
-                        return (<CardStepShowProcess step={step} onClick={showInfos} key={step.id} />)
+                        return (<CardShowStepHome step={step} onClick={showInfos} key={step.id} />)
                     })}
                     {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
                         <Card w={'15rem'}

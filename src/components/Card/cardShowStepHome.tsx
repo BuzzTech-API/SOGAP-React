@@ -6,8 +6,8 @@ import { Doughnut } from 'react-chartjs-2';
 import { useEffect, useState } from "react";
 import { checkDeadline } from "../../services/checkDeadline";
 import Evidence from "../../models/Evidence";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
+import { getStepsById } from "../../services/steps";
+//ChartJS.register(ArcElement, Tooltip, Legend);
 
 
 interface StepCard {
@@ -15,9 +15,7 @@ interface StepCard {
     onClick: () => void
 }
 
-
-
-export const CardStepShowProcess = ({step, onClick}: StepCard) => {
+export const CardShowStepHome = ({step, onClick}: StepCard) => {
     
     const [validado, setValidado] = useState(0)
     const [naoValidado, setNaoValidado] = useState(0)
@@ -26,12 +24,16 @@ export const CardStepShowProcess = ({step, onClick}: StepCard) => {
     let fontColor: string;
     fontColor = '#ffffff'
 
-    useEffect(() => {
-        const total = step.requests.length
-
-        const filteredArray = step.requests.filter(requestForEvidence => requestForEvidence.is_validated === true)
-        setNaoValidado(total - filteredArray.length)
-        setValidado(filteredArray.length)
+    useEffect(() => {(async () => {
+        
+        const stepFetch = await getStepsById(step.id)
+        if(stepFetch){
+            const total = stepFetch.requests.length
+            const filteredArray = stepFetch.requests.filter(requestForEvidence => requestForEvidence.is_validated === true)
+            setNaoValidado(total - filteredArray.length)
+            setValidado(filteredArray.length)
+        }
+    })()
     }, [])
 
     const data = {
