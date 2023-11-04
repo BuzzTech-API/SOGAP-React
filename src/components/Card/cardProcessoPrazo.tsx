@@ -32,6 +32,7 @@ export const CardProcessoPrazo = ({process}: processCardInterface) => {
     const daysLeft = checkDeadline(process.endingDate);
     let fontColor: string;
     fontColor = '#ffffff'
+
     const evento = () => {
         console.log('Evento card:' + process.title);
     }
@@ -74,7 +75,6 @@ export const CardProcessoPrazo = ({process}: processCardInterface) => {
         bgDayColor = '#00A3FF';
     } else if (daysLeft > 15) {
         bgDayColor = '#E2CE14';
-        //fontColor = '#000000';
     } else {
         bgDayColor = '#FF2323';
     }
@@ -156,7 +156,7 @@ export const CardProcessoPrazo = ({process}: processCardInterface) => {
                     border: '1px solid #111111',
                     borderRadius: '0.5rem',
                     backgroundColor: bgColor,
-                    width: '120%',
+                    width: '10rem',
                     height: '12%' }}> 
                 <Text
                     fontFamily="Poppins"
