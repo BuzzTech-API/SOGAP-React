@@ -1,23 +1,66 @@
 import Process from "../../models/Process"
-import { Card, Stack, Text } from "@chakra-ui/react";
+import { Card, Stack, Text, Box} from "@chakra-ui/react";
 import { checkDeadline } from "../../services/checkDeadline";
+import { Doughnut } from 'react-chartjs-2';
 import { formatDateToBrasil } from "../../services/formatDate";
+import Step from "../../models/Steps";
+import { useEffect, useState } from "react";
+import { getProcessById } from "../../services/process";
 
 
 interface processCardInterface {
-    process: Process
+    process: Process;
 }
 
 
-export const CardProcessoPrazo = ({ process }: processCardInterface) => {
+export const CardProcessoPrazo = ({process}: processCardInterface) => {
+
+    const [totalEtapas, setTotalEtapas] = useState(0)
+    const [filteredStep, setFilteredStep] = useState(new Array<Step>())
+
+    useEffect(() => {
+        (async () => {
+          const processFetch = await getProcessById(process.id)
+          if (processFetch!==null) {
+            setTotalEtapas(processFetch.steps !== undefined ? processFetch.steps.length : 0)
+            setFilteredStep(processFetch.steps !== undefined ? processFetch.steps.filter(step => step.status === 'Concluído') : new Array<Step>()) 
+            process.steps = processFetch.steps
+          }
+        })()
+    }, [])
+
+    const daysLeft = checkDeadline(process.endingDate);
     let fontColor: string;
     fontColor = '#ffffff'
-    const daysLeft = checkDeadline(process.endingDate);
-
     const evento = () => {
         console.log('Evento card:' + process.title);
     }
 
+    // Opções de Data para o Grafico
+    const data = {
+        labels: ['Concluido', 'Não Concluido'],
+        datasets: [
+            {
+                data: [filteredStep.length, totalEtapas - filteredStep.length],
+                backgroundColor: ['#159900', '#6E6E6E'],
+            },
+        ],
+    };
+  
+    // Opções do Grafico semi circulo
+    const options = {
+        cutout: '70%',
+        responsive: true,
+        radius: '100%',
+        rotation: 260,
+        circumference: 200,
+        plugins: {
+            legend: {
+                display: false,
+            }
+        }
+    };
+    
     let bgColor: string;
     if (process.priority === 'Alta') {
         bgColor = '#ff1a1a'
@@ -36,26 +79,25 @@ export const CardProcessoPrazo = ({ process }: processCardInterface) => {
         bgDayColor = '#FF2323';
     }
 
-    return <Card background="#58595B" onClick={evento} boxShadow="base" opacity="0.9" w={'15.1rem'} h={'18rem'} maxHeight={'17rem'} borderRadius={'0.5rem'}>
+    return <Card background="#58595B" onClick={evento} boxShadow="base" opacity="0.9" w={'15.1rem'} h={'18.5rem'} maxHeight={'18.5rem'} borderRadius={'0.5rem'}>
         <Stack justify="flex-start" align="center" spacing="23px" opacity={'0.9'}>
             <Stack
                 justify="flex-start"
                 align="center"
-                spacing="8px"
+                spacing="5px"
                 height="209.56px"
                 opacity={'0.9'}
-                padding={'1rem'}
+                padding={'0.5rem'}
             >
                 <Text
                     // Título
-
                     fontFamily="Poppins"
                     lineHeight="1"
                     fontWeight="bold"
                     fontSize="1.2rem"
                     color="#FFFFFF"
                     textAlign="center"
-                    paddingBottom='1rem'
+                    paddingBottom='0.1rem'
                 >
                     Processo #{process.id}
                 </Text>
@@ -68,9 +110,37 @@ export const CardProcessoPrazo = ({ process }: processCardInterface) => {
                     color="#FFFFFF"
                     minHeight="1rem"
                     textAlign="center"
+                    marginBottom='0.5'
                 >
                     {process.title}
                 </Text>
+                <Box width= '6rem' bg = "#ffffff" borderRadius="6rem">
+                    <Box width= '6rem' borderRadius="6rem" marginTop = "-1.2rem" display = "flex">
+                        <Doughnut width= '20%' height='20%' data={data} options={options}/>
+                    </Box>
+                    <Box paddingBottom='1rem' marginTop= '-2.5rem' alignItems='center' display="flex" flexDirection="column" zIndex='4'>
+                        <Text
+                            fontFamily="Poppins"
+                            lineHeight="1.43"
+                            fontWeight="Bold"
+                            fontSize="0.9rem"
+                            color="#000"
+                            textAlign="center"
+                        >
+                            Etapa
+                        </Text>
+                        <Text
+                            fontFamily="Poppins"
+                            lineHeight="1.43"
+                            fontWeight="medium"
+                            fontSize="0.9rem"
+                            color="#000"
+                            textAlign="center"
+                        >
+                            {filteredStep.length}/{totalEtapas}
+                        </Text>
+                    </Box>
+                </Box>
                 <Text
                     //Prioridade
                     fontFamily="Poppins"
@@ -107,6 +177,7 @@ export const CardProcessoPrazo = ({ process }: processCardInterface) => {
                     fontSize="0.9rem"
                     color="#FFFFFF"
                     textAlign="center"
+                    paddingBottom='0.5rem'
                 >
                     Prazo
                 </Text>
@@ -152,5 +223,4 @@ export const CardProcessoPrazo = ({ process }: processCardInterface) => {
             </Stack>
         </Stack>
     </Card>
-
 }
