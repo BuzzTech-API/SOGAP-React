@@ -18,6 +18,7 @@ import { EtapaDrawer } from "../components/Drawer/EtapaDrawer";
 import { ProcessDrawer } from "../components/Drawer/ProcessDrawer";
 import { CardShowStepHome } from "../components/Card/cardShowStepHome";
 import ProgressBar from "../components/ProgressBar";
+import { CardStepShowProcess } from "../components/Card/cardStepShowProcess";
 
 
 export const ShowProcess = () => {
@@ -100,7 +101,7 @@ export const ShowProcess = () => {
                             onOpen()
                         }
 
-                        return (<CardShowStepHome step={step} onClick={showInfos} key={step.id} />)
+                        return (<CardStepShowProcess step={step} onClick={showInfos} key={step.id} />)
                     })}
                     {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
                         <Card w={'15rem'}
