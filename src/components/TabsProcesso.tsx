@@ -20,15 +20,15 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
         bgColor = '#00750C'
     }
     return (
-        <Tabs height="52.6rem" variant="enclosed" isManual isFitted textColor={'white'} alignSelf="stretch" boxShadow={'4px 0 4px 0 rgba(0,0,0,0.25)'}>
-            <TabList width={'25rem'}>
+        <Tabs height="52.6rem" variant="enclosed" width={['100%','100%', '25rem']} isManual isFitted textColor={'white'} alignSelf="stretch" boxShadow={'4px 0 4px 0 rgba(0,0,0,0.25)'}>
+            <TabList width={['100%','25rem']}>
                 <Tab>Dados</Tab>
                 <Tab>Responsável</Tab>
                 {role !== null && (role ==='Gerente'|| role ==='Lider'|| role === 'Administrador') &&
                 <Tab>Ações</Tab>}
             </TabList>
-            <TabPanels maxWidth={'25rem'} minWidth={'25rem'} >
-                <TabPanel>
+            <TabPanels maxWidth={['25rem']} width={['100%', '25rem']} minWidth={['100%','25rem']} >
+                <TabPanel width={['100%', '25rem']}>
                     <VStack
                         spacing={'1rem'}
                     >
@@ -250,7 +250,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                     flex="1"
                                     textAlign="center"
                                 >
-                                    {process.createDate === undefined ? <></> : <Text>{formatDateToBrasil(process.createDate.toString())}</Text>}
+                                    {process.createDate === undefined ? <></> : <>{formatDateToBrasil(process.createDate.toString())}</>}
                                 </Text>
                             </Stack>
                         </Stack>
@@ -303,11 +303,11 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
 
                 </TabPanel>
 
-                <TabPanel maxWidth={'25rem'} minWidth={'25rem'} minH={'47.6rem'} maxH={'47.6rem'}>
+                <TabPanel maxWidth={['25rem']} width={['100%', '25rem']} minWidth={['100%','25rem']} minH={'47.6rem'} maxH={'47.6rem'}>
                     <Accordion allowToggle overflowY={'auto'}>
                         {process.users.map((user: User) => {
-                            return (<AccordionItem>
-                                <AccordionButton height="44px" alignSelf="stretch">
+                            return (<AccordionItem key={user.id}>
+                                <AccordionButton height="44px" alignSelf="stretch" >
                                     <Text
                                         fontFamily="Poppins"
                                         lineHeight="1.5"
@@ -319,7 +319,7 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                                         {user.name}
                                     </Text>
                                 </AccordionButton>
-                                <AccordionPanel width={'25rem'}>
+                                <AccordionPanel width={['100%','25rem']}>
                                     <Text
                                         fontFamily="Poppins"
                                         lineHeight="1.5"
@@ -355,8 +355,8 @@ export const ProcessTabs = ({ process, setProcess }: ProcessTabsI) => {
                     </Accordion>
                 </TabPanel>
 
-                <TabPanel maxWidth={'25rem'}>
-                    <Box maxWidth={'25rem'} height={'47.6rem'} padding={0}>
+                <TabPanel maxWidth={['25rem']} width={['100%', '25rem']}>
+                    <Box maxWidth={['25rem']} width={['100%', '25rem']} height={'47.6rem'} padding={0}>
                         <Stack direction="row" justify="center" align="center" spacing="11px" w={'23rem'}>
                             {role !== null && (role ==='Gerente'|| role ==='Lider'|| role === 'Administrador') &&
                             <ModalUpdateProcess process={process} setProcess={setProcess} />}

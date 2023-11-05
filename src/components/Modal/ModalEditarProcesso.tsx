@@ -1,16 +1,15 @@
 
-import { useDisclosure, FormLabel, Input, Button, Select, FormControl, Box, Flex, IconButton, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react"
+import { useDisclosure, FormLabel, Input, Button, Select, FormControl, Box, Flex, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
-import { verifyTokenFetch } from "../../services/token"
 import { ModalGeneric } from "./Modal"
 import User from "../../models/User"
 import { createProcessUser, getAllUsers } from "../../services/users"
-import { CloseIcon } from "@chakra-ui/icons"
 import Process from "../../models/Process"
 import { deleteUserProcess, getProcessById, updateProcess } from "../../services/process"
 import { useParams } from "react-router-dom"
 import { formatData } from "../../services/formatDate"
 import { UpdateProcessInterface } from "../../interfaces/processInterface"
+import { verifyTokenFetch } from "../../services/token"
 
 interface props {
     process_id?: string
@@ -34,6 +33,7 @@ export const ModalUpdateProcess = (props: props) => {
     }
     useEffect(() => {
         (async () => {
+            await verifyTokenFetch()
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
@@ -189,7 +189,7 @@ export const ModalUpdateProcess = (props: props) => {
 
         <>
             <Button bg='#53C4CD' variant='solid'
-                textColor='white' colorScheme="#58595B" width='8rem'
+                textColor='white' colorScheme="#58595B" width={['auto','8rem']}
                 type="submit" onClick={onOpen}
             >Editar</Button>
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem">
@@ -264,7 +264,7 @@ export const ModalUpdateProcess = (props: props) => {
                             onChange={handleStatusChange}>
                             <option value="Não iniciado">Não iniciado</option>
                             <option value="Em andamento">Em andamento</option>
-                            <option value="Concluido">Concluido</option>
+                            <option value="Concluído">Concluído</option>
 
                         </Select>
                     </FormControl>

@@ -1,6 +1,7 @@
 import { RequestEvidenceInterface, UpdateRequestEvidenceInterface } from "../interfaces/requestEvidenceInterface";
 import Evidence from "../models/Evidence";
 import RequestForEvidence from "../models/RequestForEvidence";
+
 import { formatData } from "./formatDate";
 
 
@@ -29,7 +30,7 @@ export const createRequestEvidence = async (
       }
 
       const token = localStorage.getItem('access_token');
-      const response = await fetch(`http://localhost:8000/request_for_evidence/`, {
+      const response = await fetch(`http://${window.location.hostname}:8000/request_for_evidence/`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -65,7 +66,7 @@ export const createRequestEvidence = async (
 
   export const getRequestEvidenceById = async (id: number) => {
     const token = localStorage.getItem('access_token');
-    const response = await fetch(`http://localhost:8000/request_for_evidence/${id}`, {
+    const response = await fetch(`http://${window.location.hostname}:8000/request_for_evidence/${id}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -105,7 +106,7 @@ export const createRequestEvidence = async (
 
   export const updateRequestEvidence = async (formData: UpdateRequestEvidenceInterface) => {
       const token = localStorage.getItem('access_token');
-            const response = await fetch(`http://localhost:8000/request_for_evidence/`, {
+            const response = await fetch(`http://${window.location.hostname}:8000/request_for_evidence/`, {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
@@ -125,7 +126,7 @@ export const createRequestEvidence = async (
     }
     
     const token = localStorage.getItem('access_token');
-    const response = await fetch(`http://localhost:8000/request_for_evidence/delete/`, {
+    const response = await fetch(`http://${window.location.hostname}:8000/request_for_evidence/delete/`, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -142,7 +143,7 @@ export const createRequestEvidence = async (
 
   export const validateEvidence = async (id: number) => {
       const token = localStorage.getItem('access_token');
-            const response = await fetch(`http://localhost:8000/request_for_evidence/validate/${id}`, {
+            const response = await fetch(`http://${window.location.hostname}:8000/request_for_evidence/validate/${id}`, {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',
@@ -157,7 +158,7 @@ export const createRequestEvidence = async (
 
   export const invalidateEvidence = async (id: number) => {
       const token = localStorage.getItem('access_token');
-            const response = await fetch(`http://localhost:8000/evidences/invalidate/${id}`, {
+            const response = await fetch(`http://${window.location.hostname}:8000/evidences/invalidate/${id}`, {
         method: 'PUT',
         headers: {
           'Accept': 'application/json',

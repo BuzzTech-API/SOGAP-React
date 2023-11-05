@@ -1,14 +1,14 @@
 
 import { useDisclosure, FormLabel, Input, Textarea, Button, Select, FormControl, Box, Tag, TagLabel, TagCloseButton, Flex } from "@chakra-ui/react"
 import React, { SetStateAction, useEffect, useState } from "react"
-import { verifyTokenFetch } from "../../services/token"
 import { ModalGeneric } from "./Modal"
 import Step from "../../models/Steps"
-import { getStepsById, updateStep } from "../../services/steps"
+import { updateStep } from "../../services/steps"
 import User from "../../models/User"
 import { createUserStep, deleteUserStep, getAllUsers } from "../../services/users"
 import { StepUser } from "../../interfaces/stepInterface"
 import { formatToData } from "../../services/formatDate"
+import { verifyTokenFetch } from "../../services/token"
 
 interface UpdateStep {
     step: Step,
@@ -48,8 +48,8 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
     //Função para submeter os dados ao servidor BackEnd
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        
         await verifyTokenFetch()
-
         try {
 
             if (!name || !endingDate || !objective || !priority || (responsibleList.length === 0)) { //Verificar
@@ -83,6 +83,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                     step.id,
                     step.process_id,
                     name,
+                    step.status,
                     step.order,
                     objective,
                     formatToData(endingDate),
@@ -102,6 +103,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                             step.id,
                             step.process_id,
                             name,
+                            step.status,
                             step.order,
                             objective,
                             formatToData(endingDate),
@@ -166,12 +168,12 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                 type="submit" onClick={onOpen}
                 margin={'0.5rem'}
             >Editar</Button>
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem">
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="lg">
                 <form onSubmit={handleSubmit}>
                     <FormLabel textAlign="center" fontSize="large" color='white'><strong>Edição de Etapa</strong></FormLabel>
 
                     <FormLabel pt={3} color='white'>Nome</FormLabel>
-                    <Input bg='white' textColor={'black'} placeholder={step.name} value={name} size='md' type="text" onChange={handleNameChange} />
+                    <Input maxLength={64} bg='white' textColor={'black'} placeholder={step.name} value={name} size='md' type="text" onChange={handleNameChange} />
 
                     <FormLabel pt={3} color='white'>Prazo</FormLabel>
                     <Input bg='white' textColor={'black'} size="md" type="date" value={endingDate.toString()} onChange={handleEndingDateChange} />

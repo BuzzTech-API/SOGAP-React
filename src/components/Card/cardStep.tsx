@@ -1,5 +1,4 @@
 import { Card, Stack, Text } from "@chakra-ui/react";
-import { useState } from "react";
 import Step from "../../models/Steps";
 import { formatDateToBrasil } from "../../services/formatDate";
 

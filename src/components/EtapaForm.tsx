@@ -16,8 +16,8 @@ import User from '../models/User';
 import { createUserStep, getAllUsers } from '../services/users';
 import Step from '../models/Steps';
 import { createStep } from '../services/steps';
-import { verifyTokenFetch } from '../services/token';
 import { StepUser } from '../interfaces/stepInterface';
+import { verifyTokenFetch } from '../services/token';
 
 interface EtapaFormI {
   steps: Array<Step>;

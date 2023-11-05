@@ -2,42 +2,23 @@ import { Box, Button, useDisclosure, Text, Heading, Center } from "@chakra-ui/re
 import { ModalGeneric } from "./Modal"
 import RequestForEvidence from "../../models/RequestForEvidence"
 import { ModalUploadEvidence } from "../UploadEvidence"
-import { ModalUpdateRequestEvidence } from "./ModalEditarRequisiçãoEvidencia"
-import { formatData } from "../../services/formatDate"
-import { SetStateAction, useEffect, useState } from "react"
-import { verifyTokenFetch } from "../../services/token"
-import { getAllUsers } from "../../services/users"
-import { BtnDeleteEvidencia } from "../BtnDeleteEvidencia"
+import { SetStateAction } from "react"
 import Step from "../../models/Steps"
+import Evidence from "../../models/Evidence"
 
-interface ViewRequestI {
+interface AddEvidenceI {
     request: RequestForEvidence,
     setRequestForEvidence: React.Dispatch<React.SetStateAction<RequestForEvidence>>
     step: Step,
     setStep: React.Dispatch<SetStateAction<Step>>,
+    evidences: Evidence[]
+    setEvidences: React.Dispatch<SetStateAction<Evidence[]>>
 }
 
-export const ViewRequest: React.FC<ViewRequestI> = ({
-    request, step, setRequestForEvidence, setStep
+export const AddEvidence: React.FC<AddEvidenceI> = ({
+    request, step, setRequestForEvidence, setStep, evidences, setEvidences
 }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const [responsibleName, setResponsibleName] = useState('')
-
-    useEffect(() => {
-        (async () => {
-            await verifyTokenFetch()
-            const listOfUsers = await getAllUsers()
-            if (listOfUsers) {
-                const responsibleUser = listOfUsers.find(user =>
-                    user.id === request.user_id)
-                if (responsibleUser) {
-                    setResponsibleName(responsibleUser.name)
-                }
-            }
-
-
-        })()
-    }, [request])
 
 
     return (
@@ -74,7 +55,15 @@ export const ViewRequest: React.FC<ViewRequestI> = ({
                     <Text  display={'flex'} fontSize={'1.3rem'}>{request.requiredDocument}</Text>
                 </Center>
                 <Box>
-                    <ModalUploadEvidence requestForEvidence={request} setRequestForEvidence={setRequestForEvidence} step={step} setStep={setStep}  />
+                    <ModalUploadEvidence 
+                    requestForEvidence={request} 
+                    onClose={onClose}
+                    setRequestForEvidence={setRequestForEvidence} 
+                    step={step} 
+                    setStep={setStep}  
+                    evidences={evidences}
+                    setEvidences={setEvidences}
+                    />
                 </Box>
             </ModalGeneric>
         </>

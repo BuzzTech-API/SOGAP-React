@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom'
 import { IonicLogo } from './IonicLogo'
 import { useEffect, useState } from 'react'
 import { getUser } from '../services/users'
-import { disable2FA, verifyTokenFetch } from '../services/token'
+import { disable2FA, } from '../services/token'
 import { DrawerCadastro } from './Drawer/Cadastro'
 import TwoAuthModal from "../components/Modal/QrCodeModal"
 import { BellIcon } from '@chakra-ui/icons'
@@ -26,20 +26,20 @@ import { BellIcon } from '@chakra-ui/icons'
 
 
 export const Header = () => {
-
     const [name, setName] = useState('')
     const [role, setRole] = useState('')
+    const [photo_link, setPhoto_link] = useState('')
     const [is_enable2fa, setIs_enable2fa] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     useEffect(() => {
         (async () => {
-            verifyTokenFetch()
             const data = await getUser()
             if (data) {
                 setName(data.name)
                 setRole(data.role)
                 setIs_enable2fa(data.is_2fa_enable)
+                setPhoto_link(data.photo_link)
             }
 
         })();
@@ -50,7 +50,7 @@ export const Header = () => {
 
     const deactivated2FA = async () => {
         const data = await disable2FA()
-        if (data.deactivated===true) {
+        if (data.deactivated === true) {
             setIs_enable2fa(false)
         }
     }
@@ -73,7 +73,7 @@ export const Header = () => {
         <Flex
             flexDirection={'row'}
             padding='0rem'
-            width="120rem"
+            width={["120rem", "100%"]}
             maxWidth="100%"
             height='5rem'
             background="#292A2D"
@@ -84,7 +84,7 @@ export const Header = () => {
                 flexDirection={'row'}
                 padding='0.5rem'
                 background="#292A2D"
-
+                alignItems={'center'}
             >
                 <Menu>
                     <MenuButton
@@ -93,7 +93,7 @@ export const Header = () => {
                         bg={'#292A2D'}
                         width="3.5rem"
                         height="3.5rem"
-                        marginRight={'2rem'}
+                        marginRight={['0.5rem', '2rem']}
                         marginTop={'0.2rem'}
                         padding={'0.5rem 0.5rem 0rem 0.7rem'}
                         leftIcon={
@@ -110,30 +110,34 @@ export const Header = () => {
                             </Icon>
                         } >
                     </MenuButton>
-                    <MenuList color={'#FFF'} bg={'#58595B'}>
-                        {role==='Administrador' && <MenuItem bg={'#58595B'}><DrawerCadastro /></MenuItem>}
+                    <MenuList
+                        color={'#FFF'} bg={'#58595B'} padding={'1rem'}>
+                        {role === 'Administrador' && <DrawerCadastro />
+                            }
                         <Link to={'/'}>
-                            <MenuItem bg={'#58595B'}>
-                                <Button
-                                    bg={'#58595B'}
-                                    color={'#FFF'}
-                                    width={'100%'}
-                                    _hover={{ background: '#FFF', color: '#58595B' }}
-                                >Meus Processos</Button>
-                            </MenuItem>
-                        </Link>
-                        <MenuItem bg={'#58595B'}>
-                            <Button
+                            <MenuItem
                                 bg={'#58595B'}
                                 color={'#FFF'}
                                 width={'100%'}
                                 _hover={{ background: '#FFF', color: '#58595B' }}
-                                onClick={()=>{
-                                    localStorage.removeItem('access_token')
-                                    localStorage.removeItem('refresh_token')
-                                    window.location.reload();
-                                }}
-                            >Sair</Button>
+                                as={Button}
+                            >
+                                Meus Processos
+                            </MenuItem>
+                        </Link>
+                        <MenuItem
+                            as={Button}
+                            bg={'#58595B'}
+                            color={'#FFF'}
+                            width={'100%'}
+                            _hover={{ background: '#FFF', color: '#58595B' }}
+                            onClick={() => {
+                                localStorage.removeItem('access_token')
+                                localStorage.removeItem('refresh_token')
+                                window.location.reload();
+                            }}
+                        >
+                            Sair
                         </MenuItem>
 
                     </MenuList>
@@ -146,14 +150,15 @@ export const Header = () => {
             <Menu onClose={() => {}}>
                 <MenuButton
                     as={Button}
-                        bg="transparent" 
-                        size="lg"
-                        width="3.5rem"
-                        height="3.5rem"
-                        marginRight={'2rem'}
-                        marginTop={'0.2rem'}
-                        padding={'0.5rem 1rem 0.7rem 0.5rem'}
-                    rightIcon={<BellIcon 
+                    bg="transparent"
+                    size="lg"
+                    width="3.5rem"
+                    height="3.5rem"
+                    marginRight={['0', '0', '2rem']}
+                    marginTop={'0.2rem'}
+                    marginLeft={['1rem', '0']}
+                    padding={'0.5rem 1rem 0.7rem 0.5rem'}
+                    rightIcon={<BellIcon
                         width={'2.5rem'}
                         height={'2.5rem'}
                         margin={'0'}
@@ -179,11 +184,12 @@ export const Header = () => {
                 </Menu>
             <Flex
                 flexDirection={'row'}
-                width="15rem"
+                width={['4rem', '4rem', "15rem"]}
                 marginLeft={0}
             >
                 <Box flexDirection={'column'}
-                    marginRight={'0.2rem'}
+                    marginRight={['0', '0.2rem']}
+                    display={['none', 'none', 'flex']}
                 >
 
                     <Text
@@ -208,14 +214,19 @@ export const Header = () => {
                     </Text>
                 </Box>
                 <Menu>
-                    <MenuButton>
+                    <MenuButton
+                        width={['2.5rem', "3.5rem"]}
+                        height={['2.5rem', "3.5rem"]}
+                        display={['none', 'inherit']}
+                    >
                         <Avatar
-                            name=""
-                            src=""
+                            name={name}
+                            src={photo_link}
                             size="xs"
-                            width="3.5rem"
-                            height="3.5rem"
-                            marginLeft={'1rem'}
+                            width={['2.5rem', "3.5rem"]}
+                            height={['2.5rem', "3.5rem"]}
+                            marginLeft={'0.5rem'}
+
                         >
                         </Avatar>
                     </MenuButton>

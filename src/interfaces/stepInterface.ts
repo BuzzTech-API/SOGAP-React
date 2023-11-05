@@ -10,6 +10,7 @@ export interface StepUser{
 export interface StepInterface{
     id: number
     name:string
+    status:string
     objective: string
     endingDate: Date
     endDate: Date

@@ -19,6 +19,9 @@ export function checkDeadline(endDate: Date) {
     let data_Atual = formatData(new Date())
     let data_Final = endDate.toString()
 
+    if(data_Final < data_Atual){ //Se a data final for menor que a data atual quer dizer que o prazo ja terminou, portanto retorna 0
+        return 0
+    }
     getDaysBetweenDates(data_Final, data_Atual)
 
     return getDaysBetweenDates(data_Final, data_Atual)

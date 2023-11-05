@@ -1,10 +1,11 @@
 import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, useDisclosure } from "@chakra-ui/react";
 import { ModalGeneric } from "./Modal/Modal";
-import { verifyTokenFetch } from "../services/token";
+
 import { SetStateAction, useRef, useState } from "react";
 import { deleteEvidence } from "../services/requestEvidence";
 import RequestForEvidence from "../models/RequestForEvidence";
 import Step from "../models/Steps";
+import { verifyTokenFetch } from "../services/token";
 
 interface DeleteEvidencia {
     evidencia: RequestForEvidence
@@ -20,8 +21,8 @@ export const BtnDeleteEvidencia = ({ evidencia, step, setStep, setRequests }: De
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        
         await verifyTokenFetch()
-
         try {
             const response = await deleteEvidence(evidencia.id, false)
             if (response) {
@@ -31,6 +32,7 @@ export const BtnDeleteEvidencia = ({ evidencia, step, setStep, setRequests }: De
                     step.id, 
                     step.process_id, 
                     step.name, 
+                    step.status, 
                     step.order, 
                     step.objective, 
                     step.endingDate, 
@@ -59,7 +61,6 @@ export const BtnDeleteEvidencia = ({ evidencia, step, setStep, setRequests }: De
         <>
             <Button
                 display="flex"
-                mb={3}
                 variant='solid'
                 textColor='white'
                 bg={'#58595B'}

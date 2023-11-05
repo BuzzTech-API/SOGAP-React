@@ -5,6 +5,7 @@ import { Home } from "../pages/Home"
 import { Login } from "../pages/Login"
 import { ShowProcess } from "../pages/ShowProcess"
 import DefaultLayout from "../layout/DefaultLayout"
+import { CLevel } from "../pages/CLevel"
 // Valida o token
 const validateAccessToken = async () => {
     let authenticated = new Authenticated()
@@ -51,6 +52,7 @@ export function Router(){
                 <Route element={<RequireAuth/>}>
                   <Route element={<DefaultLayout/>}>
                     <Route path="/" element={<Home/>}/>
+                    <Route path="/clevel" element={<CLevel/>}/>
                     <Route path="/process/:id" element={<ShowProcess/>}/>
                   </Route>
                 </Route>

@@ -35,6 +35,7 @@ export const ModalEtapaForm = ({widthIcon,sizeIcon,heightIcon,steps, setSteps, p
         isOpen={isOpen} 
         onClose={onClose} 
         widthModal="50rem" 
+        heightModal="55rem"
         header={<Heading as="h2" size="lg" mb={4} className="Titulo" color="#54c5ce" textAlign="center">
         Nova etapa
       </Heading>}>

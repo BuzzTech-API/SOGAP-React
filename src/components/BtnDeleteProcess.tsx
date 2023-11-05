@@ -1,10 +1,11 @@
 import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, useDisclosure } from "@chakra-ui/react";
 import Process from "../models/Process";
 import { ModalGeneric } from "./Modal/Modal";
-import { verifyTokenFetch } from "../services/token";
+
 import { deleteProcess } from "../services/process";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { verifyTokenFetch } from "../services/token";
 
 interface DeleteProcessInterface {
     process: Process,
@@ -19,8 +20,8 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        
         await verifyTokenFetch()
-
         try {
             const response = await deleteProcess(process.id, false)
             if (response) {
@@ -40,7 +41,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
     return (
         <>
             <Button bg='#ff1a1a' variant='solid'
-                textColor='white' colorScheme="#58595B" width='8rem'
+                textColor='white' colorScheme="#58595B" width={['auto','8rem']}
                 type="submit" onClick={onOpen}
             >Deletar</Button>
 
@@ -84,7 +85,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
                     >
                         <strong>Tem certeza de que quer deletar o processo {process.title} ?</strong>
 
-                        <ButtonGroup gap="240" mt={5}>
+                        <ButtonGroup gap={['5rem',"15rem"]} mt={5}>
 
                             <Button
                                 display="flex"

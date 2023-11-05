@@ -7,27 +7,18 @@ import {
   FormLabel,
   Input,
   Card,
-  CardHeader,
-  CardBody,                                      //Importação das Bibliotecas
-  Heading,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalCloseButton,
-  Select,
-  Flex,
-  IconButton,
   Grid,
   Center,
-  useDisclosure,
   ModalFooter,
   Text,
 } from '@chakra-ui/react';
-import { AddIcon, CloseIcon,} from "@chakra-ui/icons";
 import QRCode from "qrcode.react";
-import User from "../models/User";
 import { codeVerified, enableTwoFactor } from "../services/token";
 
 export interface UriFormat {

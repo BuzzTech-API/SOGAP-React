@@ -3,12 +3,12 @@ import { useDisclosure, FormLabel, Input, Textarea, Button, Select, IconButton, 
 import React, { SetStateAction, useEffect, useState } from "react";
 import User from "../../models/User";
 import { createRequestEvidence } from "../../services/requestEvidence";
-import { refreshTokenFetch, verifyTokenFetch } from "../../services/token";
 import { getAllUsers } from "../../services/users";
 import { ModalGeneric } from "./Modal";
 import { AddIcon } from "@chakra-ui/icons";
 import RequestForEvidence from "../../models/RequestForEvidence";
 import Step from "../../models/Steps";
+import { verifyTokenFetch } from "../../services/token";
 
 interface requestEvidence {
     step: Step,
@@ -23,7 +23,6 @@ export const ModalSolicitaEvidencia = ({ step, setStep, requests, setRequests }:
     const [requiredDocument, setRequiredDocument] = useState('')
     const [description, setDescription] = useState('')
     const [evidenceValidationDate, setEvidenceValidationDate] = useState(new Date())
-    const [user_id, setUserID] = useState(0)
     const [responsibleName, setResponsibleName] = useState('')
     const [usersList, setUsersList] = useState(new Array<User>())
 
@@ -45,7 +44,6 @@ export const ModalSolicitaEvidencia = ({ step, setStep, requests, setRequests }:
 
 
         setResponsibleName(e.target.value)
-        setUserID(Number.parseInt(responsibleName))
 
     }
 
@@ -54,8 +52,9 @@ export const ModalSolicitaEvidencia = ({ step, setStep, requests, setRequests }:
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         const deliveryDate = new Date()
         e.preventDefault();
-        console.log(responsibleName);
         await verifyTokenFetch()
+        console.log(responsibleName);
+        
         const newRequest = await createRequestEvidence(requiredDocument, description, step.id, Number.parseInt(responsibleName), evidenceValidationDate, deliveryDate)
         if (newRequest) {
             step.requests.push(newRequest)
@@ -69,7 +68,7 @@ export const ModalSolicitaEvidencia = ({ step, setStep, requests, setRequests }:
 
     useEffect(() => {
         (async () => {
-            await refreshTokenFetch()
+            await verifyTokenFetch()
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)

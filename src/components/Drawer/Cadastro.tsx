@@ -18,14 +18,15 @@ import {
     DrawerHeader,
     DrawerOverlay,
     Stack,
-    useDisclosure
+    useDisclosure,
+    MenuItem,
+    useToast,
 
 } from '@chakra-ui/react'
 import { useState } from "react";
-import { refreshTokenFetch } from "../../services/token";
-import { createUser } from '../../services/users';
-import { AddIcon } from '@chakra-ui/icons';
+import { createUser, uploadPhoto } from '../../services/users';
 import React from 'react';
+import { verifyTokenFetch } from '../../services/token';
 
 
 export function DrawerCadastro() {
@@ -36,17 +37,36 @@ export function DrawerCadastro() {
     const [role, setRole] = useState('')
     const [team, setTeam] = useState('')
     const [senha, setSenha] = useState('')
+    const [selectedFile, setSelectedFile] = useState<File | undefined>()
+    const [link, setLink] = useState('')
+    const toast = useToast()
+    const handleUploadClick = (e: any) => {
+        setSelectedFile(e.target.files[0])
+    }
 
     const handleClick = () => setShow(!show)
     const submit = async (e: any) => {
         e.preventDefault();
-        await refreshTokenFetch()
-
+        await verifyTokenFetch()
         try {
-            console.log(
+            if (selectedFile?.size !== 0 && selectedFile !== undefined) {
+                const formData = new FormData()
+                formData.append('file', selectedFile)
+                const promise = uploadPhoto(formData)
+                toast.promise(promise, {
+                    success: { title: 'Usuário Cadastrado', description: 'Usuário cadastrado com sucesso' },
+                    error: { title: 'Promise rejected', description: 'Something wrong' },
+                    loading: { title: 'Cadastrando Usuário', description: 'Por favor, espere' },
+                })
+                const photoLink = await promise
+                setLink(photoLink)
 
-                await createUser(name, email, role, team, senha)
+
+            }
+            console.log(
+                await createUser(name, email, role, team, senha, link)
             );
+
         } catch (error) {
 
         } finally {
@@ -62,11 +82,14 @@ export function DrawerCadastro() {
 
 
     return (
-        <><Center width={'100%'}>
-            <Button bg={'#58595B'} _hover={{ background: '#FFF', color: '#58595B' }} color={'#FFF'} onClick={onOpen} width={'100%'}>
-                Cadastrar Usuário
-            </Button>
-        </Center>
+        <>
+            <MenuItem 
+            bg={'#58595B'}
+                _hover={{ background: '#FFF', color: '#58595B' }} 
+                color={'#FFF'} 
+                onClick={onOpen} 
+                width={'100%'} 
+                as={Button}>Cadastrar Usuários</MenuItem>
             <Drawer
                 isOpen={isOpen}
                 placement='right'
@@ -86,7 +109,7 @@ export function DrawerCadastro() {
                                 <Center padding='2rem'>
                                     <Heading>Cadatrar Usuário</Heading>
                                 </Center>
-                                <Box width={'30rem'} height={'30rem'} margin={'1rem auto'} padding={'1rem'}>
+                                <Box width={'30rem'} height={'600px'} margin={'1rem auto'} padding={'1rem'}>
 
                                     <FormControl margin={'1rem'}>
                                         <FormLabel textAlign={'center'}>Nome</FormLabel>
@@ -142,6 +165,13 @@ export function DrawerCadastro() {
                                             onChange={e => setTeam(e.target.value)}
                                         />
                                     </FormControl>
+                                    <FormControl>
+                                        <FormLabel textAlign={'center'}>Upload da foto</FormLabel>
+                                        <Input
+                                            type='file'
+                                            onChange={handleUploadClick}
+                                        />
+                                    </FormControl>
 
                                 </Box>
                             </Stack>
@@ -169,16 +199,27 @@ export const Cadastro = () => {
     const [role, setRole] = useState('')
     const [team, setTeam] = useState('')
     const [senha, setSenha] = useState('')
+    const [selectedFile, setSelectedFile] = useState<File | undefined>()
+    const [link, setLink] = useState('')
+
+    const handleUploadClick = (e: any) => {
+        setSelectedFile(e.target.files[0])
+    }
 
     const handleClick = () => setShow(!show)
     const submit = async (e: any) => {
         e.preventDefault();
-        await refreshTokenFetch()
-
+        await verifyTokenFetch()
         try {
+            if (selectedFile?.size !== 0 && selectedFile !== undefined) {
+                const formData = new FormData()
+                formData.append('file', selectedFile)
+                const photoLink = await uploadPhoto(formData)
+                setLink(photoLink)
+            }
             console.log(
 
-                await createUser(name, email, role, team, senha)
+                await createUser(name, email, role, team, senha, link)
             );
         } catch (error) {
 
@@ -200,7 +241,7 @@ export const Cadastro = () => {
             <Center padding='2rem'>
                 <Heading>Cadatrar Usuário</Heading>
             </Center>
-            <Box width={'30rem'} height={'30rem'} margin={'1rem auto'} padding={'1rem'}>
+            <Box width={'30rem'} height={'600px'} margin={'1rem auto'} padding={'1rem'}>
 
                 <FormControl margin={'1rem'}>
                     <FormLabel textAlign={'center'}>Nome</FormLabel>
@@ -252,6 +293,13 @@ export const Cadastro = () => {
                         value={team}
                         type='text'
                         onChange={e => setTeam(e.target.value)}
+                    />
+                </FormControl>
+                <FormControl>
+                    <FormLabel textAlign={'center'}>Upload da foto</FormLabel>
+                    <Input
+                        type='file'
+                        onChange={handleUploadClick}
                     />
                 </FormControl>
                 <Center>
