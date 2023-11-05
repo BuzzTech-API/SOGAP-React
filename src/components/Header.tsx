@@ -55,6 +55,18 @@ export const Header = () => {
         }
     }
 
+    function handleCheckboxClick(event: { stopPropagation: () => void }) {
+        // Evitar o fechamento do MenuList quando o Checkbox é clicado.
+        event.stopPropagation()
+        }
+
+        const notifications = [
+            { id: 1, message: "Notification 1", isRead: false },
+            { id: 2, message: "Notification 2", isRead: true },
+            { id: 3, message: "Notification 3", isRead: false },
+            { id: 4, message: "Notification 4", isRead: true },
+          ];
+
 
     return (
 
@@ -131,7 +143,7 @@ export const Header = () => {
                 </Link>
             </Flex>
             <Spacer />
-            <Menu>
+            <Menu onClose={() => {}}>
                 <MenuButton
                     as={Button}
                         bg="transparent" 
@@ -153,11 +165,16 @@ export const Header = () => {
                     <MenuList
                         bg={'#58595B'}
                     >
-                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 1 <Checkbox marginLeft={'4.7rem'}></Checkbox></MenuItem>
-                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 2 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
-                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 3 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
-                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 4 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
-                        <MenuItem bg={'#58595B'} color={'#FFFFFF'}>Notification 5 <Checkbox marginLeft={'4.5rem'}></Checkbox></MenuItem>
+                        <Box bg={'#58595B'} width={'15rem'}>
+                            <Box display="flex" justifyContent="space-between" alignItems="center">
+                            <Text fontWeight="semibold" fontSize="18px" marginLeft={'0.5rem'}>Notificações</Text>
+                            <Text fontWeight="semibold" fontSize="14px" marginRight={'0.5rem'} textAlign="right">Marcar<br />como lida</Text>
+                            </Box>
+                            {notifications.map((notification) => (
+                                <MenuItem key={notification.id} bg={'#58595B'} color={'#FFFFFF'}>
+                                {notification.message}<Checkbox onClick={handleCheckboxClick} marginLeft={'4.5rem'}></Checkbox></MenuItem>
+                            ))}
+                        </Box>
                     </MenuList>
                 </Menu>
             <Flex
