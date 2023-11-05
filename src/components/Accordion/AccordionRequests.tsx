@@ -175,6 +175,8 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
           {is_validated === false &&
             evidences.length !== 0 &&
             evidences !== undefined &&
+            evidences[evidences.length - 1].validation !== undefined &&
+            evidences[evidences.length - 1].validation.length === 0 &&
             role !== null && role === 'Colaborador' && (<Text
               lineHeight="1.5"
               fontWeight="semibold"
@@ -186,6 +188,7 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
             </Text>)}
 
           {evidence_is_validated === false &&
+          requestForEvidence.user_id === myId &&
             <AddEvidence
               request={requestForEvidence}
               setRequestForEvidence={setRequestForEvidence}
@@ -194,21 +197,42 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
               evidences={evidences}
               setEvidences={setEvidences}
             />}
-          <Flex flexDirection={'row'} gap={'1rem'}>
-
-            <BtnDeleteEvidencia
-              evidencia={requestForEvidence}
-              setRequests={setRequests}
-              setStep={setStep}
-              step={step}
-            />
-
-            <ModalUpdateRequestEvidence
-              requestEvidence={requestForEvidence}
+          {
+            evidence_is_validated === false &&
+            role !== null && role === 'Colaborador' &&
+            requestForEvidence.user_id === myId &&
+            <AddEvidence
+              request={requestForEvidence}
               setRequestForEvidence={setRequestForEvidence}
-              setStep={setStep}
               step={step}
+              setStep={setStep}
+              evidences={evidences}
+              setEvidences={setEvidences}
             />
+          }
+          <Flex flexDirection={'row'} gap={'1rem'}>
+            {
+              role !== null && role !== 'Colaborador' &&
+              
+              (
+                <>
+                  <BtnDeleteEvidencia
+                    evidencia={requestForEvidence}
+                    setRequests={setRequests}
+                    setStep={setStep}
+                    step={step}
+                  />
+
+                  <ModalUpdateRequestEvidence
+                    requestEvidence={requestForEvidence}
+                    setRequestForEvidence={setRequestForEvidence}
+                    setStep={setStep}
+                    step={step}
+                  />
+                </>
+              )
+
+            }
           </Flex>
 
 
@@ -307,49 +331,44 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
             </Text>
           </Box>
           {role !== null && role !== 'Colaborador' &&
-            <Menu>
-              <MenuButton as={Button} bgColor={'#29784E'} color={'#FFF'} variant="solid" size="md">
-                Ações
-              </MenuButton>
-              <MenuList bg={'#58595B'}>
-                {role !== null && role !== 'Colaborador' && requestForEvidence.user_id === myId &&
-                  <MenuItem bg={'#58595B'}>
-                    <AddEvidence
-                      request={requestForEvidence}
-                      setRequestForEvidence={setRequestForEvidence}
-                      step={step}
-                      setStep={setStep}
-                      evidences={evidences}
-                      setEvidences={setEvidences}
-                    />
-                  </MenuItem>}
-                <MenuItem bg={'#58595B'}>
-                  <BtnDeleteEvidencia evidencia={requestForEvidence} setRequests={setRequests} setStep={setStep} step={step} />
-                </MenuItem>
-                <MenuItem bg={'#58595B'} >
-                  <ModalUpdateRequestEvidence requestEvidence={requestForEvidence} setRequestForEvidence={setRequestForEvidence} setStep={setStep} step={step} />
-                </MenuItem>
-              </MenuList>
-            </Menu>
+            <Box display={'flex'} flexDirection={'column'} gap={'2rem'}>
+
+              {role !== null && role !== 'Colaborador' && requestForEvidence.user_id === myId &&
+                <AddEvidence
+                  request={requestForEvidence}
+                  setRequestForEvidence={setRequestForEvidence}
+                  step={step}
+                  setStep={setStep}
+                  evidences={evidences}
+                  setEvidences={setEvidences}
+                />}
+
+              <Box display={'flex'} flexDirection={'row'} gap={'2rem'}>
+                <BtnDeleteEvidencia
+                  evidencia={requestForEvidence}
+                  setRequests={setRequests}
+                  setStep={setStep}
+                  step={step}
+                />
+
+                <ModalUpdateRequestEvidence
+                  requestEvidence={requestForEvidence}
+                  setRequestForEvidence={setRequestForEvidence}
+                  setStep={setStep}
+                  step={step}
+                />
+              </Box>
+            </Box>
           }
           {role !== null && role === 'Colaborador' && requestForEvidence.user_id === myId &&
-            <Menu>
-              <MenuButton as={Button} bgColor={'#29784E'} color={'#FFF'} variant="solid" size="md">
-                Ações
-              </MenuButton>
-              <MenuList bg={'#58595B'}>
-                <MenuItem bg={'#58595B'}>
-                  <AddEvidence
-                    request={requestForEvidence}
-                    setRequestForEvidence={setRequestForEvidence}
-                    step={step}
-                    setStep={setStep}
-                    evidences={evidences}
-                    setEvidences={setEvidences}
-                  />
-                </MenuItem>
-              </MenuList>
-            </Menu>
+            <AddEvidence
+              request={requestForEvidence}
+              setRequestForEvidence={setRequestForEvidence}
+              step={step}
+              setStep={setStep}
+              evidences={evidences}
+              setEvidences={setEvidences}
+            />
           }
         </ VStack>
       </AccordionPanel>

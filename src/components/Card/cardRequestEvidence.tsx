@@ -49,13 +49,13 @@ export const CardRequestEvidence = ({ requestEvidence }: requestEvidenceCardInte
 
 
 
-    return <Card background="#58595B" onClick={evento} boxShadow="base" opacity="0.9" w={'15.1rem'} h={'18rem'} maxHeight={'17rem'} borderRadius={'0.5rem'}>
-        <Stack justify="flex-start" align="center" spacing="23px" opacity={'0.9'}>
+    return <Card background="#58595B" onClick={evento} boxShadow="base" opacity="0.9" w={'15.1rem'} h={'22rem'} maxHeight={'22rem'} borderRadius={'0.5rem'}>
+        <Stack justify="flex-start" align="center" spacing="1.5rem" opacity={'0.9'}>
             <Stack
                 justify="flex-start"
                 align="center"
-                spacing="4px"
-                height="237.5px"
+                spacing="1rem"
+                height="19rem"
                 opacity={'0.9'}
                 padding={'1rem'}
             >

@@ -84,7 +84,7 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
         h={'100%'}
         display={displayCard}
         >
-           <CardStepShowProcess step={step} onClick={function (): void {
+           <CardStepShowProcess step={step} steps={steps} key={step.id} onClick={function (): void {
             ''
           }} />
         </Center>
@@ -290,7 +290,7 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
                   {
                     role !== null &&
                     (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
-                    <ModalSolicitaEvidencia requests={requests} setRequests={setRequests} step={step} setStep={setStep} />
+                    <ModalSolicitaEvidencia requests={requests} setRequests={setRequests} step={step} setStep={setStep} steps={steps} setSteps={setSteps} />
                   }
                 </TabPanel>
                 {

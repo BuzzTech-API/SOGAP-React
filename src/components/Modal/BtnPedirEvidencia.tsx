@@ -13,12 +13,14 @@ import { verifyTokenFetch } from "../../services/token";
 interface requestEvidence {
     step: Step,
     setStep: React.Dispatch<SetStateAction<Step>>,
+    steps: Step[],
+    setSteps: React.Dispatch<SetStateAction<Step[]>>,
     requests: RequestForEvidence[],
     setRequests: React.Dispatch<SetStateAction<RequestForEvidence[]>>
 }
 
 
-export const ModalSolicitaEvidencia = ({ step, setStep, requests, setRequests }: requestEvidence) => {
+export const ModalSolicitaEvidencia = ({ step, setStep,steps, setSteps, requests, setRequests }: requestEvidence) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [requiredDocument, setRequiredDocument] = useState('')
     const [description, setDescription] = useState('')
@@ -57,8 +59,13 @@ export const ModalSolicitaEvidencia = ({ step, setStep, requests, setRequests }:
         
         const newRequest = await createRequestEvidence(requiredDocument, description, step.id, Number.parseInt(responsibleName), evidenceValidationDate, deliveryDate)
         if (newRequest) {
-            step.requests.push(newRequest)
-            setStep(step)
+            setSteps(steps.map(stepmap =>{
+                if (step.id === stepmap.id) {
+                    stepmap.requests.push(newRequest)
+                    return stepmap
+                }
+                return stepmap
+            }))
             setRequests(requests.concat(newRequest))
             onClose()
         }

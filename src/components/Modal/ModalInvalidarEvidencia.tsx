@@ -31,33 +31,7 @@ export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestFor
     const [reason, setReason] = useState('')
     const {socket} = useSocket()
 
-    useEffect(() => {
-        if (socket) {
-            socket.onmessage =(event)=>{
-                const data = JSON.parse(event.data)
-                const validation = new Validation(
-                    data.validation.id,
-                    data.validation.evidence_id,
-                    data.validation.reason,
-                    data.validation.user_id,
-                    data.validation.is_validated
-                )
-                evidence.validation.push(validation)
-                setEvidences(evidences.map(evidenceMap=>{
-                    if (evidenceMap.id === evidence.id) {
-                        return evidence
-                    }
-                    return evidenceMap
-                }))
-            }
-            
-        }
-
     
-      return () => {
-        
-      }
-    }, [])
     
 
 
@@ -79,6 +53,15 @@ export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestFor
                     }
                 }
                 socket.send(JSON.stringify(data))
+                const validation = new Validation(-1, evidence.id, reason, myId, false)
+                setEvidences(evidences.map(evidenceMap=>{
+                    if (evidenceMap.id === validation.evidence_id) {
+                        evidenceMap.validation.push(validation)
+                        return evidenceMap
+                    }
+                    return evidenceMap
+                }))
+                onClose()
             }
         }
 

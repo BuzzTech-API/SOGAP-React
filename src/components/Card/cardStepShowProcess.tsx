@@ -10,12 +10,13 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface StepCard {
     step: Step;
+    steps: Step[];
     onClick: () => void
 }
 
 
 
-export const CardStepShowProcess = ({ step, onClick }: StepCard) => {
+export const CardStepShowProcess = ({ step, steps, onClick }: StepCard) => {
     const [validado, setValidado] = useState(0)
     const [naoValidado, setNaoValidado] = useState(0)
 
@@ -25,7 +26,7 @@ export const CardStepShowProcess = ({ step, onClick }: StepCard) => {
         const filteredArray = step.requests.filter(requestForEvidence => requestForEvidence.is_validated === true)
         setNaoValidado(total - filteredArray.length)
         setValidado(filteredArray.length)
-    }, [])
+    }, [steps])
 
     const data = {
         labels: ['Validado', 'Não Validado'],
@@ -83,7 +84,7 @@ export const CardStepShowProcess = ({ step, onClick }: StepCard) => {
             borderTopRadius={'7.5rem'}
         >
             <Box maxW={'15rem'} maxH={'15rem'} alignSelf={'center'} position={'absolute'} top={'-4rem'}>
-                <Doughnut data={data} options={options} />
+                <Doughnut data={data} options={options} redraw />
             </Box>
             <Box h={'6.5rem'} width={'100%'} alignContent={'center'} color={'#FFF'} paddingTop={'3rem'}>
                 <Text textAlign={'center'}>{validado}/{validado + naoValidado}</Text>

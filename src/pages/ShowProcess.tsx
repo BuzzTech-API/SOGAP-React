@@ -101,7 +101,7 @@ export const ShowProcess = () => {
                             onOpen()
                         }
 
-                        return (<CardStepShowProcess step={step} onClick={showInfos} key={step.id} />)
+                        return (<CardStepShowProcess step={step} steps={steps} onClick={showInfos} key={step.id} />)
                     })}
                     {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
                         <Card w={'15rem'}

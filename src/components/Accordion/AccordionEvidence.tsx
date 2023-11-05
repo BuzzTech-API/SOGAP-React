@@ -3,11 +3,13 @@ import Evidence from "../../models/Evidence"
 import { BtnDeleteEvidencia } from "../BtnDeleteEvidencia"
 import { ModalUpdateRequestEvidence } from "../Modal/ModalEditarRequisiçãoEvidencia"
 import { ModalInvalidarEvidencia } from "../Modal/ModalInvalidarEvidencia"
-import { SetStateAction } from "react"
+import { SetStateAction, useEffect } from "react"
 import { validateEvidence } from "../../services/requestEvidence"
 import RequestForEvidence from "../../models/RequestForEvidence"
 import { formatDateToBrasil } from "../../services/formatDate"
 import { AttachmentIcon } from "@chakra-ui/icons"
+import { useSocket } from "../../layout/DefaultLayout"
+import Validation from "../../models/Validation"
 
 interface propsAE {
     role: String
@@ -24,6 +26,36 @@ interface propsAE {
 export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequestForEvidence, requestForEvidence, process_id, step_id, myId, setEvidences }: propsAE) => {
     const toast = useToast()
     const { isOpen, onClose, onOpen } = useDisclosure()
+
+    const {socket} = useSocket()
+
+    useEffect(() => {
+        if (socket) {
+            socket.onmessage =(event)=>{
+                const data = JSON.parse(event.data)
+                const validation = new Validation(
+                    data.validation.id,
+                    data.validation.evidence_id,
+                    data.validation.reason,
+                    data.validation.user_id,
+                    data.validation.is_validated
+                )
+                setEvidences(evidences.map(evidenceMap=>{
+                    if (evidenceMap.id === validation.evidence_id) {
+                        evidenceMap.validation.push(validation)
+                        return evidenceMap
+                    }
+                    return evidenceMap
+                }))
+            }
+            
+        }
+
+    
+      return () => {
+        
+      }
+    }, [])
 
     const valitadeEvidenceAction = async () => {
         toast.promise(validateEvidence(requestForEvidence.id), {
@@ -85,12 +117,8 @@ export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequest
                                     requestForEvidence.is_validated === false &&
                                     role !== null && (role === 'Administrador' || role === 'Gerente' || role === 'Lider') &&
                                     (
-                                        <Menu>
-                                            <MenuButton as={Button} bgColor={'#29784E'} color={'#FFF'} variant="solid" size="md">
-                                                Ações
-                                            </MenuButton>
-                                            <MenuList bg={'#58595B'} padding={'1rem'} >
-                                                <MenuItem
+                                        <Box display={'flex'} flexDir={'row'} gap={'2rem'}>
+                                        <Button
                                                     as={Button}
                                                     bg={'#58595B'}
                                                     color={'#FFF'}
@@ -99,8 +127,8 @@ export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequest
                                                     onClick={valitadeEvidenceAction}
                                                 >
                                                     Validar Evidência
-                                                </MenuItem>
-                                                <MenuItem
+                                                </Button>
+                                                <Button
                                                     as={Button}
                                                     bg={'#58595B'}
                                                     color={'#FFF'}
@@ -120,9 +148,8 @@ export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequest
                                                         myId={myId}
                                                         evidence={evidence}
                                                     />
-                                                </MenuItem>
-                                            </MenuList>
-                                        </Menu>
+                                                </Button>
+                                        </Box>
                                     )
                                 }
                                 {
