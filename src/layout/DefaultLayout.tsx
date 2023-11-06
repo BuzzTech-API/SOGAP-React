@@ -7,6 +7,7 @@ import { useOutletContext } from "react-router";
 import { getUser } from "../services/users";
 import NotificationClass from "../models/Notification";
 import { refreshTokenFetch } from "../services/token";
+import Cookies from "universal-cookie";
 
 type ContextType = { socket: WebSocket | null };
 
@@ -21,6 +22,9 @@ export default function DefaultLayout() {
             (async ()=>await refreshTokenFetch())();
 
         }finally{
+            const cookie = new Cookies()
+            cookie.remove('access_token')
+            cookie.set('access_token', localStorage.getItem('access_token'),{sameSite:'strict'})
 
             const socket = new WebSocket(`ws://${window.location.hostname}/notification/ws`);
             

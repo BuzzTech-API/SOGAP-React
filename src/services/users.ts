@@ -117,7 +117,7 @@ export const getUser = async () => {
         const data = await response.json()
         localStorage.setItem('cargo', data.role)
         const cookie = new Cookies()
-        cookie.set('myId',data.id,{sameSite:'lax'})
+        cookie.set('myId',data.id,{sameSite:'strict'})
         return data
       }
     } catch (error) {

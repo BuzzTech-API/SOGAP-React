@@ -18,8 +18,8 @@ export const refreshToken = async (authenticated: Authenticated) => {
       if (response.status === 200) {
         const data = await response.json()
         const cookie = new Cookies()
-        cookie.set('access_token', data.access_token,{sameSite:'lax'})
-        cookie.set('refresh_token', data.refresh_token,{sameSite:'lax'})
+        cookie.set('access_token', data.access_token,{sameSite:'strict'})
+        cookie.set('refresh_token', data.refresh_token,{sameSite:'strict'})
         localStorage.setItem('access_token', data.access_token)
         localStorage.setItem('refresh_token', data.refresh_token)
         return authenticated.isAuthenticated = true;
@@ -91,8 +91,8 @@ export const loginToken = async (email: string, senha: string) => {
     return false
   }
   const cookie = new Cookies()
-  cookie.set('access_token', data.access_token,{sameSite:'lax'})
-  cookie.set('refresh_token', data.refresh_token,{sameSite:'lax'})
+  cookie.set('access_token', data.access_token,{sameSite:'strict'})
+  cookie.set('refresh_token', data.refresh_token,{sameSite:'strict'})
   localStorage.setItem('access_token', data.access_token)
   localStorage.setItem('refresh_token', data.refresh_token)
 }
@@ -127,8 +127,10 @@ export const refreshTokenFetch = async () => {
       if (response.status === 200) {
         const data = await response.json()
         const cookie = new Cookies()
-        cookie.set('access_token', data.access_token,{sameSite:'lax'})
-        cookie.set('refresh_token', data.refresh_token,{sameSite:'lax'})
+        cookie.remove('access_token')
+        cookie.remove('refresh_token')
+        cookie.set('access_token', data.access_token,{sameSite:'strict'})
+        cookie.set('refresh_token', data.refresh_token,{sameSite:'strict'})
         localStorage.setItem('access_token', data.access_token)
         localStorage.setItem('refresh_token', data.refresh_token)
       }
@@ -187,8 +189,8 @@ export const verifyCode = async (verificationCode: string) => {
       if (response.status === 200) {
         const data = await response.json()
         const cookie = new Cookies()
-        cookie.set('access_token', data.access_token,{sameSite:'lax'})
-        cookie.set('refresh_token', data.refresh_token,{sameSite:'lax'})
+        cookie.set('access_token', data.access_token,{sameSite:'strict'})
+        cookie.set('refresh_token', data.refresh_token,{sameSite:'strict'})
         localStorage.setItem('access_token', data.access_token)
         localStorage.setItem('refresh_token', data.refresh_token)
         localStorage.removeItem('login_token');

@@ -24,15 +24,16 @@ import TwoAuthModal from "../components/Modal/QrCodeModal"
 import { BellIcon } from '@chakra-ui/icons'
 import { useSocket } from '../layout/DefaultLayout'
 import NotificationClass from '../models/Notification'
+import { notificationVisualized } from '../services/notification'
 
 
-interface PropsH{
+interface PropsH {
 
     notifications: NotificationClass[]
     setNotifications: React.Dispatch<React.SetStateAction<NotificationClass[]>>
 }
 
-export const Header = ({notifications, setNotifications}:PropsH) => {
+export const Header = ({ notifications, setNotifications }: PropsH) => {
     const [name, setName] = useState('')
     const [role, setRole] = useState('')
     const [photo_link, setPhoto_link] = useState('')
@@ -57,7 +58,7 @@ export const Header = ({notifications, setNotifications}:PropsH) => {
     }, [])
 
 
-    
+
     const deactivated2FA = async () => {
         const data = await disable2FA()
         if (data.deactivated === true) {
@@ -68,7 +69,19 @@ export const Header = ({notifications, setNotifications}:PropsH) => {
     function handleCheckboxClick(event: { stopPropagation: () => void }) {
         // Evitar o fechamento do MenuList quando o Checkbox é clicado.
         event.stopPropagation()
+    }
+
+    async function handleCheckboxChange(event: any) {
+        // Evitar o fechamento do MenuList quando o Checkbox é clicado.
+        if(event.target.checked){
+            setNotifications(notifications.filter(notification =>{ if (notification.id !== event.target.value) return notification}))
+            await notificationVisualized(event.target.value)
         }
+
+
+
+
+    }
 
 
     return (
@@ -116,7 +129,7 @@ export const Header = ({notifications, setNotifications}:PropsH) => {
                     <MenuList
                         color={'#FFF'} bg={'#58595B'} padding={'1rem'}>
                         {role === 'Administrador' && <DrawerCadastro />
-                            }
+                        }
                         <Link to={'/'}>
                             <MenuItem
                                 bg={'#58595B'}
@@ -150,7 +163,7 @@ export const Header = ({notifications, setNotifications}:PropsH) => {
                 </Link>
             </Flex>
             <Spacer />
-            <Menu onClose={() => {}} closeOnSelect={false}>
+            <Menu onClose={() => { }} closeOnSelect={false}>
                 <MenuButton
                     as={Button}
                     bg="transparent"
@@ -167,25 +180,27 @@ export const Header = ({notifications, setNotifications}:PropsH) => {
                         margin={'0'}
                         padding={'0'}
                         color={"#FFFFFF"}
-                    /> } 
-                    >
-                    </MenuButton>
-                    <MenuList
-                        bg={'#58595B'}
-                        w={'20rem'}
-                    >
-                        <Box bg={'#58595B'} width={'19rem'}>
-                            <Box display="flex" justifyContent="space-between" alignItems="center">
+                    />}
+                >
+                </MenuButton>
+                <MenuList
+                    bg={'#58595B'}
+                    w={'30rem'}
+                    maxH={'30rem'}
+                    overflowY={'auto'}
+                >
+                    <Box bg={'#58595B'} width={'29rem'}>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
                             <Text fontWeight="semibold" fontSize="18px" marginLeft={'0.5rem'}>Notificações</Text>
                             <Text fontWeight="semibold" fontSize="14px" marginRight={'0.5rem'} textAlign="right">Marcar<br />como lida</Text>
-                            </Box>
-                            {notifications.map((notification) => (
-                                <MenuItem key={notification.id} bg={'#58595B'} color={'#FFFFFF'} w={'18rem'} h={'5rem'} overflowY={'auto'}>
-                                {notification.mensage}<Checkbox onClick={handleCheckboxClick} marginLeft={'4.5rem'}></Checkbox></MenuItem>
-                            ))}
                         </Box>
-                    </MenuList>
-                </Menu>
+                        {notifications.map((notification) => (
+                            <MenuItem key={'Notification:' + notification.id} bg={'#58595B'} color={'#FFFFFF'} w={'28rem'} textAlign={'justify'}>
+                                {notification.mensage}<Checkbox onClick={handleCheckboxClick} value={notification.id} onChange={handleCheckboxChange} marginLeft={'4.5rem'}></Checkbox></MenuItem>
+                        ))}
+                    </Box>
+                </MenuList>
+            </Menu>
             <Flex
                 flexDirection={'row'}
                 width={['4rem', '4rem', "15rem"]}
