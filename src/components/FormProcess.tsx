@@ -46,11 +46,13 @@ export interface FormDataStructure {
 interface IconSettings {
   width: string,
   setProcesses: React.Dispatch<React.SetStateAction<Process[]>>
+  setSortProcess: React.Dispatch<React.SetStateAction<Process[]>>
   processes: Array<Process>
+  sortProcess: Array<Process>
 }
 
 //Função Principal
-const FormP = ({ width, setProcesses, processes }: IconSettings) => {
+const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: IconSettings) => {
 
 
   const [usersList, setUsersList] = useState(new Array<User>())
@@ -117,8 +119,8 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
 
   //Função para submeter os dados ao servidor BackEnd
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    await verifyTokenFetch()
     e.preventDefault();
+    await verifyTokenFetch()
     try {
       const response: Process = await sendFormData(formData);
 
@@ -127,6 +129,7 @@ const FormP = ({ width, setProcesses, processes }: IconSettings) => {
       })
 
       setProcesses(processes.concat(response))
+      setSortProcess(processes)
 
     } catch (error) {
       console.error("Erro ao enviar dados do Formulário para o backend", error);

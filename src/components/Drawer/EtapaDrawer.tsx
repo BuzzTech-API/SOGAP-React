@@ -284,7 +284,7 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
                 <TabPanel alignItems={'center'} alignContent={'center'}>
                   <Accordion allowToggle>
                     {step.requests.map((requestForEvidence: RequestForEvidence) => {
-                      return (<AccordionRequests key={requestForEvidence.id} requestForEvidenceI={requestForEvidence} setRequests={setRequests} process_id={step.process_id} step={step} setStep={setStep} />)
+                      return (<AccordionRequests key={requestForEvidence.id} steps={steps} setSteps={setSteps} requestForEvidenceI={requestForEvidence} setRequests={setRequests} process_id={step.process_id} step={step} setStep={setStep} />)
                     })}
                   </Accordion>
                   {

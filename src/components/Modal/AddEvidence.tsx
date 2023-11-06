@@ -24,10 +24,10 @@ export const AddEvidence: React.FC<AddEvidenceI> = ({
     return (
         <>
             <Button
-                bg={'#58595B'}
+                bg={'#53C4CD'}
                 color={'#FFF'}
                 _hover={{ background: '#FFF', color: '#58595B' }}
-                width={'50%'}
+                width={'12rem'}
                 minHeight={'3rem'}
                 padding={'0.1rem'}
                 textAlign={'center'}

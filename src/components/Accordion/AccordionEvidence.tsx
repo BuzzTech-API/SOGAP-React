@@ -10,6 +10,7 @@ import { formatDateToBrasil } from "../../services/formatDate"
 import { AttachmentIcon } from "@chakra-ui/icons"
 import { useSocket } from "../../layout/DefaultLayout"
 import Validation from "../../models/Validation"
+import Step from "../../models/Steps"
 
 interface propsAE {
     role: String
@@ -21,17 +22,19 @@ interface propsAE {
     myId: number
     evidences: Evidence[]
     setEvidences: React.Dispatch<SetStateAction<Evidence[]>>
+    steps: Step[],
+    setSteps: React.Dispatch<SetStateAction<Step[]>>,
 }
 
-export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequestForEvidence, requestForEvidence, process_id, step_id, myId, setEvidences }: propsAE) => {
+export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequestForEvidence, requestForEvidence, process_id, step_id, myId, setEvidences, steps, setSteps }: propsAE) => {
     const toast = useToast()
     const { isOpen, onClose, onOpen } = useDisclosure()
 
-    const {socket} = useSocket()
+    const { socket } = useSocket()
 
     useEffect(() => {
         if (socket) {
-            socket.onmessage =(event)=>{
+            socket.onmessage = (event) => {
                 const data = JSON.parse(event.data)
                 const validation = new Validation(
                     data.validation.id,
@@ -40,7 +43,7 @@ export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequest
                     data.validation.user_id,
                     data.validation.is_validated
                 )
-                setEvidences(evidences.map(evidenceMap=>{
+                setEvidences(evidences.map(evidenceMap => {
                     if (evidenceMap.id === validation.evidence_id) {
                         evidenceMap.validation.push(validation)
                         return evidenceMap
@@ -48,13 +51,13 @@ export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequest
                     return evidenceMap
                 }))
             }
-            
+
         }
 
-    
-      return () => {
-        
-      }
+
+        return () => {
+
+        }
     }, [])
 
     const valitadeEvidenceAction = async () => {
@@ -65,7 +68,20 @@ export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequest
         }
         )
         requestForEvidence.is_validated = true
+        setRequestForEvidence(requestForEvidence)
         setIs_validated(requestForEvidence.is_validated)
+        setSteps(steps.map(step =>{
+            if (step.id === step_id) {
+                step.requests.map(requestForEvidencemap =>{
+                    if (requestForEvidencemap.id ===requestForEvidence.id) {
+                        return requestForEvidence
+                    }
+                    return requestForEvidencemap
+                })
+                return step
+            }
+            return step
+        }))
     }
     const invalitadeEvidenceAction = async () => {
         onOpen()
@@ -118,37 +134,37 @@ export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequest
                                     role !== null && (role === 'Administrador' || role === 'Gerente' || role === 'Lider') &&
                                     (
                                         <Box display={'flex'} flexDir={'row'} gap={'2rem'}>
-                                        <Button
-                                                    as={Button}
-                                                    bg={'#58595B'}
-                                                    color={'#FFF'}
-                                                    width={'100%'}
-                                                    _hover={{ background: '#FFF', color: '#58595B' }}
-                                                    onClick={valitadeEvidenceAction}
-                                                >
-                                                    Validar Evidência
-                                                </Button>
-                                                <Button
-                                                    as={Button}
-                                                    bg={'#58595B'}
-                                                    color={'#FFF'}
-                                                    width={'100%'}
-                                                    _hover={{ background: '#FFF', color: '#58595B' }}
-                                                    onClick={invalitadeEvidenceAction}
-                                                >
-                                                    Invalidar Evidência
-                                                    <ModalInvalidarEvidencia
-                                                        evidences={evidences}
-                                                        setEvidences={setEvidences}
-                                                        process_id={process_id}
-                                                        isOpen={isOpen}
-                                                        onClose={onClose}
-                                                        requestForEvidence={requestForEvidence}
-                                                        step_id={step_id}
-                                                        myId={myId}
-                                                        evidence={evidence}
-                                                    />
-                                                </Button>
+                                            <Button
+                                                as={Button}
+                                                bg={'#53C4CD'}
+                                                color={'#FFF'}
+                                                width={'100%'}
+                                                _hover={{ background: '#FFF', color: '#58595B' }}
+                                                onClick={valitadeEvidenceAction}
+                                            >
+                                                Validar Evidência
+                                            </Button>
+                                            <Button
+                                                as={Button}
+                                                bg={'#ff1a1a'}
+                                                color={'#FFF'}
+                                                width={'100%'}
+                                                _hover={{ background: '#FFF', color: '#58595B' }}
+                                                onClick={invalitadeEvidenceAction}
+                                            >
+                                                Invalidar Evidência
+                                                <ModalInvalidarEvidencia
+                                                    evidences={evidences}
+                                                    setEvidences={setEvidences}
+                                                    process_id={process_id}
+                                                    isOpen={isOpen}
+                                                    onClose={onClose}
+                                                    requestForEvidence={requestForEvidence}
+                                                    step_id={step_id}
+                                                    myId={myId}
+                                                    evidence={evidence}
+                                                />
+                                            </Button>
                                         </Box>
                                     )
                                 }

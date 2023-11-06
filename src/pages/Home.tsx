@@ -52,50 +52,14 @@ export const Home = () => {
     }, [])
 
     const handleClick = () => {
-};
-
-    const sortByTitle = () => {
-        const sortedProcesses = [...processes].sort((a, b) => {
-            if (a.title < b.title)
-                return sortTitle ? 1 : -1
-            if (a.title > b.title)
-                return sortTitle ? -1 : 1
-            return 0
-        })
-        setSortProcess(sortedProcesses)
-        setSortTitle(!sortTitle)
-    }
-
-    const sortByLastUpdate = () => {
-        const sortedProcesses = [...processes].sort((a, b) => {
-            if (a.lastUpdate < b.lastUpdate)
-                return sortLastUpdate ? 1 : -1
-            if (a.lastUpdate > b.lastUpdate)
-                return sortLastUpdate ? -1 : 1
-            return 0
-        })
-        setSortProcess(sortedProcesses)
-        setSortLastUpdate(!sortLastUpdate)
-    }
-
-    const sortByStatus = () => {
-        const sortedProcesses = [...processes].sort((a, b) => {
-            if (a.status < b.status)
-                return sortStatus ? 1 : -1
-            if (a.status > b.status)
-                return sortStatus ? -1 : 1
-            return 0
-        })
-        setSortProcess(sortedProcesses)
-        setSortStatus(!sortStatus)
-    }
+    };
 
     return (<Flex flexDirection={'column'}>
 
         {role === 'C-Level' && (
             <Navigate to="/clevel" replace={true} />
         )}
-        <Flex width={['100%']} maxWidth={'100.125rem'} alignSelf={'center'} marginTop='1rem' key={1}>
+        <Flex width={['100%']} maxWidth={'100.125rem'} alignSelf={'center'} marginTop='1rem' key={'Flex Próximo do Prazo'}>
             <Text
                 fontFamily={'Poppins'}
                 fontSize='1.5rem'
@@ -115,7 +79,7 @@ export const Home = () => {
                 steps={steps.length > 0 ? steps : undefined}
                 setRequestForEvidence={requestForEvidence.length > 0 ? setRequestForEvidence : undefined}
                 requestForEvidence={requestForEvidence.length > 0 ? requestForEvidence : undefined}
-                key={-1}
+                key={-1898009}
             />
         </Flex>
         <Flex
@@ -125,33 +89,33 @@ export const Home = () => {
             flexWrap={["nowrap", "wrap"]}
             gap='1rem'
             marginTop={'1rem'}
-            maxHeight='18rem'
-            minHeight='18rem'
-            key={2}
+            maxHeight='22rem'
+            minHeight='22rem'
+            key={'Flex Cards do Proximo do Prazo'}
             maxWidth={'100.125rem'}
             overflowY={'auto'} >
             {requestForEvidence.map((requestForEvidence: RequestForEvidence) => {
                 if (requestForEvidence.is_validated) {
                     return
                 }
-                return <Link to={''}>
+                return <Link to={''} key={'Link to Request Card:' + requestForEvidence.id}>
                     <CardRequestEvidence key={'request:' + requestForEvidence.id}
                         requestEvidence={requestForEvidence}
                     />
                 </Link>
             })}
             {filteredProcesses.map((process: Process) => {
-                return <Link to={`/process/${process.id}`} key={process.id}><CardProcessoPrazo key={"process:" + process.id}
+                return <Link to={`/process/${process.id}`} key={'Link to Process Card:' + process.id}><CardProcessoPrazo key={"process:" + process.id}
                     process={process}
                 /></Link>
             })}
             {steps.map((step: Step) => {
-                return <Link to={`/process/${step.process_id}`} key={step.process_id}><CardShowStepHome key={"Etapa:" + step.id} onClick={handleClick}
+                return <Link to={`/process/${step.process_id}`} key={'Link to Process Card Step:' + step.id}><CardShowStepHome key={"Etapa:" + step.id} onClick={handleClick}
                     step={step}
                 /></Link>
             })}
         </Flex>
-        <Flex flexDirection={'column'} gap={'0.25rem'} key={3}>
+        <Flex flexDirection={'column'} gap={'0.25rem'} key={'Flex Meus processos'}>
 
             <Flex width={['100%']}
                 maxWidth={'100.125rem'}
@@ -161,6 +125,7 @@ export const Home = () => {
                 gap={'0.5rem'}
                 padding={'0.5rem'}
                 display={['flex', 'none']}
+                key={'Flex Meus processos Tela pequena'}
             >
                 <Text
                     fontFamily={'Poppins'}
@@ -187,7 +152,13 @@ export const Home = () => {
                             display={'flex'}
                             justifyContent={'right'}
                         >
-                            <FormP width={'9rem'} processes={processes} setProcesses={setProcesses} />
+                            <FormP
+                                width={'9rem'}
+                                processes={processes}
+                                setProcesses={setProcesses}
+                                setSortProcess={setSortProcess}
+                                sortProcess={sortProcess}
+                            />
                         </Box>
                     </>
                 )}
@@ -225,6 +196,7 @@ export const Home = () => {
                 gap={'0.5rem'}
                 padding={'0.5rem'}
                 display={['none', 'flex']}
+                key={'Flex Meus processos Tela Grande'}
             >
                 <Text
                     fontFamily={'Poppins'}
@@ -272,7 +244,13 @@ export const Home = () => {
                             display={'flex'}
                             justifyContent={'right'}
                         >
-                            <FormP width={'9rem'} processes={processes} setProcesses={setProcesses} />
+                            <FormP
+                                width={'9rem'}
+                                processes={processes}
+                                setProcesses={setProcesses}
+                                setSortProcess={setSortProcess}
+                                sortProcess={sortProcess}
+                            />
                         </Box>
                     </>)}
 
@@ -285,7 +263,9 @@ export const Home = () => {
                     setProcesses={setProcesses}
                     sortProcess={sortProcess}
                     setSortProcess={setSortProcess}
-                    role={role} />
+                    role={role}
+                    key={'tabela dos processos'}
+                />
 
             }
         </Flex>

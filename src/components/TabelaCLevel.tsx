@@ -62,7 +62,7 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
         <TableContainer
             width={['100%']}
             maxW={'100.125rem'}
-            height='25rem'
+            height='23rem'
             alignSelf={'center'}
             bg={'#58595B'}
             borderRadius={'0.75rem'}
@@ -75,25 +75,25 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                     position="sticky"
                     top="0"
                     zIndex="sticky"
-                    key={0}
+                    key={-9987896}
                 >
                     <Tr >
-                        <Th color={'#FFF'} onClick={sortByTitle} key={1}>Título
+                        <Th color={'#FFF'} onClick={sortByTitle} key={-981}>Título
                             <UpDownIcon boxSize={5} mx={2} />
                         </Th>
-                        <Th color={'#FFF'} onClick={sortByTitle} key={1}>Progresso
+                        <Th color={'#FFF'} onClick={sortByTitle} key={-89851}>Progresso
 
                         </Th>
 
-                        <Th textAlign="center" color={'#FFF'} onClick={sortByLastUpdate} key={2}>Prazo
+                        <Th textAlign="center" color={'#FFF'} onClick={sortByLastUpdate} key={-3467}>Prazo
                             <UpDownIcon boxSize={5} mx={2} />
                         </Th>
 
-                        <Th textAlign="center" color={'#FFF'} onClick={sortByStatus} key={3}>Status
+                        <Th textAlign="center" color={'#FFF'} onClick={sortByStatus} key={-86545323}>Status
                             <UpDownIcon boxSize={5} mx={2} />
 
                         </Th>
-                        {role !== null && role !== 'C-Level' && <Th textAlign="center" color={'#FFF'} key={4}>Ações</Th>}
+                        {role !== null && role !== 'C-Level' && <Th textAlign="center" color={'#FFF'} key={-2142434}>Ações</Th>}
 
                     </Tr>
                 </Thead>
@@ -109,10 +109,10 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                             bgColorStatus = '#00afff'
                         }
                         return (
-                            <Tr key={process.id} onClick={()=>setProcess(process)} maxHeight={'3rem'}  _selection={{backgroundColor:"#FFFFFF"}}>
+                            <Tr key={'Process Table Key: '+ process.id} onClick={()=>setProcess(process)} maxHeight={'3rem'}  _selection={{backgroundColor:"#FFFFFF"}}>
 
                                 <Td minWidth='30rem'>{process.title}</Td>
-                                <Td minWidth='20rem' maxH={'3rem'}><ProgressBar process={process} /></Td>
+                                <Td minWidth='18rem' maxW={'18rem'} maxH={'3rem'}><ProgressBar process={process} /></Td>
                                 <Td textAlign="center">{formatDateToBrasil(process.endingDate.toString())}</Td>
                                 <Td><Box
                                     width={'9rem'}
@@ -159,10 +159,10 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                             bgColorStatus = '#00afff'
                         }
                         return (
-                            <Tr key={process.id} maxHeight={'3rem'}  _selection={{backgroundColor:"#FFFFFF"}}>
+                            <Tr key={'Process Table Key: '+ process.id} maxHeight={'3rem'}  _selection={{backgroundColor:"#FFFFFF"}}>
 
                                 <Td minWidth='30rem'>{process.title}</Td>
-                                <Td minWidth='20rem' maxH={'3rem'}><ProgressBar process={process} /></Td>
+                                <Td minWidth='20rem' maxH={'3rem'}  maxW={'20rem'}><ProgressBar process={process} /></Td>
                                 <Td textAlign="center">{formatDateToBrasil(process.endingDate.toString())}</Td>
                                 <Td><Box
                                     width={'9rem'}

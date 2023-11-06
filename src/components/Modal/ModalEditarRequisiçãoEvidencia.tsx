@@ -143,7 +143,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
             <Button
                 display="flex"
                 variant='solid'
-                bg={'#58595B'}
+                bg={'#53C4CD'}
                 color={'#FFF'}
                 width={'100%'}
                 _hover={{ background: '#FFF', color: '#58595B' }}

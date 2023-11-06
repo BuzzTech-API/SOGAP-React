@@ -67,6 +67,7 @@ export const createStep = async (name: string,
 export const updateStep = async (
   step_id: number,
   name: string,
+  status: string,
   endDate: Date,
   endingDate: Date,
   process_id: number,
@@ -79,6 +80,7 @@ export const updateStep = async (
   const bodyJson = {
       "step_id": step_id,
       "name": name,
+      "status": status,
       "endDate": endDate,
       "endingDate": EndingDate,
       "process_id": process_id,

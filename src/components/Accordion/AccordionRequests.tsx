@@ -21,8 +21,10 @@ interface AccordionI {
   step: Step,
   setStep: React.Dispatch<SetStateAction<Step>>,
   setRequests: React.Dispatch<SetStateAction<RequestForEvidence[]>>
+  steps: Step[],
+  setSteps: React.Dispatch<SetStateAction<Step[]>>,
 }
-export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setStep, setRequests }: AccordionI) => {
+export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setStep, setRequests, steps, setSteps }: AccordionI) => {
   const [user, setUser] = useState(new User('', '', '', '', false, 0, '', new Array<Process>()))
   const [requestForEvidence, setRequestForEvidence] = useState(requestForEvidenceI)
   const [is_validated, setIs_validated] = useState(requestForEvidence.is_validated)
@@ -159,6 +161,8 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
           {evidences !== undefined &&
             role !== null &&
             <AccordionEvidence
+              steps={steps}
+              setSteps={setSteps}
               evidences={evidences}
               role={role}
               setIs_validated={setIs_validated}
@@ -188,7 +192,8 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
             </Text>)}
 
           {evidence_is_validated === false &&
-          requestForEvidence.user_id === myId &&
+            role !== null && role !== 'Colaborador' &&
+            requestForEvidence.user_id === myId &&
             <AddEvidence
               request={requestForEvidence}
               setRequestForEvidence={setRequestForEvidence}
@@ -213,7 +218,7 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
           <Flex flexDirection={'row'} gap={'1rem'}>
             {
               role !== null && role !== 'Colaborador' &&
-              
+
               (
                 <>
                   <BtnDeleteEvidencia

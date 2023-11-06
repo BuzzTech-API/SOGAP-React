@@ -23,6 +23,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
     const [endingDate, setEndingDate] = useState(step.endingDate.toString())
     const [objective, setObjective] = useState(step.objective)
     const [priority, setPriority] = useState(step.priority)
+    const [status, setStatus] = useState(step.status)
     const [usersList, setUsersList] = useState(new Array<User>())
     const [responsibleList, setResponsibleList] = useState(new Array<User>())
 
@@ -43,12 +44,16 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
         //valores de prioridade
         setPriority(event.target.value)
     }
+    const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        //valores de prioridade
+        setStatus(event.target.value)
+    }
 
 
     //Função para submeter os dados ao servidor BackEnd
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
+
         await verifyTokenFetch()
         try {
 
@@ -58,7 +63,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
             }
 
 
-            const response = await updateStep(step.id, name, step.endDate, formatToData(endingDate),
+            const response = await updateStep(step.id, name, status, step.endDate, formatToData(endingDate),
                 step.process_id, objective, priority, step.order) //Atualiza a etapa com os dados rebidos 
 
             for (const user of step.users) { //Deleta todos os usuario relacionados a etapa
@@ -67,7 +72,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
             const userStepList = new Array<StepUser>()
             responsibleList.forEach(async (user: User) => { //Cria usuarios relacionados a etapa
                 await createUserStep(user.id, step.id)
-                
+
             })
             responsibleList.forEach((user: User) => { //Cria usuarios relacionados a etapa
                 const userStep: StepUser = {
@@ -78,12 +83,12 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                 userStepList.push(userStep)
             })
 
-            if (setStep!==undefined) {
+            if (setStep !== undefined) {
                 const updatedStep = new Step(
                     step.id,
                     step.process_id,
                     name,
-                    step.status,
+                    status,
                     step.order,
                     objective,
                     formatToData(endingDate),
@@ -103,7 +108,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                             step.id,
                             step.process_id,
                             name,
-                            step.status,
+                            status,
                             step.order,
                             objective,
                             formatToData(endingDate),
@@ -140,7 +145,13 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
     const handleChangeResponsible = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const newResponsible = usersList.find(user => user.id === Number.parseInt(e.target.value))
         if (newResponsible) {
-            setResponsible(newResponsible)
+            let is_inResponsibleList = false
+            responsibleList.forEach(user => {if (user.id ===newResponsible.id) {
+                is_inResponsibleList= true
+            }})
+            if (!is_inResponsibleList) {
+                setResponsibleList(responsibleList.concat(newResponsible))
+            }
         }
     }
 
@@ -151,9 +162,9 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
             if (listOfUsers) {
                 setUsersList(listOfUsers)
             }
-            
+
             setResponsibleList(step.users.map(userStep => userStep.user)) //Define a lista de responsáveis com os usuários retornados
-            
+
 
         })()
     }, [step])
@@ -168,18 +179,41 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                 type="submit" onClick={onOpen}
                 margin={'0.5rem'}
             >Editar</Button>
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="lg">
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="54rem">
                 <form onSubmit={handleSubmit}>
                     <FormLabel textAlign="center" fontSize="large" color='white'><strong>Edição de Etapa</strong></FormLabel>
 
                     <FormLabel pt={3} color='white'>Nome</FormLabel>
-                    <Input maxLength={64} bg='white' textColor={'black'} placeholder={step.name} value={name} size='md' type="text" onChange={handleNameChange} />
+                    <Input
+                        maxLength={64}
+                        bg='white'
+                        textColor={'black'}
+                        placeholder={step.name}
+                        value={name}
+                        size='md'
+                        type="text"
+                        onChange={handleNameChange}
+                    />
 
                     <FormLabel pt={3} color='white'>Prazo</FormLabel>
-                    <Input bg='white' textColor={'black'} size="md" type="date" value={endingDate.toString()} onChange={handleEndingDateChange} />
+                    <Input
+                        bg='white'
+                        textColor={'black'}
+                        size="md"
+                        type="date"
+                        value={endingDate.toString()}
+                        onChange={handleEndingDateChange}
+                    />
 
                     <FormLabel pt={3} color='white'>Objetivo</FormLabel>
-                    <Textarea bg='white' textColor={'black'} placeholder={step.objective} value={objective} onChange={handleObjectiveChange} />
+                    <Textarea 
+                    maxLength={300}
+                    bg='white' 
+                    textColor={'black'} 
+                    placeholder={step.objective} 
+                    value={objective} 
+                    onChange={handleObjectiveChange} 
+                    />
 
                     <FormControl id="priority" mb={5}>
                         <FormLabel color="#ffffff" fontSize="20px" pt={3} mb={1} ml={210}>Prioridade</FormLabel>
@@ -189,6 +223,17 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                             <option value="Alta">Alta</option>
                             <option value="Média">Média</option>
                             <option value="Baixa">Baixa</option>
+                        </Select>
+                    </FormControl>
+
+                    <FormControl id="priority" mb={5}>
+                        <FormLabel color="#ffffff" fontSize="20px" pt={3} mb={1} ml={210}>Prioridade</FormLabel>
+                        <Select placeholder={step.status} style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
+                            value={status}
+                            onChange={handleStatusChange}>
+                            <option value="Não Iniciado">Não Iniciado</option>
+                            <option value="Iniciado">Iniciado</option>
+                            <option value="Concluído">Concluído</option>
                         </Select>
                     </FormControl>
                     <FormControl id="responsaveis" color="#ffff" mb={4}>
