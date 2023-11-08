@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react"
-import { Box, Button, Text, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Spacer, Input } from "@chakra-ui/react"
+import { useEffect, useState } from "react"
+import { Box, Text, Flex, Spacer, Input } from "@chakra-ui/react"
 import Process from "../models/Process"
 import FormP from "../components/FormProcess"
 import { Link, Navigate } from "react-router-dom"
-import { formatDateToBrasil } from "../services/formatDate"
-import { BtnDeleteProcess } from "../components/BtnDeleteProcess"
-import { ModalUpdateProcess } from "../components/Modal/ModalEditarProcesso"
 import { getMyRelatedData } from "../services/users"
 import Step from "../models/Steps"
 import RequestForEvidence from "../models/RequestForEvidence"
@@ -14,9 +11,7 @@ import { CardProcessoPrazo } from "../components/Card/cardProcessHome"
 import { CardShowStepHome } from "../components/Card/cardShowStepHome"
 
 import { ModalFilter } from "../components/Modal/ModalFilters"
-import { UpDownIcon } from "@chakra-ui/icons"
 import { CardRequestEvidence } from "../components/Card/cardRequestEvidence"
-import ProgressBar from "../components/ProgressBar"
 import { TabelaCLevel } from "../components/TabelaCLevel"
 
 
@@ -31,14 +26,13 @@ export const Home = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [role, setRole] = useState(localStorage.getItem('cargo'))
     const [filteredProcesses, setFilteredProcesses] = useState(new Array<Process>())
+    const [filteredRequestForEvidence, setFilteredRequestForEvidence] = useState(new Array<RequestForEvidence>())
+    const [filteredSteps, setFilteredSteps] = useState(new Array<Step>())
     const [sortProcess, setSortProcess] = useState(new Array<Process>())
-    const [sortTitle, setSortTitle] = useState(false)
-    const [sortLastUpdate, setSortLastUpdate] = useState(false)
-    const [sortStatus, setSortStatus] = useState(false)
+    const [selectedType, setSelectedType] = useState<string[]>([])
 
     useEffect(() => {
         (async () => {
-
             const userContent = await getMyRelatedData()
 
             if (userContent) {
@@ -74,11 +68,13 @@ export const Home = () => {
             >Próximo do Prazo</Text>
             <ModalFilter
                 setProcess={setFilteredProcesses}
-                processes={filteredProcesses}
-                setSteps={steps.length > 0 ? setSteps : undefined}
                 steps={steps.length > 0 ? steps : undefined}
-                setRequestForEvidence={requestForEvidence.length > 0 ? setRequestForEvidence : undefined}
+                setFilteredSteps={setFilteredSteps}
+                setFilteredRequestForEvidence={setFilteredRequestForEvidence}
                 requestForEvidence={requestForEvidence.length > 0 ? requestForEvidence : undefined}
+                setSelectedType={setSelectedType}
+                selectedType={selectedType}
+                type={5001}
                 key={-1898009}
             />
         </Flex>
@@ -94,7 +90,18 @@ export const Home = () => {
             key={'Flex Cards do Proximo do Prazo'}
             maxWidth={'100.125rem'}
             overflowY={'auto'} >
-            {requestForEvidence.map((requestForEvidence: RequestForEvidence) => {
+
+            {filteredProcesses.filter(process => selectedType.length === 0 || selectedType.includes('Processos')).map((process: Process) => {
+                return <Link to={`/process/${process.id}`} key={'Link to Process Card:' + process.id}><CardProcessoPrazo key={"process:" + process.id}
+                    process={process}
+                /></Link>
+            })}
+            {filteredSteps.filter(step => selectedType.length === 0 || selectedType.includes('Etapas')).map((step: Step) => {
+                return <Link to={`/process/${step.process_id}`} key={'Link to Process Card Step:' + step.id}><CardShowStepHome key={"Etapa:" + step.id} onClick={handleClick}
+                    step={step}
+                /></Link>
+            })}
+            {filteredRequestForEvidence.filter(request => selectedType.length === 0 || selectedType.includes('Requisições de Evidência')).map((requestForEvidence: RequestForEvidence) => {
                 if (requestForEvidence.is_validated) {
                     return
                 }
@@ -103,16 +110,6 @@ export const Home = () => {
                         requestEvidence={requestForEvidence}
                     />
                 </Link>
-            })}
-            {filteredProcesses.map((process: Process) => {
-                return <Link to={`/process/${process.id}`} key={'Link to Process Card:' + process.id}><CardProcessoPrazo key={"process:" + process.id}
-                    process={process}
-                /></Link>
-            })}
-            {steps.map((step: Step) => {
-                return <Link to={`/process/${step.process_id}`} key={'Link to Process Card Step:' + step.id}><CardShowStepHome key={"Etapa:" + step.id} onClick={handleClick}
-                    step={step}
-                /></Link>
             })}
         </Flex>
         <Flex flexDirection={'column'} gap={'0.25rem'} key={'Flex Meus processos'}>
@@ -166,7 +163,7 @@ export const Home = () => {
 
                 <ModalFilter
                     setProcess={setSortProcess}
-                    processes={processes} />
+                    type={5000} />
 
                 <Input
                     placeholder="Pesquisar por nome de processo"
@@ -213,7 +210,7 @@ export const Home = () => {
 
                 <ModalFilter
                     setProcess={setSortProcess}
-                    processes={processes} />
+                    type={5000} />
 
                 <Input
                     placeholder="Pesquisar por nome de processo"
