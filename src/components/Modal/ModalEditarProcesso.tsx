@@ -263,7 +263,7 @@ export const ModalUpdateProcess = (props: props) => {
                             value={formData.status}
                             onChange={handleStatusChange}>
                             <option value="Não iniciado">Não iniciado</option>
-                            <option value="Em andamento">Em andamento</option>
+                            <option value="Iniciado">Iniciado</option>
                             <option value="Concluído">Concluído</option>
 
                         </Select>

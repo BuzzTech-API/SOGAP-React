@@ -6,7 +6,8 @@ import { formatDateToBrasil } from "../services/formatDate"
 import { BtnDeleteProcess } from "./BtnDeleteProcess"
 import { ModalUpdateProcess } from "./Modal/ModalEditarProcesso"
 import ProgressBar from "./ProgressBar"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { getProcessById } from "../services/process"
 
 interface propsTabela {
     role: string,
@@ -19,15 +20,40 @@ interface propsTabela {
 
 export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, setProcesses, setProcess }: propsTabela) => {
     const [sortTitle, setSortTitle] = useState(false)
-    const [sortLastUpdate, setSortLastUpdate] = useState(false)
-    const [sortStatus, setSortStatus] = useState(false)
+    const [sortEndingDate, setSortEndingDate] = useState(false)
+    const [sortProgress, setSortProgress] = useState(false)
+    const [listProcess, setListProcess] = useState(new Array<Process>())
+    const [sortStatus, setSortStatus] = useState('Concluído')
 
+    useEffect(() => {
+        (async () => {
+            const processList = await Promise.all(processes.map(async process => {
+                return await getProcessById(process.id)
+            }))
+            const filteredProcessList = processList.filter(process => process !== null) as Process[]
+            setListProcess(filteredProcessList)
+
+
+        })()
+    }, [processes])
+
+    const sortByCompletedSteps = () => {
+        const sortedProcesses = [...listProcess].sort((a, b) => {
+            const completedStepsA = a.steps ? a.steps.filter(step => step.status === 'Concluído').length : 0
+            const completedStepsB = b.steps ? b.steps.filter(step => step.status === 'Concluído').length : 0
+            return sortProgress ? completedStepsB - completedStepsA : completedStepsA - completedStepsB
+        })
+        setSortProcess(sortedProcesses)
+        setSortProgress(!sortProgress)
+    }
 
     const sortByTitle = () => {
         const sortedProcesses = [...processes].sort((a, b) => {
-            if (a.title < b.title)
+            const titleA = a.title.toUpperCase()
+            const titleB = b.title.toUpperCase()
+            if (titleA < titleB)
                 return sortTitle ? 1 : -1
-            if (a.title > b.title)
+            if (titleA> titleB)
                 return sortTitle ? -1 : 1
             return 0
         })
@@ -35,29 +61,44 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
         setSortTitle(!sortTitle)
     }
 
+
+
     const sortByLastUpdate = () => {
         const sortedProcesses = [...processes].sort((a, b) => {
-            if (a.lastUpdate < b.lastUpdate)
-                return sortLastUpdate ? 1 : -1
-            if (a.lastUpdate > b.lastUpdate)
-                return sortLastUpdate ? -1 : 1
-            return 0
+            const dateA = new Date(a.endingDate)
+            const dateB = new Date(b.endingDate)
+
+            return sortEndingDate ? dateB.getTime() - dateA.getTime() : dateA.getTime() - dateB.getTime()
         })
         setSortProcess(sortedProcesses)
-        setSortLastUpdate(!sortLastUpdate)
+        setSortEndingDate(!sortEndingDate)
     }
 
     const sortByStatus = () => {
+        const statusOrder : { [key: string]: number } = {
+            'Concluído': sortStatus === 'Concluído' ? 1 : 4,
+            'Iniciado': sortStatus === 'Iniciado' ? 1 : sortStatus === 'Concluído' ? 2 : 3,
+            'Não iniciado': sortStatus === 'Não iniciado' ? 1 : sortStatus === 'Iniciado' ? 2 : 3
+        }
         const sortedProcesses = [...processes].sort((a, b) => {
-            if (a.status < b.status)
-                return sortStatus ? 1 : -1
-            if (a.status > b.status)
-                return sortStatus ? -1 : 1
+            const orderA = statusOrder[a.status]
+            const orderB = statusOrder[b.status]
+            if (orderA < orderB)
+                return -1
+            if (orderA > orderB)
+                return 1
             return 0
         })
         setSortProcess(sortedProcesses)
-        setSortStatus(!sortStatus)
+        if (sortStatus === 'Concluído') {
+            setSortStatus('Iniciado');
+        } else if (sortStatus === 'Iniciado') {
+            setSortStatus('Não iniciado');
+        } else {
+            setSortStatus('Concluído');
+        }
     }
+
     return (
         <TableContainer
             width={['100%']}
@@ -81,8 +122,8 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                         <Th color={'#FFF'} onClick={sortByTitle} key={-981}>Título
                             <UpDownIcon boxSize={5} mx={2} />
                         </Th>
-                        <Th color={'#FFF'} onClick={sortByTitle} key={-89851}>Progresso
-
+                        <Th color={'#FFF'} onClick={sortByCompletedSteps} key={-89851}>Progresso
+                            <UpDownIcon boxSize={5} mx={2} />
                         </Th>
 
                         <Th textAlign="center" color={'#FFF'} onClick={sortByLastUpdate} key={-3467}>Prazo
