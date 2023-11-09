@@ -26,12 +26,12 @@ export const ModalUploadEvidence = ({ requestForEvidence, step, setStep, setRequ
     const submit = async (e: any) => {
         e.preventDefault()
         try {
-            await verifyTokenFetch()
+            
             const uploadInput = document.getElementById('uploadInput') as HTMLInputElement //pega o arquivo enviado atraves de <input...>
 
 
 
-            let requisicao = fetch(`http://${window.location.hostname}:8000/users_processes/process_id/${step.process_id}`, {
+            let requisicao = fetchWithRefresh(`http://${window.location.hostname}:8000/users_processes/process_id/${step.process_id}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

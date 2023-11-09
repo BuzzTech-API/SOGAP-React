@@ -24,7 +24,7 @@ export const CLevel = () => {
     const breakpoint = useBreakpoint()
     useEffect(() => {
         (async () => {
-            await verifyTokenFetch()
+            
             const allProcess = await getAllProcess()
             const allUsers = await getAllUsers()
             if (allProcess) {

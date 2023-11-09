@@ -23,7 +23,7 @@ export const BtnDeleteEtapa = ({etapa, setSteps, steps, onCloseD}: DeleteEtapaIn
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         
-        await verifyTokenFetch()
+        
         try{
             const response = await deleteStep(etapa.id, false)
             if(response){

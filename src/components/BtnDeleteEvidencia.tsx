@@ -22,7 +22,7 @@ export const BtnDeleteEvidencia = ({ evidencia, step, setStep, setRequests }: De
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         
-        await verifyTokenFetch()
+        
         try {
             const response = await deleteEvidence(evidencia.id, false)
             if (response) {

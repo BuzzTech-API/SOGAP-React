@@ -11,6 +11,7 @@ import {
   TagCloseButton,
   TagLabel,
   Flex,
+  useToast,
 } from '@chakra-ui/react';
 import User from '../models/User';
 import { createUserStep, getAllUsers } from '../services/users';
@@ -33,7 +34,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
   const [priority, setPriority] = useState('')
   const [usersList, setUsersList] = useState(new Array<User>())
   const [responsibleList, setResponsibleList] = useState(new Array<User>())
-
+  const toast = useToast()
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Atualizar o estado com o novo valor do input
@@ -58,8 +59,14 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
   //Função para submeter os dados ao servidor BackEnd
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await verifyTokenFetch()
-    const newStep = await createStep(name, endingDate, endingDate, processId, objective, priority, steps.length + 1)
+    
+    const requisicao = createStep(name, endingDate, endingDate, processId, objective, priority, steps.length + 1)
+    toast.promise(requisicao, {
+      success: { title: 'Etapa Criada', description: 'Etapa criada com sucesso' },
+      error: { title: 'Erro ao criar Etapa', description: 'Erro' },
+      loading: { title: 'Criando Etapa', description: 'Por favor, espere' },
+  })
+    const newStep = await requisicao 
 
     if (newStep !== null) {
       const userStepList = new Array<StepUser>()
@@ -72,7 +79,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
         }
         userStepList.push(userStep)
       })
-
+      newStep.status= 'Não Iniciado'
       newStep.users = userStepList;
       setSteps(steps.concat(newStep))
     }
@@ -91,7 +98,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
   };
   useEffect(() => {
     (async () => {
-      await verifyTokenFetch()
+      
       const listOfUsers = await getAllUsers()
       if (listOfUsers) {
         setUsersList(listOfUsers)

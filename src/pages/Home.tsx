@@ -13,6 +13,7 @@ import { CardShowStepHome } from "../components/Card/cardShowStepHome"
 import { ModalFilter } from "../components/Modal/ModalFilters"
 import { CardRequestEvidence } from "../components/Card/cardRequestEvidence"
 import { TabelaCLevel } from "../components/TabelaCLevel"
+import { checkDeadline } from "../services/checkDeadline"
 
 
 
@@ -105,12 +106,37 @@ export const Home = () => {
                 if (requestForEvidence.is_validated) {
                     return
                 }
+                if (checkDeadline(requestForEvidence.deliveryDate)>15) {
+                    return
+                }
                 return <Link to={''} key={'Link to Request Card:' + requestForEvidence.id}>
                     <CardRequestEvidence key={'request:' + requestForEvidence.id}
                         requestEvidence={requestForEvidence}
                     />
                 </Link>
             })}
+            {/* {filteredProcesses.map((process: Process) => {
+                if (process.status === 'Concluído') {
+                    return
+                }
+                if (checkDeadline(process.endingDate)>45) {
+                    return
+                }
+                return <Link to={`/process/${process.id}`} key={'Link to Process Card:' + process.id}><CardProcessoPrazo key={"process:" + process.id}
+                    process={process}
+                /></Link>
+            })}
+            {steps.map((step: Step) => {
+                if (step.status === 'Concluído') {
+                    return
+                }
+                if (checkDeadline(step.endingDate)>30) {
+                    return
+                }
+                return <Link to={`/process/${step.process_id}`} key={'Link to Process Card Step:' + step.id}><CardShowStepHome key={"Etapa:" + step.id} onClick={handleClick}
+                    step={step}
+                /></Link>
+            })} */}
         </Flex>
         <Flex flexDirection={'column'} gap={'0.25rem'} key={'Flex Meus processos'}>
 

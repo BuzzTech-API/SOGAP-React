@@ -1,11 +1,12 @@
+import fetchWithRefresh from "./fetchWithRefresh";
 
 export async function activate2FA(): Promise<{ secret_key: string }> {
   try {
-    let response = await fetch('http://${window.location.hostname}:8000/enable-2fa', {
+    let response = await fetchWithRefresh('http://${window.location.hostname}:8000/enable-2fa', {
       method: 'POST',
     });
     if (response.status === 401) {
-      response = await fetch('http://${window.location.hostname}:8000/enable-2fa', {
+      response = await fetchWithRefresh('http://${window.location.hostname}:8000/enable-2fa', {
         method: 'POST',
       });
     }

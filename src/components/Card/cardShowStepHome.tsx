@@ -20,7 +20,7 @@ export const CardShowStepHome = ({step, onClick}: StepCard) => {
     const [validado, setValidado] = useState(0)
     const [naoValidado, setNaoValidado] = useState(0)
     const daysLeft = checkDeadline(step.endingDate);
-    
+    const [total, setTotal] = useState(0)
     let fontColor: string;
     fontColor = '#ffffff'
 
@@ -29,6 +29,8 @@ export const CardShowStepHome = ({step, onClick}: StepCard) => {
         const stepFetch = await getStepsById(step.id)
         if(stepFetch){
             const total = stepFetch.requests.length
+            setTotal(stepFetch.requests.length)
+            step.requests = stepFetch.requests
             const filteredArray = stepFetch.requests.filter(requestForEvidence => requestForEvidence.is_validated === true)
             setNaoValidado(total - filteredArray.length)
             setValidado(filteredArray.length)
@@ -136,7 +138,7 @@ export const CardShowStepHome = ({step, onClick}: StepCard) => {
                         color="#000"
                         textAlign="center"
                     >
-                        {validado}/{naoValidado}
+                        {validado}/{total}
                     </Text>
                 </Box>
             </Box>

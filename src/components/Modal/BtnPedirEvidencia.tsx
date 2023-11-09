@@ -1,5 +1,5 @@
 
-import { useDisclosure, FormLabel, Input, Textarea, Button, Select, IconButton, Center } from "@chakra-ui/react";
+import { useDisclosure, FormLabel, Input, Textarea, Button, Select, IconButton, Center, useToast } from "@chakra-ui/react";
 import React, { SetStateAction, useEffect, useState } from "react";
 import User from "../../models/User";
 import { createRequestEvidence } from "../../services/requestEvidence";
@@ -27,6 +27,7 @@ export const ModalSolicitaEvidencia = ({ step, setStep,steps, setSteps, requests
     const [evidenceValidationDate, setEvidenceValidationDate] = useState(new Date())
     const [responsibleName, setResponsibleName] = useState('')
     const [usersList, setUsersList] = useState(new Array<User>())
+    const toast = useToast()
 
     const handleRequiredDocumentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         // Atualizar o estado com o novo valor do input
@@ -54,10 +55,15 @@ export const ModalSolicitaEvidencia = ({ step, setStep,steps, setSteps, requests
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         const deliveryDate = new Date()
         e.preventDefault();
-        await verifyTokenFetch()
-        console.log(responsibleName);
         
-        const newRequest = await createRequestEvidence(requiredDocument, description, step.id, Number.parseInt(responsibleName), evidenceValidationDate, deliveryDate)
+        
+        const requisicao = createRequestEvidence(requiredDocument, description, step.id, Number.parseInt(responsibleName), evidenceValidationDate, deliveryDate)
+        toast.promise(requisicao, {
+            success: { title: 'Solicitação de Evidência Criado', description: 'Solicitação de Evidência criado com sucesso' },
+            error: { title: 'Erro ao criar Solicitação de Evidência', description: 'Erro' },
+            loading: { title: 'Criando Solicitação de Evidência', description: 'Por favor, espere' },
+        })
+        const newRequest = await requisicao 
         if (newRequest) {
             setSteps(steps.map(stepmap =>{
                 if (step.id === stepmap.id) {
@@ -75,7 +81,7 @@ export const ModalSolicitaEvidencia = ({ step, setStep,steps, setSteps, requests
 
     useEffect(() => {
         (async () => {
-            await verifyTokenFetch()
+            
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
@@ -103,7 +109,7 @@ export const ModalSolicitaEvidencia = ({ step, setStep,steps, setSteps, requests
                     onClick={onOpen}
                 ></IconButton>
             </Center>
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem">
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="32rem">
                 <form onSubmit={handleSubmit}>
                     <FormLabel textAlign="center" fontSize="large" color='white'><strong>Solicitação de evidência</strong></FormLabel>
                     <FormLabel pt={3} color='white'>Documento requerido</FormLabel>

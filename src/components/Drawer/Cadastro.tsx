@@ -47,7 +47,7 @@ export function DrawerCadastro() {
     const handleClick = () => setShow(!show)
     const submit = async (e: any) => {
         e.preventDefault();
-        await verifyTokenFetch()
+        
         try {
             if (selectedFile?.size !== 0 && selectedFile !== undefined) {
                 const formData = new FormData()
@@ -63,9 +63,14 @@ export function DrawerCadastro() {
 
 
             }
-            console.log(
-                await createUser(name, email, role, team, senha, link)
-            );
+            const requisicao = createUser(name, email, role, team, senha, link)
+            toast.promise(requisicao, {
+                success: { title: 'Usuário Criado', description: 'Usuário criado com sucesso' },
+                error: { title: 'Erro ao criar Usuário', description: 'Erro' },
+                loading: { title: 'Criando Usuário', description: 'Por favor, espere' },
+            })
+            await requisicao
+            
 
         } catch (error) {
 
@@ -151,6 +156,7 @@ export function DrawerCadastro() {
                                             value={role}
                                             onChange={handleSelectChange}
                                             bg={'#58595B'}>
+                                            <option value="" style={{ backgroundColor: '#58595B' }}></option>
                                             <option value="Gerente" style={{ backgroundColor: '#58595B' }}>Gerente</option>
                                             <option value="Lider" style={{ backgroundColor: '#58595B' }}>Lider</option>
                                             <option value="Colaborador" style={{ backgroundColor: '#58595B' }}>Colaborador</option>
@@ -209,7 +215,7 @@ export const Cadastro = () => {
     const handleClick = () => setShow(!show)
     const submit = async (e: any) => {
         e.preventDefault();
-        await verifyTokenFetch()
+        
         try {
             if (selectedFile?.size !== 0 && selectedFile !== undefined) {
                 const formData = new FormData()

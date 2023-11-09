@@ -1,15 +1,21 @@
 import { refreshTokenFetch } from "./token"
-
-const fetchWithRefresh = async (url: string, headers: {}) => {
+interface headers {
+    method?: string,
+    headers?: any,
+    body?: any
+}
+const fetchWithRefresh = async (url: string, headers: headers) => {
     const firstFetch = await fetch(url, headers)
     if (firstFetch.status === 401) {
-        try {
-            await refreshTokenFetch()
-        } finally {
-            const secondFetch = await fetch(url, headers)
-            return secondFetch
+        await refreshTokenFetch()
+        const token = localStorage.getItem('access_token');
+        headers.headers.Authorization = 'Bearer ' + token
+        const secondFetch = await fetch(url, headers)
+        return secondFetch
 
-        }
+
+
+
     }
     return firstFetch
 }

@@ -34,7 +34,7 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
   const role = localStorage.getItem('cargo')
   useEffect(() => {
     (async () => {
-      await verifyTokenFetch()
+      
       const data: User = await getUserById(requestForEvidence.user_id)
       const me: User = await getUser()
       setMyId(me.id)

@@ -1,5 +1,5 @@
 
-import { useDisclosure, FormLabel, Input, Button, Select, FormControl, Box, Flex, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react"
+import { useDisclosure, FormLabel, Input, Button, Select, FormControl, Box, Flex, Tag, TagCloseButton, TagLabel, useToast } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
 import { ModalGeneric } from "./Modal"
 import User from "../../models/User"
@@ -24,6 +24,7 @@ export const ModalUpdateProcess = (props: props) => {
     const [responsibleList, setResponsibleList] = useState(new Array<User>())
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { id } = useParams()
+    const toast = useToast()
     const [process, setProcess] = useState(new Process())
     let process_id: string | undefined;
     if (props.process_id !== undefined) {
@@ -33,7 +34,7 @@ export const ModalUpdateProcess = (props: props) => {
     }
     useEffect(() => {
         (async () => {
-            await verifyTokenFetch()
+            
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
@@ -109,7 +110,7 @@ export const ModalUpdateProcess = (props: props) => {
     //Função para submeter os dados ao servidor BackEnd
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        await verifyTokenFetch()
+        
 
         try {
             if (!formData) { //Verificar
@@ -117,7 +118,13 @@ export const ModalUpdateProcess = (props: props) => {
                 return
             }
 
-            await updateProcess(formData) //Atualiza a etapa com os dados rebidos 
+            const requisicao = updateProcess(formData)
+            toast.promise(requisicao, {
+                success: { title: 'Processo Editado', description: 'Processo editado com sucesso' },
+                error: { title: 'Erro ao editar Processo', description: 'Erro' },
+                loading: { title: 'Editando Processo', description: 'Por favor, espere' },
+            }) //Atualiza a etapa com os dados rebidos 
+            await requisicao
             if (props.processes && props.setProcesses) {
                 props.setProcesses(props.processes.map((item: Process) => {
                     if (item.id === process.id) {
@@ -192,7 +199,7 @@ export const ModalUpdateProcess = (props: props) => {
                 textColor='white' colorScheme="#58595B" width={['auto','8rem']}
                 type="submit" onClick={onOpen}
             >Editar</Button>
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem">
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="52rem">
                 <form onSubmit={handleSubmit}>
                     <FormLabel textAlign="center" fontSize="large" color='white'><strong>Edição de Processo</strong></FormLabel>
 
@@ -240,7 +247,7 @@ export const ModalUpdateProcess = (props: props) => {
                         onChange={handleChangeEndingDate} />
 
                     <FormControl id="priority" mb={3}>
-                        <FormLabel color="#ffffff" fontSize="20px" pt={3} mb={1} ml={210}>Prioridade</FormLabel>
+                        <FormLabel color="#ffffff" pt={3}>Prioridade</FormLabel>
                         <Select
                             placeholder={process.priority}
                             style={{ width: "100%", height: "40px" }}
@@ -255,7 +262,7 @@ export const ModalUpdateProcess = (props: props) => {
                     </FormControl>
 
                     <FormControl id="status" mb={3}>
-                        <FormLabel color="#ffffff" fontSize="20px" pt={3} mb={1} ml={210}>Status</FormLabel>
+                        <FormLabel color="#ffffff" pt={3} >Status</FormLabel>
                         <Select
                             placeholder={process.status}
                             style={{ width: "100%", height: "40px" }}
@@ -284,11 +291,11 @@ export const ModalUpdateProcess = (props: props) => {
                         </Select>
                         <Box>
                             <Flex
-                                minH={'10rem'}
+                                minH={'7rem'}
                                 maxWidth={'100%'}
                                 marginLeft='1rem'
                                 flexDirection='row'
-                                gap='1.5rem'
+                                gap='1rem'
                                 flexWrap="wrap"
                                 justifyContent="flex-start"
                             >

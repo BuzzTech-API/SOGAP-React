@@ -77,7 +77,7 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
 
   return (
     <Drawer isOpen={isOpen} size={size} onClose={onClose}>
-      <DrawerOverlay backgroundColor={"rgba(0, 0, 0, 0.9)"}>
+      <DrawerOverlay backgroundColor={"rgba(0, 0, 0, 0.8)"}>
      
         <Center
         w={'35%'}
@@ -206,7 +206,7 @@ export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }:
                         padding={'0.3rem'}
                         overflow={'hidden'}
                         textAlign={'center'}
-                      >{step.priority}</Box>
+                      >{step.status}</Box>
                     </Box>
                     <Box
                       textAlign={'center'}

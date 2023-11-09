@@ -28,12 +28,12 @@ import { notificationVisualized } from '../services/notification'
 
 
 interface PropsH {
-
-    notifications: NotificationClass[]
+    socket: WebSocket | null,
+    notifications: NotificationClass[],
     setNotifications: React.Dispatch<React.SetStateAction<NotificationClass[]>>
 }
 
-export const Header = ({ notifications, setNotifications }: PropsH) => {
+export const Header = ({ socket, notifications, setNotifications }: PropsH) => {
     const [name, setName] = useState('')
     const [role, setRole] = useState('')
     const [photo_link, setPhoto_link] = useState('')
@@ -56,7 +56,34 @@ export const Header = ({ notifications, setNotifications }: PropsH) => {
 
 
     }, [])
+    useEffect(() => {
+        if(socket){
 
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data)
+                
+                const notification = new NotificationClass(
+                    data.notification.id,
+                    data.notification.typeOfEvent,
+                    data.notification.title,
+                    data.notification.mensage,
+                    data.notification.addressed,
+                    data.notification.sender,
+                    data.notification.is_visualized
+                    )
+                    
+                    
+                    setNotifications(notifications.concat(notification))
+                }
+
+
+        }
+    
+      return () => {
+        
+      }
+    }, [])
+    
 
 
     const deactivated2FA = async () => {
@@ -74,7 +101,9 @@ export const Header = ({ notifications, setNotifications }: PropsH) => {
     async function handleCheckboxChange(event: any) {
         // Evitar o fechamento do MenuList quando o Checkbox é clicado.
         if(event.target.checked){
-            setNotifications(notifications.filter(notification =>{ if (notification.id !== event.target.value) return notification}))
+            console.log(notifications);
+            
+            setNotifications(notifications.filter(notification =>notification.id !== Number.parseInt(event.target.value)))
             await notificationVisualized(event.target.value)
         }
 
@@ -190,7 +219,7 @@ export const Header = ({ notifications, setNotifications }: PropsH) => {
                     overflowY={'auto'}
                 >
                     <Box bg={'#58595B'} width={'29rem'}>
-                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                        <Box display="flex" justifyContent="space-between" alignItems="center" color={'white'}>
                             <Text fontWeight="semibold" fontSize="18px" marginLeft={'0.5rem'}>Notificações</Text>
                             <Text fontWeight="semibold" fontSize="14px" marginRight={'0.5rem'} textAlign="right">Marcar<br />como lida</Text>
                         </Box>

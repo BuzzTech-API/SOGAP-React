@@ -10,10 +10,12 @@ import { verifyTokenFetch } from "../services/token";
 interface DeleteProcessInterface {
     process: Process,
     processes?: Array<Process>,
+    sortProcess?: Array<Process>,
+    setSortProcess?: React.Dispatch<React.SetStateAction<Process[]>>
     setProcess?: React.Dispatch<React.SetStateAction<Process[]>>
 }
 
-export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = undefined }: DeleteProcessInterface) => {
+export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = undefined, setSortProcess, sortProcess }: DeleteProcessInterface) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [showSuccessDialog, setShowSuccessDialog] = useState(false)
     const cancelRef = useRef(null)
@@ -21,11 +23,12 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         
-        await verifyTokenFetch()
+        
         try {
             const response = await deleteProcess(process.id, false)
             if (response) {
                 setShowSuccessDialog(true)
+                
             }
 
 
@@ -34,6 +37,12 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
             console.log(error)
 
         } finally {
+            if (processes && setProcess) {
+                setProcess(processes.filter(item=> item.id !==process.id))
+            }
+            if (sortProcess && setSortProcess) {
+                setSortProcess(sortProcess.filter(item=> item.id !==process.id))
+            }
             onClose()
         }
     }
@@ -75,7 +84,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
                 </AlertDialogOverlay>
             </AlertDialog>
 
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" >
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="10rem" >
                 <form onSubmit={handleSubmit}>
                     <FormLabel
                         textAlign="center"

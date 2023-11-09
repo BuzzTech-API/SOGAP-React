@@ -34,7 +34,7 @@ export const ModalFilter = ({ setProcess, steps, setFilteredSteps, setFilteredRe
 
     useEffect(() => {
         (async () => {
-            await verifyTokenFetch()
+            
             const userContent = await getMyRelatedData()
 
             if (userContent && setProcess) {

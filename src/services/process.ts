@@ -2,11 +2,12 @@ import { ProcessInterface, UpdateProcessInterface } from "../interfaces/processI
 import Process from "../models/Process";
 import User from "../models/User";
 import {FormDataStructure} from "../components/FormProcess"
+import fetchWithRefresh from "./fetchWithRefresh";
 
 
 export const getAllProcess = async () => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/processes`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/processes`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -50,7 +51,7 @@ export const getAllProcess = async () => {
 
 export const getProcessById = async (id: number) => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/processes/${id}`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/processes/${id}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -92,7 +93,7 @@ export const getProcessById = async (id: number) => {
 
 export const sendFormData = async (formData: FormDataStructure) => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/processes/`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/processes/`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -109,7 +110,7 @@ export const sendFormData = async (formData: FormDataStructure) => {
 
 export const updateProcess = async (formData: UpdateProcessInterface) => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/processes/`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/processes/`, {
     method: 'PUT',
     headers: {
       'Accept': 'application/json',
@@ -130,7 +131,7 @@ export const deleteUserProcess = async (user_id: number, process_id: number) => 
     process_id: process_id
   }
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/users_processes/`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/users_processes/`, {
     method: 'DELETE',
     headers: {
       'Accept': 'application/json',
@@ -150,7 +151,7 @@ export const deleteProcess = async (process_id: number, is_active: boolean) => {
   console.log(bodyJson);
   
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/processes/delete`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/processes/delete`, {
     method: 'PUT',
     headers: {
       'Accept': 'application/json',

@@ -25,7 +25,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
 
     useEffect(() => {
         (async () => {
-            await verifyTokenFetch()
+            
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
@@ -93,7 +93,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
     //Função para submeter os dados ao servidor BackEnd
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        await verifyTokenFetch()
+        
 
         try {
 

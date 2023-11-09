@@ -1,4 +1,5 @@
 import Cookies from "universal-cookie";
+import fetchWithRefresh from "./fetchWithRefresh";
 
 export class Authenticated {
   public isAuthenticated: boolean = false
@@ -99,7 +100,7 @@ export const loginToken = async (email: string, senha: string) => {
 
 export const enableTwoFactor = async () => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/enable-2fa`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/enable-2fa`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -133,9 +134,11 @@ export const refreshTokenFetch = async () => {
         cookie.set('refresh_token', data.refresh_token,{sameSite:'strict'})
         localStorage.setItem('access_token', data.access_token)
         localStorage.setItem('refresh_token', data.refresh_token)
+        return data.access_token
       }
       else {
         localStorage.removeItem('refresh_token');
+        return null
       }
     } catch (error) {
       // Se a verificação falhar (por exemplo, token inválido), você pode lidar com isso aqui
@@ -149,7 +152,7 @@ export const codeVerified = async (verification_code: string) => {
     "verification_code": verification_code,
   }
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/verify-2fa-First-Auth`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/verify-2fa-First-Auth`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -176,7 +179,7 @@ export const verifyCode = async (verificationCode: string) => {
 
   if (login_token) {
     try {
-      const response = await fetch(`http://${window.location.hostname}:8000/verify-2fa`, {
+      const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/verify-2fa`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -243,7 +246,7 @@ export const verifyTokenFetch = async () => {
 
 export const disable2FA = async () => {
   const token = localStorage.getItem('access_token');
-  const response = await fetch(`http://${window.location.hostname}:8000/deactivate2fa`, {
+  const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/deactivate2fa`, {
     method: 'PUT',
     headers: {
       'Accept': 'application/json',

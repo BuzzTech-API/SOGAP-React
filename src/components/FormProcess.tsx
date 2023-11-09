@@ -22,7 +22,8 @@ import {
   useDisclosure,
   Tag,
   TagCloseButton,
-  TagLabel
+  TagLabel,
+  useToast
 } from '@chakra-ui/react';
 import User from "../models/User";
 import { createProcessUser, getAllUsers } from "../services/users";
@@ -59,7 +60,7 @@ const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: 
   const [responsibleList, setResponsibleList] = useState(new Array<User>())
   useEffect(() => {
     (async () => {
-      await verifyTokenFetch()
+      
       const listOfUsers = await getAllUsers()
       if (listOfUsers) {
         setUsersList(listOfUsers)
@@ -67,7 +68,7 @@ const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: 
 
     })();
   }, [])
-
+  const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState<FormDataStructure>({
     title: '',
@@ -120,9 +121,15 @@ const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: 
   //Função para submeter os dados ao servidor BackEnd
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await verifyTokenFetch()
+    
     try {
-      const response: Process = await sendFormData(formData);
+      const requisicao = sendFormData(formData);
+      toast.promise(requisicao, {
+        success: { title: 'Processo Criado', description: 'Processo criado com sucesso' },
+        error: { title: 'Erro ao criar Processo', description: 'Erro' },
+        loading: { title: 'Criando Processo', description: 'Por favor, espere' },
+    })
+      const response: Process = await requisicao
 
       responsibleList.forEach(async (user: User) => {
         await createProcessUser(user.id, response.id)

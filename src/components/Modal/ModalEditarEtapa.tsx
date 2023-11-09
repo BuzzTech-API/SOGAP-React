@@ -1,5 +1,5 @@
 
-import { useDisclosure, FormLabel, Input, Textarea, Button, Select, FormControl, Box, Tag, TagLabel, TagCloseButton, Flex } from "@chakra-ui/react"
+import { useDisclosure, FormLabel, Input, Textarea, Button, Select, FormControl, Box, Tag, TagLabel, TagCloseButton, Flex, useToast } from "@chakra-ui/react"
 import React, { SetStateAction, useEffect, useState } from "react"
 import { ModalGeneric } from "./Modal"
 import Step from "../../models/Steps"
@@ -26,6 +26,8 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
     const [status, setStatus] = useState(step.status)
     const [usersList, setUsersList] = useState(new Array<User>())
     const [responsibleList, setResponsibleList] = useState(new Array<User>())
+    const toast = useToast()
+
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         // Atualizar o estado com o novo valor do input
@@ -54,7 +56,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        await verifyTokenFetch()
+        
         try {
 
             if (!name || !endingDate || !objective || !priority || (responsibleList.length === 0)) { //Verificar
@@ -63,8 +65,14 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
             }
 
 
-            const response = await updateStep(step.id, name, status, step.endDate, formatToData(endingDate),
-                step.process_id, objective, priority, step.order) //Atualiza a etapa com os dados rebidos 
+            const request = updateStep(step.id, name, status, step.endDate, formatToData(endingDate),
+            step.process_id, objective, priority, step.order) //Atualiza a etapa com os dados rebidos 
+            toast.promise(request, {
+                success: { title: 'Etapa Editada', description: 'Enviado com sucesso' },
+                error: { title: 'Erro ao Alterar a Etapa', description: 'Error' },
+                loading: { title: 'Enviando Alterações da Etapa', description: 'Por favor, espere' },
+            })
+            const response = await request
 
             for (const user of step.users) { //Deleta todos os usuario relacionados a etapa
                 await deleteUserStep(user.user_id, step.id)
@@ -157,7 +165,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
 
     useEffect(() => {
         (async () => {
-            await verifyTokenFetch()
+            
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
