@@ -149,7 +149,7 @@ export const ModalFilter = ({ setProcess, steps, setFilteredSteps, setFilteredRe
                 bg="#29784E"
                 color="white"
                 width={'5rem'}
-                _hover={{ color: "#29784E", bg: "white" }}
+                _hover={{ background: '#FFF', color: '#58595B' }}
                 onClick={onOpen}
             >Filtros</Button>
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="auto" heightModal="auto">
@@ -313,11 +313,11 @@ export const ModalFilter = ({ setProcess, steps, setFilteredSteps, setFilteredRe
                     <ButtonGroup gap="240" mt={5}>
 
                         <Button
-                            bg='#53C4CD' variant='solid' textColor='white' mt={3} mb={3} width='100%' onClick={resetFilters}>Desfazer filtros
+                            bg='#53C4CD' variant='solid' textColor='white' mt={3} mb={3} width='100%' _hover={{ background: '#FFF', color: '#58595B' }} onClick={resetFilters}>Desfazer filtros
                         </Button>
 
 
-                        <Button bg='#53C4CD' variant='solid' textColor='white' mt={3} mb={3} width='100%' type="submit">Aplicar filtros</Button>
+                        <Button bg='#53C4CD' variant='solid' textColor='white' mt={3} mb={3} width='100%' _hover={{ background: '#FFF', color: '#58595B' }} type="submit">Aplicar filtros</Button>
                     </ButtonGroup>
 
 

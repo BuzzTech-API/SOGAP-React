@@ -24,7 +24,7 @@ export const ManagerList = ({AllUsers}: ManagerListInterface) => {
         <Stack
             spacing={4}
             align="start"
-            bg="#58595B"
+            bg='linear-gradient(109deg, #58595B 0%, rgba(88, 89, 91, 0.00) 100%)'
             color="white"
             padding="6"
             borderRadius="md"

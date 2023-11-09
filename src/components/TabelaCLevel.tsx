@@ -53,7 +53,7 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
             const titleB = b.title.toUpperCase()
             if (titleA < titleB)
                 return sortTitle ? 1 : -1
-            if (titleA> titleB)
+            if (titleA > titleB)
                 return sortTitle ? -1 : 1
             return 0
         })
@@ -75,7 +75,7 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
     }
 
     const sortByStatus = () => {
-        const statusOrder : { [key: string]: number } = {
+        const statusOrder: { [key: string]: number } = {
             'Concluído': sortStatus === 'Concluído' ? 1 : 4,
             'Iniciado': sortStatus === 'Iniciado' ? 1 : sortStatus === 'Concluído' ? 2 : 3,
             'Não iniciado': sortStatus === 'Não iniciado' ? 1 : sortStatus === 'Iniciado' ? 2 : 3
@@ -110,7 +110,7 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
             overflowX={['auto']}
             overflowY={'auto'}
         >
-            <Table color={'#FFF'} bg={'#58595B'} colorScheme="theme">
+            <Table color={'#FFF'} variant={'striped'} bg={'#58595B'} colorScheme="theme">
                 <Thead
                     bg={'#58595B'}
                     position="sticky"
@@ -188,7 +188,9 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                                     >
                                         {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') && <ModalUpdateProcess process_id={process.id.toString()} processes={processes} setProcesses={setProcesses} />}
                                         {role !== null && (role === 'Gerente' || role === 'Administrador') && <BtnDeleteProcess process={process} processes={processes} setProcess={setProcesses} />}
-                                        <Link to={`/process/${process.id}`}><Button bg='#53C4CD' variant='solid' textColor='white'>Visualizar</Button></Link>
+                                        <Link to={`/process/${process.id}`}><Button
+                                            _hover={{ background: '#FFF', color: '#58595B' }}
+                                            bg='#53C4CD' variant='solid' textColor='white' >Visualizar</Button></Link>
                                     </Td>}
                                 </Tr>
                             )
@@ -278,7 +280,9 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                                                 sortProcess={sortProcess}
                                             />
                                         }
-                                        <Link to={`/process/${process.id}`}><Button bg='#53C4CD' variant='solid' textColor='white'>Visualizar</Button></Link>
+                                        <Link to={`/process/${process.id}`}><Button
+                                            _hover={{ background: '#FFF', color: '#58595B' }}
+                                            bg='#53C4CD' variant='solid' textColor='white'>Visualizar</Button></Link>
                                     </Td>}
                                 </Tr>
                             )

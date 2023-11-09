@@ -139,6 +139,7 @@ export default function InformProcesso({ process }: processCardInterface) {
             <Button
                 w='10rem'
                 h='3rem'
+                _hover={{ background: '#FFF', color: '#58595B' }}
                 background='linear-gradient(270deg, #54C5CE -6.12%, rgba(84, 197, 206, 0.00) 150.36%)'
                 borderRadius='10px'>
                 <Text

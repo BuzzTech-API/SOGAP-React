@@ -59,9 +59,9 @@ export const ModalSolicitaEvidencia = ({ step, setStep, steps, setSteps, request
 
         const requisicao = createRequestEvidence(requiredDocument, description, step.id, Number.parseInt(responsibleName), evidenceValidationDate, deliveryDate)
         toast.promise(requisicao, {
-            success: { title: 'Solicitação de Evidência Criado', description: 'Solicitação de Evidência criado com sucesso' },
-            error: { title: 'Erro ao criar Solicitação de Evidência', description: 'Erro' },
-            loading: { title: 'Criando Solicitação de Evidência', description: 'Por favor, espere' },
+            success: { title: 'Requisição de Evidência Criado', description: 'Requisição de Evidência criado com sucesso' },
+            error: { title: 'Erro ao criar Requisição de Evidência', description: 'Erro' },
+            loading: { title: 'Criando Requisição de Evidência', description: 'Por favor, espere' },
         })
         const newRequest = await requisicao
         if (newRequest) {
@@ -130,10 +130,10 @@ export const ModalSolicitaEvidencia = ({ step, setStep, steps, setSteps, request
                     <Input bg='white' textColor={'black'} placeholder='Digite o documento requerido' size='md' type="text" onChange={handleRequiredDocumentChange} />
 
                     <FormLabel pt={3} color='white'>Descrição</FormLabel>
-                    <Textarea bg='white' textColor={'black'} placeholder='Descreva a solicitação' onChange={handleDescriptionChange} resize='none' />
+                    <Textarea bg='white' textColor={'black'} placeholder='Descreva a solicitação' maxLength={240} onChange={handleDescriptionChange} />
 
                     <FormLabel pt={3} color='white'>Data de entrega</FormLabel>
-                    <Input bg='white' textColor={'black'} placeholder="Selecione a data" size="md" type="date" onChange={handleEvidenceValidationDateChange} />
+                    <Input bg='white' textColor={'black'} placeholder="Selecione a data" size="md" type="date"  onChange={handleEvidenceValidationDateChange} />
 
                     <FormLabel pt={3} color='white'>Responsável</FormLabel>
                     <Select
@@ -159,7 +159,7 @@ export const ModalSolicitaEvidencia = ({ step, setStep, steps, setSteps, request
                         )}
                     </Select>
 
-                    <Button display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='black' colorScheme="#58595B" width='100%' type="submit">Enviar</Button>
+                    <Button display="flex" mb={3} bg='#53C4CD' variant='solid' _hover={{ background: '#FFF', color: '#58595B' }} textColor='white' colorScheme="#58595B" width='100%' type="submit">Enviar</Button>
                 </form>
             </ModalGeneric>
         </>

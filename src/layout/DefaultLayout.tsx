@@ -9,7 +9,10 @@ import NotificationClass from "../models/Notification";
 import { refreshTokenFetch } from "../services/token";
 import Cookies from "universal-cookie";
 
-type ContextType = { socket: WebSocket | null };
+type ContextType = { socket: WebSocket | null 
+    notifications: NotificationClass[]
+    setNotifications: React.Dispatch<React.SetStateAction<NotificationClass[]>>
+};
 
 export default function DefaultLayout() {
 
@@ -30,7 +33,7 @@ export default function DefaultLayout() {
 
         socket.onopen = () => {
             console.log('Conexão WebSocket aberta.');
-
+            setSocket(socket);
         };
 
         socket.onmessage = (event) => {
@@ -46,8 +49,9 @@ export default function DefaultLayout() {
                 data.notification.is_visualized
             )
 
-
-            setNotifications(notifications.concat(notification))
+            console.log(notification);
+            notifications.push(notification)
+            setNotifications(notifications)
 
 
         }
@@ -58,8 +62,7 @@ export default function DefaultLayout() {
 
         };
 
-        setSocket(socket);
-
+     
         // Certifique-se de fechar a conexão ao desmontar o componente ou quando não for mais necessário.
         return () => {
             socket.close();
@@ -71,12 +74,15 @@ export default function DefaultLayout() {
     return (
         <Flex flexDirection="column">
             <Header notifications={notifications} setNotifications={setNotifications} socket={socket} />
-            <Outlet context={{ socket } satisfies ContextType} />
+            <Outlet context={{ socket, notifications, setNotifications } satisfies ContextType} />
         </Flex>
     )
 }
 
 
 export function useSocket() {
+    return useOutletContext<ContextType>();
+}
+export function useNotifications() {
     return useOutletContext<ContextType>();
 }

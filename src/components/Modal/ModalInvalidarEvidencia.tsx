@@ -98,6 +98,7 @@ export const ModalInvalidarEvidencia = ({ process_id, isOpen, onClose, requestFo
                             <Button
                                 type='submit'
                                 bg='#53C4CD'
+                                _hover={{ background: '#FFF', color: '#58595B' }}
                                 variant='solid'
                                 textColor='white'>Confirmar Invalidação</Button>
                         </Flex>

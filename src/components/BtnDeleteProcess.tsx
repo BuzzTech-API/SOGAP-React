@@ -50,7 +50,8 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
     return (
         <>
             <Button bg='#ff1a1a' variant='solid'
-                textColor='white' colorScheme="#58595B" width={['5rem']}
+                textColor='white' colorScheme="#58595B" width={['auto', '8rem']}
+                _hover={{ background: '#FFF', color: '#58595B' }}
                 type="submit" onClick={onOpen}
             >Deletar</Button>
 
@@ -67,15 +68,19 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
 
                         <AlertDialogFooter>
                             {processes === undefined && setProcess === undefined ? (<Link to={'/'}>
-                                <Button ref={cancelRef} onClick={() => setShowSuccessDialog(false)}>
+                                <Button ref={cancelRef} onClick={() => setShowSuccessDialog(false)}
+                                    _hover={{ background: '#FFF', color: '#58595B' }}
+                                >
                                     OK
                                 </Button>
-                            </Link>) : (<Button ref={cancelRef} onClick={() => {
-                                setShowSuccessDialog(false)
-                                if (setProcess !== undefined && processes !== undefined) {
-                                    setProcess(processes.filter((item) => item !== process))
-                                }
-                            }}>
+                            </Link>) : (<Button ref={cancelRef}
+                                _hover={{ background: '#FFF', color: '#58595B' }}
+                                onClick={() => {
+                                    setShowSuccessDialog(false)
+                                    if (setProcess !== undefined && processes !== undefined) {
+                                        setProcess(processes.filter((item) => item !== process))
+                                    }
+                                }}>
                                 OK
                             </Button>)}
 
@@ -118,6 +123,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
                                 textColor='white'
                                 colorScheme="#58595B"
                                 width='100%'
+                                _hover={{ background: '#FFF', color: '#58595B' }}
                                 type="submit">DELETAR
                             </Button>
 
@@ -130,6 +136,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
                                 textColor='white'
                                 colorScheme="#53C4CD"
                                 width='100%'
+                                _hover={{ background: '#FFF', color: '#58595B' }}
                                 onClick={onClose}>CANCELAR
                             </Button>
                         </ButtonGroup>

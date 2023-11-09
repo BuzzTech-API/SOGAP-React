@@ -1,4 +1,4 @@
-import { useDisclosure, FormLabel, Input, Button, Select, Tooltip, Textarea, Heading, ModalHeader } from "@chakra-ui/react"
+import { useDisclosure, FormLabel, Input, Button, Select, Tooltip, Textarea, Heading, ModalHeader , useToast  } from "@chakra-ui/react"
 import React, { SetStateAction, useEffect, useState } from "react"
 import { ModalGeneric } from "./Modal"
 import User from "../../models/User"
@@ -21,7 +21,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [usersList, setUsersList] = useState(new Array<User>())
     const [responsibleName, setResponsibleName] = useState('')
-
+    const toast = useToast()
 
     useEffect(() => {
         (async () => {
@@ -97,7 +97,13 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
 
         try {
 
-            const response = await updateRequestEvidence(formData) //Atualiza a etapa com os dados rebidos 
+            const requisicao = updateRequestEvidence(formData) //Atualiza a etapa com os dados rebidos 
+            toast.promise(requisicao, {
+                success: { title: 'Requisição de Evidência Editado', description: 'Requisição de Evidência editado com sucesso' },
+                error: { title: 'Erro ao editar Requisição de Evidência', description: 'Erro' },
+                loading: { title: 'Editando Requisição de Evidência', description: 'Por favor, espere' },
+            })
+            const response = await requisicao
 
             if (response.ok) { //Se der certo ele passa pra dentro do if
                 //Talvez colocar algum popup dizendo que as alterações foram feitas
@@ -227,7 +233,17 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
                         )}
                     </Select>
 
-                    <Button display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='black' colorScheme="#58595B" width='100%' type="submit">Confirmar</Button>
+                    <Button
+                        display="flex"
+                        mb={3}
+                        bg='#53C4CD'
+                        variant='solid'
+                        textColor='white'
+                        colorScheme="#58595B"
+                        width='100%'
+                        type="submit"
+                        _hover={{ background: '#FFF', color: '#58595B' }}
+                    >Confirmar</Button>
                 </form >
             </ModalGeneric>
         </>

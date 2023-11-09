@@ -188,6 +188,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
             <Button bg='#53C4CD' variant='solid'
                 textColor='white' width='10rem'
                 type="submit" onClick={onOpen}
+                _hover={{ background: '#FFF', color: '#58595B' }}
                 margin={'0.5rem'}
             >Editar</Button>
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="auto">
@@ -243,7 +244,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                     />
 
                     <FormControl id="priority" mb={5}>
-                        <FormLabel>Prioridade</FormLabel>
+                        <FormLabel color="#ffffff" pt={3} mb={1}>Prioridade</FormLabel>
                         <Select placeholder={step.priority} style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
                             value={priority}
                             onChange={handlePriorityChange}>
@@ -254,7 +255,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                     </FormControl>
 
                     <FormControl id="priority" mb={5}>
-                        <FormLabel>Status</FormLabel>
+                        <FormLabel color="#ffffff" pt={3} mb={1}>Status</FormLabel>
                         <Select placeholder={step.status} style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
                             value={status}
                             onChange={handleStatusChange}>
@@ -318,7 +319,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                             </Flex >
                         </Box>
                     </FormControl>
-                    <Button display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='white' colorScheme="#58595B" width='100%' type="submit">Confirmar</Button>
+                    <Button display="flex" mb={3} bg='#53C4CD' _hover={{ background: '#FFF', color: '#58595B' }} variant='solid' textColor='white' colorScheme="#58595B" width='100%' type="submit">Confirmar</Button>
                 </form>
             </ModalGeneric>
         </>

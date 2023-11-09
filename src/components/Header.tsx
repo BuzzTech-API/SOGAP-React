@@ -56,34 +56,30 @@ export const Header = ({ socket, notifications, setNotifications }: PropsH) => {
 
 
     }, [])
-    useEffect(() => {
-        if(socket){
+    
+    if(socket){
 
-            socket.onmessage = (event) => {
-                const data = JSON.parse(event.data)
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data)
+            
+            const notification = new NotificationClass(
+                data.notification.id,
+                data.notification.typeOfEvent,
+                data.notification.title,
+                data.notification.mensage,
+                data.notification.addressed,
+                data.notification.sender,
+                data.notification.is_visualized
+                )
+                notifications.push(notification)
+            console.log(notification);
                 
-                const notification = new NotificationClass(
-                    data.notification.id,
-                    data.notification.typeOfEvent,
-                    data.notification.title,
-                    data.notification.mensage,
-                    data.notification.addressed,
-                    data.notification.sender,
-                    data.notification.is_visualized
-                    )
-                    
-                    
-                    setNotifications(notifications.concat(notification))
-                }
+                setNotifications(notifications)
+            }
 
 
-        }
-    
-      return () => {
-        
-      }
-    }, [])
-    
+    }
+
 
 
     const deactivated2FA = async () => {

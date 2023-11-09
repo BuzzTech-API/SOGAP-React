@@ -199,7 +199,8 @@ export const CardRequestEvidence = ({ requestEvidence }: requestEvidenceCardInte
                     minWidth='14rem'
                     textAlign="center"
                 >
-                    {checkDeadline(requestEvidence.evidenceValidationDate)} Dias Restantes
+                    {checkDeadline(requestEvidence.evidenceValidationDate)=== 0? 
+                    "Atrasado": checkDeadline(requestEvidence.evidenceValidationDate)+ ' Dias Restantes'}
                 </Text>
             </Stack>
         </Stack>

@@ -32,6 +32,7 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
   const [myId, setMyId] = useState(0)
   const [evidence_is_validated, setEvidence_is_validated] = useState(false)
   const role = localStorage.getItem('cargo')
+
   useEffect(() => {
     (async () => {
       
@@ -172,6 +173,7 @@ export const AccordionRequests = ({ requestForEvidenceI, process_id, step, setSt
               myId={myId}
               process_id={process_id}
               step_id={step.id}
+              key={'Evidence Accordion:' + requestForEvidence.id}
             />
           }
 

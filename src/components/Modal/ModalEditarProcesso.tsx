@@ -197,7 +197,8 @@ export const ModalUpdateProcess = (props: props) => {
 
         <>
             <Button bg='#53C4CD' variant='solid'
-                textColor='white' colorScheme="#58595B" width={['5rem']}
+                _hover={{ background: '#FFF', color: '#58595B' }}
+                textColor='white' colorScheme="#58595B" width={['auto', '8rem']}
                 type="submit" onClick={onOpen}
             >Editar</Button>
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="auto">
@@ -345,7 +346,7 @@ export const ModalUpdateProcess = (props: props) => {
                             </Flex >
                         </Box>
                     </FormControl>
-                    <Button display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='white' colorScheme="#58595B" width='100%' type="submit">Confirmar</Button>
+                    <Button display="flex" mb={3} _hover={{ background: '#FFF', color: '#58595B' }} bg='#53C4CD' variant='solid' textColor='white' colorScheme="#58595B" width='100%' type="submit">Confirmar</Button>
                 </form>
             </ModalGeneric>
         </>
