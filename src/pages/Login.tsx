@@ -8,7 +8,11 @@ import {
     FormControl,
     FormLabel,
     Center,
-    useDisclosure
+    useDisclosure,
+    CardHeader,
+    Heading,
+    CardFooter,
+    CardBody
 
 } from '@chakra-ui/react'
 import { useState } from "react";
@@ -47,26 +51,26 @@ export const Login = () => {
 
         try {
             const is_enable = await loginToken(email, senha)
-            if(is_enable === false){
+            if (is_enable === false) {
                 setIs_enable(true)
                 onOpen()
-            }else{
+            } else {
                 setToken(localStorage.getItem('access_token'))
                 setRefresh_token(localStorage.getItem('refresh_token'))
             }
-            } catch (error) {
-            
-            }
+        } catch (error) {
+
+        }
     }
-    
-    const submitVerification =async (e:any) => {
+
+    const submitVerification = async (e: any) => {
         e.preventDefault()
-    
+
         try {
             await verifyCode(verificationCode)
         } catch (error) {
-            
-        } finally{
+
+        } finally {
             setToken(localStorage.getItem('access_token'))
             setRefresh_token(localStorage.getItem('refresh_token'))
         }
@@ -74,61 +78,65 @@ export const Login = () => {
 
     return <Card backgroundColor={'#58595B'} margin={'10rem auto'} textColor={'white'} width='40rem'>
         {token && (
-          <Navigate to="/" replace={true} />
+            <Navigate to="/" replace={true} />
         )}
         {refresh_token && (
-          <Navigate to="/" replace={true} />
+            <Navigate to="/" replace={true} />
         )}
         <form onSubmit={submit}>
             <Box width={'30rem'} height={'30rem'} margin={'1rem auto'} padding={'1rem'}>
-                <Center>
-
-                <FormControl margin={'1rem'}>
-                    <FormLabel textAlign={'center'}>Email</FormLabel>
-                    <Input
-                        type='email'
-                        onChange={e => setEmail(e.target.value)}
-                        />
-                </FormControl>
-                </Center>
-                <FormControl margin={'1rem auto'} width='26rem'>
-                    <FormLabel textAlign={'center'}>Senha</FormLabel>
-                    <InputGroup size='md'>
+                <CardHeader textAlign="center">
+                    <Heading fontSize="4rem" fontFamily='Poppins' fontWeight="bold" color="#53C4CD" size='lg'>
+                        Login
+                    </Heading>
+                </CardHeader>
+                <CardBody>
+                    <FormControl margin={'1rem auto'}  width='auto'>
+                        <FormLabel textAlign={'left'}>Email</FormLabel>
                         <Input
-                            pr='8.5rem'
-                            type={show ? 'text' : 'password'}
-                            placeholder='Enter password'
-                            onChange={e => setSenha(e.target.value)}
+                            type='email'
+                            onChange={e => setEmail(e.target.value)}
                         />
-                        <InputRightElement width='4.5rem'>
-                            <Button textColor={'white'} backgroundColor={'#4fb3bb'} h='1.75rem' size='sm' onClick={handleClick}>
-                                {show ? 'Hide' : 'Show'}
-                            </Button>
-                        </InputRightElement>
-                    </InputGroup>
-                </FormControl>
-                <Center>
-                    <Button type='submit' textColor={'white'} backgroundColor={'#4fb3bb'}>Logar</Button>
-                </Center>
+                    </FormControl>
+                    <FormControl margin={'1rem auto'} width='auto'>
+                        <FormLabel textAlign={'left'}>Senha</FormLabel>
+                        <InputGroup size='md'>
+                            <Input
+                                pr='8.5rem'
+                                type={show ? 'text' : 'password'}
+                                placeholder='Enter password'
+                                onChange={e => setSenha(e.target.value)}
+                            />
+                            <InputRightElement width='4.5rem'>
+                                <Button textColor={'white'} backgroundColor={'#4fb3bb'} h='1.75rem' size='sm' onClick={handleClick}>
+                                    {show ? 'Hide' : 'Show'}
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
+                    </FormControl>
+                </CardBody>
+                <CardFooter>
+                    <Button type='submit' textColor={'white'} backgroundColor={'#4fb3bb'} width='100%' borderRadius="4rem">Logar</Button>
+                </CardFooter>
             </Box>
         </form>
         {is_enable && (<ModalGeneric widthModal='30rem' isOpen={isOpen} onClose={onClose} >
             <form onSubmit={submitVerification}>
-            <Box width={'25rem'} height={'15rem'} margin={'1rem auto'} justifyContent={'center'} padding={'1rem'}>
-                <Center>
-                    <FormControl margin={'1rem'}>
-                        <FormLabel textAlign={'center'}>Digite o Código de Autenticação</FormLabel>
-                        <Input
-                            type='text'
-                            value={verificationCode}
-                            onChange={e => setVerificationCode(e.target.value)}
-                        />
-                    </FormControl>
-                </Center>
-                <Center>
-                    <Button type='submit' textColor={'white'} backgroundColor={'#4fb3bb'}>Logar</Button>
-                </Center>
-            </Box>
+                <Box width={'25rem'} height={'15rem'} margin={'1rem auto'} justifyContent={'center'} padding={'1rem'}>
+                    <Center>
+                        <FormControl margin={'1rem'}>
+                            <FormLabel textAlign={'center'}>Digite o Código de Autenticação</FormLabel>
+                            <Input
+                                type='text'
+                                value={verificationCode}
+                                onChange={e => setVerificationCode(e.target.value)}
+                            />
+                        </FormControl>
+                    </Center>
+                    <Center>
+                        <Button type='submit' textColor={'white'} backgroundColor={'#4fb3bb'}>Logar</Button>
+                    </Center>
+                </Box>
             </form>
         </ModalGeneric>)}
     </Card>

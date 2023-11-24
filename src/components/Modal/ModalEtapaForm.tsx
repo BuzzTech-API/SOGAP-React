@@ -1,4 +1,4 @@
-import { Heading, IconButton, useDisclosure } from "@chakra-ui/react"
+import { Heading, IconButton, ModalHeader, useDisclosure } from "@chakra-ui/react"
 import { ModalGeneric } from "./Modal"
 import EtapaForm from "../EtapaForm"
 import { AddIcon } from "@chakra-ui/icons"
@@ -9,12 +9,12 @@ interface ModalEtapaFormI {
     widthIcon: string;
     sizeIcon: string;
     heightIcon: string;
-    steps:Array<Step>;
+    steps: Array<Step>;
     setSteps: React.Dispatch<React.SetStateAction<Step[]>>;
     processId: number
 }
 
-export const ModalEtapaForm = ({widthIcon,sizeIcon,heightIcon,steps, setSteps, processId}:ModalEtapaFormI) => {
+export const ModalEtapaForm = ({ widthIcon, sizeIcon, heightIcon, steps, setSteps, processId }: ModalEtapaFormI) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     return <>
@@ -25,20 +25,30 @@ export const ModalEtapaForm = ({widthIcon,sizeIcon,heightIcon,steps, setSteps, p
             borderRadius='24rem'
             padding='1rem'
             size={sizeIcon}
-            icon={<AddIcon h={heightIcon} w={widthIcon}/>}
+            icon={<AddIcon h={heightIcon} w={widthIcon} />}
             _hover={{ color: "#53C4CD", bg: "#FFF" }}
             onClick={onOpen}
         >
 
         </IconButton>
-        <ModalGeneric 
-        isOpen={isOpen} 
-        onClose={onClose} 
-        widthModal="50rem" 
-        heightModal="55rem"
-        header={<Heading as="h2" size="lg" mb={4} className="Titulo" color="#54c5ce" textAlign="center">
-        Nova etapa
-      </Heading>}>
+        <ModalGeneric
+            isOpen={isOpen}
+            onClose={onClose}
+            widthModal="50rem"
+            heightModal="auto"
+            header={<ModalHeader textAlign="center"><Heading
+                as="h2"
+                size='lg'
+                fontFamily={'Poppins'}
+                fontSize='1.9rem'
+                fontStyle='normal'
+                fontWeight='bold'
+                mb={3}
+                className="Titulo"
+                color='#53C4CD'
+                textAlign="center">
+                Nova etapa
+            </Heading></ModalHeader>}>
             <EtapaForm steps={steps} setSteps={setSteps} processId={processId} onClose={onClose} />
         </ModalGeneric>
     </>

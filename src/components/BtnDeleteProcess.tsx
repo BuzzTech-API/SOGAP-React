@@ -1,4 +1,4 @@
-import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, useDisclosure } from "@chakra-ui/react";
+import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, Heading, ModalHeader, useDisclosure } from "@chakra-ui/react";
 import Process from "../models/Process";
 import { ModalGeneric } from "./Modal/Modal";
 
@@ -22,13 +22,13 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
-        
+
+
         try {
             const response = await deleteProcess(process.id, false)
             if (response) {
                 setShowSuccessDialog(true)
-                
+
             }
 
 
@@ -38,10 +38,10 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
 
         } finally {
             if (processes && setProcess) {
-                setProcess(processes.filter(item=> item.id !==process.id))
+                setProcess(processes.filter(item => item.id !== process.id))
             }
             if (sortProcess && setSortProcess) {
-                setSortProcess(sortProcess.filter(item=> item.id !==process.id))
+                setSortProcess(sortProcess.filter(item => item.id !== process.id))
             }
             onClose()
         }
@@ -50,7 +50,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
     return (
         <>
             <Button bg='#ff1a1a' variant='solid'
-                textColor='white' colorScheme="#58595B" width={['auto','8rem']}
+                textColor='white' colorScheme="#58595B" width={['auto', '8rem']}
                 type="submit" onClick={onOpen}
             >Deletar</Button>
 
@@ -84,17 +84,31 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
                 </AlertDialogOverlay>
             </AlertDialog>
 
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="10rem" >
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="auto" >
                 <form onSubmit={handleSubmit}>
+                    <ModalHeader textAlign="center">
+                        <Heading
+                            as="h2"
+                            size='lg'
+                            fontFamily={'Poppins'}
+                            fontSize='1.9rem'
+                            fontStyle='normal'
+                            fontWeight='bold'
+                            mb={3}
+                            className="Titulo"
+                            color='#53C4CD'
+                            textAlign="center">
+                            Deletar processo
+                        </Heading>
+                    </ModalHeader>
                     <FormLabel
                         textAlign="center"
                         fontSize="large"
                         color='white'
-                        mt={3}
                     >
                         <strong>Tem certeza de que quer deletar o processo {process.title} ?</strong>
 
-                        <ButtonGroup gap={['5rem',"15rem"]} mt={5}>
+                        <ButtonGroup gap={['5rem', "15rem"]} mt={5}>
 
                             <Button
                                 display="flex"
@@ -111,10 +125,10 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
                             <Button
                                 display="flex"
                                 mb={3}
-                                bg='gray'
+                                bg='#53C4CD'
                                 variant='solid'
                                 textColor='white'
-                                colorScheme="#58595B"
+                                colorScheme="#53C4CD"
                                 width='100%'
                                 onClick={onClose}>CANCELAR
                             </Button>

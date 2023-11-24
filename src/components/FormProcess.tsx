@@ -60,7 +60,7 @@ const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: 
   const [responsibleList, setResponsibleList] = useState(new Array<User>())
   useEffect(() => {
     (async () => {
-      
+
       const listOfUsers = await getAllUsers()
       if (listOfUsers) {
         setUsersList(listOfUsers)
@@ -121,14 +121,14 @@ const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: 
   //Função para submeter os dados ao servidor BackEnd
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     try {
       const requisicao = sendFormData(formData);
       toast.promise(requisicao, {
         success: { title: 'Processo Criado', description: 'Processo criado com sucesso' },
         error: { title: 'Erro ao criar Processo', description: 'Erro' },
         loading: { title: 'Criando Processo', description: 'Por favor, espere' },
-    })
+      })
       const response: Process = await requisicao
 
       responsibleList.forEach(async (user: User) => {
@@ -147,6 +147,8 @@ const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: 
     }
   };
 
+  const GL = usersList.filter((user: User) => user.role === "Gerente" || user.role === "Lider")
+
   //Retorno em HTML do Formulário
   return (<>
     <Button margin=''
@@ -157,16 +159,16 @@ const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: 
       onClick={onOpen}
     >Novo Processo
     </Button>
-    <Modal size={['full',"xxl"]} isOpen={isOpen} onClose={onClose}>
+    <Modal size={['full', "xxl"]} isOpen={isOpen} onClose={onClose}>
 
       <ModalOverlay />
 
-      <ModalContent w={["100%","1000px"]} h={['auto']} >
+      <ModalContent w={["100%", "1000px"]} h={['auto']} >
         <Card bg="#58595B">
           <Box>
             <ModalHeader textAlign="center">
               <CardHeader>
-                <Heading fontSize="1.9rem" fontWeight="bold" color="#53C4CD" size={['md','md']}>
+                <Heading fontSize="1.9rem" fontFamily='Poppins' fontWeight="bold" color="#53C4CD" size='lg'>
                   Novo Processo
                 </Heading>
               </CardHeader>
@@ -247,10 +249,12 @@ const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: 
                         onChange={handleChangeResponsible}
                       >
                         <option value=""></option>
-                        {usersList.map((user: User) => {
+                        {GL.length > 0 ? (GL.map((user: User) =>
+                          <option key={user.id} value={user.id}>{user.role} - {user.name}</option>
 
-                          return <option key={user.id} value={user.id}>{user.name}</option>
-                        })}
+                        )) : (
+                          <option value="Não há nenhum gerente ou lider cadastrado" disabled>Não há nenhum gerente ou lider cadastrado</option>
+                        )}
 
                       </Select>
                       <Box>

@@ -92,9 +92,9 @@ export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequest
 
     return (
         <Accordion allowToggle w={'70%'}>
-            {evidences.map(evidence => {
+            {evidences.map((evidence, index)=> {
                 return (
-                    <AccordionItem>
+                    <AccordionItem key={index}>
                         <h2>
                             <AccordionButton>
                                 <Box as="span" flex='1' textAlign='left'>

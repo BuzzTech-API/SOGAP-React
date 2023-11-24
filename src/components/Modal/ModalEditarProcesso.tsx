@@ -1,5 +1,5 @@
 
-import { useDisclosure, FormLabel, Input, Button, Select, FormControl, Box, Flex, Tag, TagCloseButton, TagLabel, useToast } from "@chakra-ui/react"
+import { useDisclosure, FormLabel, Input, Button, Select, FormControl, Box, Flex, Tag, TagCloseButton, TagLabel, useToast, Heading, ModalHeader } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
 import { ModalGeneric } from "./Modal"
 import User from "../../models/User"
@@ -34,7 +34,7 @@ export const ModalUpdateProcess = (props: props) => {
     }
     useEffect(() => {
         (async () => {
-            
+
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
@@ -110,7 +110,7 @@ export const ModalUpdateProcess = (props: props) => {
     //Função para submeter os dados ao servidor BackEnd
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
+
 
         try {
             if (!formData) { //Verificar
@@ -191,18 +191,31 @@ export const ModalUpdateProcess = (props: props) => {
         }
     }
 
+    const GL = usersList.filter((user: User) => user.role === "Gerente" || user.role === "Lider")
 
     return (
 
         <>
             <Button bg='#53C4CD' variant='solid'
-                textColor='white' colorScheme="#58595B" width={['auto','8rem']}
+                textColor='white' colorScheme="#58595B" width={['auto', '8rem']}
                 type="submit" onClick={onOpen}
             >Editar</Button>
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="52rem">
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="auto">
                 <form onSubmit={handleSubmit}>
-                    <FormLabel textAlign="center" fontSize="large" color='white'><strong>Edição de Processo</strong></FormLabel>
-
+                    <ModalHeader textAlign="center">
+                        <Heading
+                            fontFamily={'Poppins'}
+                            fontSize='1.9rem'
+                            fontStyle='normal'
+                            fontWeight='bold'
+                            alignSelf={'center'}
+                            textAlign="center"
+                            color='#53C4CD'
+                            mb={3}
+                            size='lg'
+                        >Edição de processo
+                        </Heading>
+                    </ModalHeader>
                     <FormLabel pt={3} color='white'>Título</FormLabel>
                     <Input
                         bg='white'
@@ -283,10 +296,12 @@ export const ModalUpdateProcess = (props: props) => {
                             onChange={handleChangeResponsible}
                         >
                             <option value=""></option>
-                            {usersList.map((user: User) => {
+                            {GL.length > 0 ? (GL.map((user: User) =>
+                                <option key={user.id} value={user.id}>{user.role} - {user.name}</option>
 
-                                return <option key={user.id} value={user.id}>{user.name}</option>
-                            })}
+                            )) : (
+                                <option value="Não há nenhum gerente ou lider cadastrado" disabled>Não há nenhum gerente ou lider cadastrado</option>
+                            )}
 
                         </Select>
                         <Box>

@@ -1,4 +1,4 @@
-import { Box, Button, useDisclosure, Text, Heading, Center } from "@chakra-ui/react"
+import { Box, Button, useDisclosure, Text, Heading, Center, Tooltip } from "@chakra-ui/react"
 import { ModalGeneric } from "./Modal"
 import RequestForEvidence from "../../models/RequestForEvidence"
 import { ModalUploadEvidence } from "../UploadEvidence"
@@ -50,19 +50,21 @@ export const AddEvidence: React.FC<AddEvidenceI> = ({
                         Fechar
                     </Button>}
             >
-                    <Heading size={'md'} textAlign={'center'}>Documento Requirido</Heading>
+                <Heading size={'md'} textAlign={'center'}>Documento Requirido</Heading>
                 <Center marginBottom={'2rem'}>
-                    <Text  display={'flex'} fontSize={'1.3rem'}>{request.requiredDocument}</Text>
+                    <Tooltip label={request.requiredDocument}>
+                        <Text display={'flex'} fontSize={'1.3rem'} noOfLines={1}>{request.requiredDocument}</Text>
+                    </Tooltip>
                 </Center>
                 <Box>
-                    <ModalUploadEvidence 
-                    requestForEvidence={request} 
-                    onClose={onClose}
-                    setRequestForEvidence={setRequestForEvidence} 
-                    step={step} 
-                    setStep={setStep}  
-                    evidences={evidences}
-                    setEvidences={setEvidences}
+                    <ModalUploadEvidence
+                        requestForEvidence={request}
+                        onClose={onClose}
+                        setRequestForEvidence={setRequestForEvidence}
+                        step={step}
+                        setStep={setStep}
+                        evidences={evidences}
+                        setEvidences={setEvidences}
                     />
                 </Box>
             </ModalGeneric>

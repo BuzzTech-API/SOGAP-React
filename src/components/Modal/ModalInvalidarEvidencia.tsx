@@ -1,13 +1,13 @@
-import { 
+import {
     Box,
-    Button, 
-    Flex, 
-    FormLabel, 
-    Modal, 
-    ModalBody, 
-    ModalCloseButton, 
+    Button,
+    Flex,
+    FormLabel,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
     ModalContent,
-    ModalOverlay, 
+    ModalOverlay,
     Textarea
 } from "@chakra-ui/react"
 import React, { SetStateAction, useEffect, useState } from "react";
@@ -15,10 +15,10 @@ import { useSocket } from "../../layout/DefaultLayout";
 import RequestForEvidence from "../../models/RequestForEvidence";
 import Validation from "../../models/Validation";
 import Evidence from "../../models/Evidence";
-interface PropsInvalidar{
+interface PropsInvalidar {
     process_id: number,
     isOpen: boolean,
-    onClose: ()=>void,
+    onClose: () => void,
     requestForEvidence: RequestForEvidence,
     step_id: number,
     myId: number,
@@ -26,21 +26,18 @@ interface PropsInvalidar{
     evidences: Evidence[]
     setEvidences: React.Dispatch<SetStateAction<Evidence[]>>
 }
-export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestForEvidence, step_id, myId, evidence, evidences, setEvidences}:PropsInvalidar) => {
+export const ModalInvalidarEvidencia = ({ process_id, isOpen, onClose, requestForEvidence, step_id, myId, evidence, evidences, setEvidences }: PropsInvalidar) => {
 
     const [reason, setReason] = useState('')
-    const {socket} = useSocket()
-
-    
-    
-
+    const { socket } = useSocket()
 
     const submit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         
-        const lastEvidenceIndex = requestForEvidence.evidences.length -1
+
+        const lastEvidenceIndex = requestForEvidence.evidences.length - 1
         if (socket) {
-                if (lastEvidenceIndex >=0) {
+            if (lastEvidenceIndex >= 0) {
                 const data = {
                     event: 'Invalidar evidência',
                     data: {
@@ -54,7 +51,7 @@ export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestFor
                 }
                 socket.send(JSON.stringify(data))
                 const validation = new Validation(-1, evidence.id, reason, myId, false)
-                setEvidences(evidences.map(evidenceMap=>{
+                setEvidences(evidences.map(evidenceMap => {
                     if (evidenceMap.id === validation.evidence_id) {
                         evidenceMap.validation.push(validation)
                         return evidenceMap
@@ -93,7 +90,8 @@ export const ModalInvalidarEvidencia = ({process_id, isOpen, onClose, requestFor
                                     bg={'white'}
                                     color={'black'}
                                     h={'16rem'}
-                                    onChange={(event)=> setReason(event.target.value)}
+                                    onChange={(event) => setReason(event.target.value)}
+                                    resize="none"
                                 />
 
                             </Box>

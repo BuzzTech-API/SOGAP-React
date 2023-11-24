@@ -59,14 +59,14 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
   //Função para submeter os dados ao servidor BackEnd
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const requisicao = createStep(name, endingDate, endingDate, processId, objective, priority, steps.length + 1)
     toast.promise(requisicao, {
       success: { title: 'Etapa Criada', description: 'Etapa criada com sucesso' },
       error: { title: 'Erro ao criar Etapa', description: 'Erro' },
       loading: { title: 'Criando Etapa', description: 'Por favor, espere' },
-  })
-    const newStep = await requisicao 
+    })
+    const newStep = await requisicao
 
     if (newStep !== null) {
       const userStepList = new Array<StepUser>()
@@ -79,7 +79,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
         }
         userStepList.push(userStep)
       })
-      newStep.status= 'Não Iniciado'
+      newStep.status = 'Não Iniciado'
       newStep.users = userStepList;
       setSteps(steps.concat(newStep))
     }
@@ -98,7 +98,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
   };
   useEffect(() => {
     (async () => {
-      
+
       const listOfUsers = await getAllUsers()
       if (listOfUsers) {
         setUsersList(listOfUsers)
@@ -106,6 +106,8 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
 
     })();
   }, [])
+
+  const lideres = usersList.filter((user: User) => user.role === "Lider")
 
 
   return (
@@ -125,7 +127,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
         <FormLabel className="Subtitulo" color="#ffff">
           Objetivo
         </FormLabel>
-        <Textarea maxLength={300} background="white" color="#333" onChange={handleObjectiveChange} borderRadius={'2rem'} />
+        <Textarea resize="none" maxLength={300} background="white" color="#333" onChange={handleObjectiveChange} borderRadius={'2rem'} />
       </FormControl>
 
       <FormControl className="Subtitulo" color="#ffff" id="previsaoTermino" mb={4}>
@@ -133,7 +135,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
         <Input type="date" background="white" color="#333" borderRadius={'2rem'} onChange={handleEndingDateChange} />
       </FormControl>
       <FormControl id="priority" mb={5}>
-        <FormLabel color="#ffffff" fontSize="20px" mb={1} ml={210}>Prioridade</FormLabel>
+        <FormLabel>Prioridade</FormLabel>
         <Select style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
           value={priority}
           onChange={handlePriorityChange}>
@@ -150,10 +152,12 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
           onChange={handleChangeResponsible}
         >
           <option value=""></option>
-          {usersList.map((user: User) => {
+          {lideres.length > 0 ? (lideres.map((user: User) =>
+            <option key={user.id} value={user.id}>{user.role} - {user.name}</option>
 
-            return <option key={user.id} value={user.id}>{user.name}</option>
-          })}
+          )) : (
+            <option value="Não há nenhum lider cadastrado" disabled>Não há nenhum lider cadastrado</option>
+          )}
 
         </Select>
         <Box>
@@ -200,7 +204,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
       </FormControl>
 
       <Button
-        marginTop="20px"
+        marginBottom="1rem"
         borderRadius='2rem'
         type="submit"
         colorScheme="teal"

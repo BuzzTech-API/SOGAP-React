@@ -1,5 +1,5 @@
 
-import { useDisclosure, FormLabel, Input, Textarea, Button, Select, FormControl, Box, Tag, TagLabel, TagCloseButton, Flex, useToast } from "@chakra-ui/react"
+import { useDisclosure, FormLabel, Input, Textarea, Button, Select, FormControl, Box, Tag, TagLabel, TagCloseButton, Flex, useToast, ModalHeader, Heading } from "@chakra-ui/react"
 import React, { SetStateAction, useEffect, useState } from "react"
 import { ModalGeneric } from "./Modal"
 import Step from "../../models/Steps"
@@ -56,7 +56,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        
+
         try {
 
             if (!name || !endingDate || !objective || !priority || (responsibleList.length === 0)) { //Verificar
@@ -66,7 +66,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
 
 
             const request = updateStep(step.id, name, status, step.endDate, formatToData(endingDate),
-            step.process_id, objective, priority, step.order) //Atualiza a etapa com os dados rebidos 
+                step.process_id, objective, priority, step.order) //Atualiza a etapa com os dados rebidos 
             toast.promise(request, {
                 success: { title: 'Etapa Editada', description: 'Enviado com sucesso' },
                 error: { title: 'Erro ao Alterar a Etapa', description: 'Error' },
@@ -154,9 +154,11 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
         const newResponsible = usersList.find(user => user.id === Number.parseInt(e.target.value))
         if (newResponsible) {
             let is_inResponsibleList = false
-            responsibleList.forEach(user => {if (user.id ===newResponsible.id) {
-                is_inResponsibleList= true
-            }})
+            responsibleList.forEach(user => {
+                if (user.id === newResponsible.id) {
+                    is_inResponsibleList = true
+                }
+            })
             if (!is_inResponsibleList) {
                 setResponsibleList(responsibleList.concat(newResponsible))
             }
@@ -165,7 +167,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
 
     useEffect(() => {
         (async () => {
-            
+
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
@@ -178,6 +180,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
     }, [step])
 
 
+    const lideres = usersList.filter((user: User) => user.role === "Lider")
 
     return (
 
@@ -187,9 +190,23 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                 type="submit" onClick={onOpen}
                 margin={'0.5rem'}
             >Editar</Button>
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="54rem">
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="auto">
                 <form onSubmit={handleSubmit}>
-                    <FormLabel textAlign="center" fontSize="large" color='white'><strong>Edição de Etapa</strong></FormLabel>
+                    <ModalHeader textAlign="center">
+                        <Heading
+                            as="h2"
+                            size='lg'
+                            fontFamily={'Poppins'}
+                            fontSize='1.9rem'
+                            fontStyle='normal'
+                            fontWeight='bold'
+                            mb={3}
+                            className="Titulo"
+                            color='#53C4CD'
+                            textAlign="center">
+                            Edição de etapa
+                        </Heading>
+                    </ModalHeader>
 
                     <FormLabel pt={3} color='white'>Nome</FormLabel>
                     <Input
@@ -214,17 +231,19 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                     />
 
                     <FormLabel pt={3} color='white'>Objetivo</FormLabel>
-                    <Textarea 
-                    maxLength={300}
-                    bg='white' 
-                    textColor={'black'} 
-                    placeholder={step.objective} 
-                    value={objective} 
-                    onChange={handleObjectiveChange} 
+                    <Textarea
+                        maxLength={300}
+                        bg='white'
+                        textColor={'black'}
+                        placeholder={step.objective}
+                        value={objective}
+                        onChange={handleObjectiveChange}
+                        resize='none'
+                        mb={5}
                     />
 
                     <FormControl id="priority" mb={5}>
-                        <FormLabel color="#ffffff" fontSize="20px" pt={3} mb={1} ml={210}>Prioridade</FormLabel>
+                        <FormLabel>Prioridade</FormLabel>
                         <Select placeholder={step.priority} style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
                             value={priority}
                             onChange={handlePriorityChange}>
@@ -235,7 +254,7 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                     </FormControl>
 
                     <FormControl id="priority" mb={5}>
-                        <FormLabel color="#ffffff" fontSize="20px" pt={3} mb={1} ml={210}>Prioridade</FormLabel>
+                        <FormLabel>Status</FormLabel>
                         <Select placeholder={step.status} style={{ width: "100%", height: "40px" }} rounded="100px" color="#000000" bg="#D9D9D9"
                             value={status}
                             onChange={handleStatusChange}>
@@ -251,11 +270,12 @@ export const ModalUpdateStep = ({ step, steps, setStep, setSteps }: UpdateStep) 
                             onChange={handleChangeResponsible}
                         >
                             <option value=""></option>
-                            {usersList.map((user: User) => {
+                            {lideres.length > 0 ? (lideres.map((user: User) =>
+                                <option key={user.id} value={user.id}>{user.role} - {user.name}</option>
 
-                                return <option key={user.id} value={user.id}>{user.name}</option>
-                            })}
-
+                            )) : (
+                                <option value="Não há nenhum lider cadastrado" disabled>Não há nenhum lider cadastrado</option>
+                            )}
                         </Select>
                         <Box>
                             <Flex

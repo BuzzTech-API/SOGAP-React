@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Checkbox, Flex, Table, useDisclosure, Text } from "@chakra-ui/react"
+import { Box, Button, ButtonGroup, Checkbox, Flex, Table, useDisclosure, Text, Heading, CardHeader, ModalHeader } from "@chakra-ui/react"
 import { ModalGeneric } from "./Modal"
 import { useEffect, useState } from "react"
 import Process from "../../models/Process"
@@ -34,7 +34,7 @@ export const ModalFilter = ({ setProcess, steps, setFilteredSteps, setFilteredRe
 
     useEffect(() => {
         (async () => {
-            
+
             const userContent = await getMyRelatedData()
 
             if (userContent && setProcess) {
@@ -128,7 +128,7 @@ export const ModalFilter = ({ setProcess, steps, setFilteredSteps, setFilteredRe
                 (selectedDates.length === 0 || selectedDates.includes(request.evidenceValidationDate.toString()))
             )
         }) : []
-        
+
         if (setFilteredRequestForEvidence)
             setFilteredRequestForEvidence(filteredRequests)
 
@@ -154,16 +154,19 @@ export const ModalFilter = ({ setProcess, steps, setFilteredSteps, setFilteredRe
             >Filtros</Button>
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="auto" heightModal="auto">
                 <form onSubmit={filterProcesses}>
-                    <Text
-                        fontFamily={'Poppins'}
-                        fontSize='1.5rem'
-                        fontStyle='normal'
-                        fontWeight='700'
-                        alignSelf={'center'}
-                        textAlign="center"
-                        color={'white'}
-                        mb={3}
-                    >Filtros</Text>
+                    <ModalHeader textAlign="center">
+                        <Heading
+                            fontFamily={'Poppins'}
+                            fontSize='1.9rem'
+                            fontStyle='normal'
+                            fontWeight='bold'
+                            alignSelf={'center'}
+                            textAlign="center"
+                            color='#53C4CD'
+                            mb={3}
+                            size='lg'
+                        >Filtros</Heading>
+                    </ModalHeader>
                     <Flex
                         direction={"column"}
                         alignSelf={'center'}

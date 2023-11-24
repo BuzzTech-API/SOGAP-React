@@ -1,4 +1,4 @@
-import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, useDisclosure } from "@chakra-ui/react";
+import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, Heading, ModalHeader, useDisclosure } from "@chakra-ui/react";
 import { ModalGeneric } from "./Modal/Modal";
 
 import { SetStateAction, useRef, useState } from "react";
@@ -12,100 +12,115 @@ interface DeleteEtapaInterface {
 
     steps: Step[],
     setSteps: React.Dispatch<SetStateAction<Step[]>>,
-    onCloseD: ()=>void
+    onCloseD: () => void
 }
 
-export const BtnDeleteEtapa = ({etapa, setSteps, steps, onCloseD}: DeleteEtapaInterface) => {
+export const BtnDeleteEtapa = ({ etapa, setSteps, steps, onCloseD }: DeleteEtapaInterface) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [showSuccessDialog, setShowSuccessDialog] = useState(false)
     const cancelRef = useRef(null)
-    
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
-        
-        try{
+
+
+        try {
             const response = await deleteStep(etapa.id, false)
-            if(response){
+            if (response) {
                 setShowSuccessDialog(true)
             }
-            
-            
 
-        }catch(error){
+
+
+        } catch (error) {
             console.log(error)
 
-        }finally{
+        } finally {
             onClose()
             onCloseD()
-                setSteps(steps.filter((item)=>item.id!==etapa.id))
+            setSteps(steps.filter((item) => item.id !== etapa.id))
         }
     }
 
-    return(
+    return (
         <>
-        <Button bg='#ff1a1a' variant='solid' 
-            textColor='white' width='10rem' 
-            type="submit" onClick={onOpen}
+            <Button bg='#ff1a1a' variant='solid'
+                textColor='white' width='10rem'
+                type="submit" onClick={onOpen}
             >Deletar</Button>
 
-        <AlertDialog
-          isOpen={showSuccessDialog}
-          leastDestructiveRef={cancelRef}
-          onClose={() => setShowSuccessDialog(false)}
-        >
-          <AlertDialogOverlay>
-            <AlertDialogContent>
-              <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                Etapa apagada com sucesso!
-              </AlertDialogHeader>
+            <AlertDialog
+                isOpen={showSuccessDialog}
+                leastDestructiveRef={cancelRef}
+                onClose={() => setShowSuccessDialog(false)}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            Etapa apagada com sucesso!
+                        </AlertDialogHeader>
 
-              <AlertDialogFooter>
-                <Button ref={cancelRef} onClick={() => setShowSuccessDialog(false)}>
-                  OK
-                </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialogOverlay>
-        </AlertDialog>
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={() => setShowSuccessDialog(false)}>
+                                OK
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
 
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" >
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="auto">
                 <form onSubmit={handleSubmit}>
-                    <FormLabel 
-                    textAlign="center" 
-                    fontSize="large" 
-                    color='white'
-                    mt={3}
+                    <ModalHeader textAlign="center">
+                        <Heading
+                            as="h2"
+                            size='lg'
+                            fontFamily={'Poppins'}
+                            fontSize='1.9rem'
+                            fontStyle='normal'
+                            fontWeight='bold'
+                            mb={3}
+                            className="Titulo"
+                            color='#53C4CD'
+                            textAlign="center">
+                            Deletar etapa
+                        </Heading>
+                    </ModalHeader>
+                    <FormLabel
+                        textAlign="center"
+                        fontSize="large"
+                        color='white'
+                        mb={'1rem'}
                     >
                         <strong>Tem certeza de que quer deletar a etapa: {etapa.name} ?</strong></FormLabel>
-                        
-                        <ButtonGroup display={'flex'} alignSelf={'center'} gap="240" mt={5}>
-                            <Button 
-                                display="flex" 
-                                mb={3} 
-                                bg='#ff1a1a' 
-                                variant='solid' 
-                                textColor='white' 
-                                colorScheme="#58595B" 
-                                width='100%' 
-                                type="submit">DELETAR
-                            </Button>
-                            
-                            <Button 
-                                display="flex" 
-                                mb={3} 
-                                bg='gray' 
-                                variant='solid' 
-                                textColor='white' 
-                                colorScheme="#58595B" 
-                                width='100%' 
-                                onClick={onClose}>CANCELAR
-                            </Button>
-                        </ButtonGroup>
-                    
+
+                    <ButtonGroup display={'flex'} alignSelf={'center'} gap="240" mt={5}>
+                        <Button
+                            display="flex"
+                            mb={3}
+                            bg='#ff1a1a'
+                            variant='solid'
+                            textColor='white'
+                            colorScheme="#58595B"
+                            width='100%'
+                            type="submit">DELETAR
+                        </Button>
+
+                        <Button
+                            display="flex"
+                            mb={3}
+                            bg='#53C4CD'
+                            variant='solid'
+                            textColor='white'
+                            colorScheme="#53C4CD"
+                            width='100%'
+                            onClick={onClose}>CANCELAR
+                        </Button>
+                    </ButtonGroup>
+
                 </form>
             </ModalGeneric>
-            
+
         </>
     )
 }

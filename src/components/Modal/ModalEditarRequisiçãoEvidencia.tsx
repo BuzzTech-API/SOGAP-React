@@ -1,4 +1,4 @@
-import { useDisclosure, FormLabel, Input, Button, Select } from "@chakra-ui/react"
+import { useDisclosure, FormLabel, Input, Button, Select, Tooltip, Textarea, Heading, ModalHeader } from "@chakra-ui/react"
 import React, { SetStateAction, useEffect, useState } from "react"
 import { ModalGeneric } from "./Modal"
 import User from "../../models/User"
@@ -25,30 +25,30 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
 
     useEffect(() => {
         (async () => {
-            
+
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
             }
             if (requestEvidence) {
-                
-                    setFormData({
-                        requiredDocument: requestEvidence.requiredDocument,
-                        description: requestEvidence.description,
-                        step_id: requestEvidence.step_id,
-                        user_id: requestEvidence.user_id,
-                        evidenceValidationDate: formatData(new Date(requestEvidence.evidenceValidationDate)),
-                        deliveryDate: formatData(new Date(requestEvidence.deliveryDate)),
-                        is_validated: requestEvidence.is_validated,
-                        is_actived: true,
-                        id: requestEvidence.id
-                    })
-                    const responsibleUser = listOfUsers.find(user =>
-                        user.id === requestEvidence.user_id)
-                    if (responsibleUser) {
-                        setResponsibleName(responsibleUser.name)
-                    }
-                
+
+                setFormData({
+                    requiredDocument: requestEvidence.requiredDocument,
+                    description: requestEvidence.description,
+                    step_id: requestEvidence.step_id,
+                    user_id: requestEvidence.user_id,
+                    evidenceValidationDate: formatData(new Date(requestEvidence.evidenceValidationDate)),
+                    deliveryDate: formatData(new Date(requestEvidence.deliveryDate)),
+                    is_validated: requestEvidence.is_validated,
+                    is_actived: true,
+                    id: requestEvidence.id
+                })
+                const responsibleUser = listOfUsers.find(user =>
+                    user.id === requestEvidence.user_id)
+                if (responsibleUser) {
+                    setResponsibleName(responsibleUser.name)
+                }
+
             }
 
 
@@ -70,7 +70,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
     })
 
     //Função para lidar com mudanças no corpo do formulário
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         const { title, value } = e.target
         setFormData((prevData) => ({
             ...prevData,
@@ -93,7 +93,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
     //Função para submeter os dados ao servidor BackEnd
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
+
 
         try {
 
@@ -114,8 +114,8 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
                     requestEvidence.evidences
                 )
                 setRequestForEvidence(updateRequestForEvidence)
-                const newRequests = step.requests.map((item)=>{
-                    if(item.id === formData.id){
+                const newRequests = step.requests.map((item) => {
+                    if (item.id === formData.id) {
                         return updateRequestForEvidence
                     }
                     return item
@@ -136,7 +136,7 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
 
 
 
-
+    const colaboradores = usersList.filter((user: User) => user.role === "Colaborador")
     return (
 
         <>
@@ -150,31 +150,49 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
                 type="submit"
                 onClick={onOpen}
             >Editar</Button>
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem">
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="auto">
                 <form onSubmit={handleSubmit}>
-                    <FormLabel textAlign="center" fontSize="large" color='white'><strong>Edição de Requisição de Evidência</strong></FormLabel>
+                    <ModalHeader textAlign="center">
+                        <Heading
+                            as="h2"
+                            size='lg'
+                            fontFamily={'Poppins'}
+                            fontSize='1.9rem'
+                            fontStyle='normal'
+                            fontWeight='bold'
+                            mb={3}
+                            className="Titulo"
+                            color='#53C4CD'
+                            textAlign="center">
+                            Edição de Requisição de Evidência
+                        </Heading>
+                    </ModalHeader>
 
                     <FormLabel pt={3} color='white'>Documento requerido</FormLabel>
-                    <Input
-                        bg='white'
-                        textColor={'black'}
-                        placeholder={requestEvidence.requiredDocument}
-                        size='md'
-                        type="text"
-                        title="requiredDocument"
-                        value={formData.requiredDocument}
-                        onChange={handleChange} />
+                    <Tooltip label={requestEvidence.requiredDocument}>
+                        <Input
+                            bg='white'
+                            textColor={'black'}
+                            placeholder={requestEvidence.requiredDocument}
+                            size='md'
+                            type="text"
+                            title="requiredDocument"
+                            value={formData.requiredDocument}
+                            onChange={handleChange} />
+                    </Tooltip>
 
                     <FormLabel pt={3} color='white'>Descrição</FormLabel>
-                    <Input
-                        bg='white'
-                        textColor={'black'}
-                        size="md"
-                        placeholder={requestEvidence.description}
-                        type="text"
-                        title="description"
-                        value={formData.description}
-                        onChange={handleChange} />
+                    <Tooltip label={requestEvidence.description}>
+                        <Textarea
+                            bg='white'
+                            textColor={'black'}
+                            size="md"
+                            placeholder={requestEvidence.description}
+                            title="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            resize='none' />
+                    </Tooltip>
 
                     <FormLabel pt={3} color='white'>Data de entrega</FormLabel>
                     <Input
@@ -196,10 +214,17 @@ export const ModalUpdateRequestEvidence = ({ requestEvidence, setRequestForEvide
                         bg="#D9D9D9"
                         value={responsibleName}>
                         <option value=""></option>
-                        {usersList.map((user: User) => {
-
-                            return <option value={user.id + ": " + user.name} key={user.id}>{user.id + ": " + user.name}</option>
-                        })}
+                        {colaboradores.length > 0 ? (
+                            colaboradores.map((user: User) => (
+                                <option value={user.id + ": " + user.name} key={user.id}>
+                                    {user.id + ": " + user.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="Não há nenhum Colaborador cadastrado" disabled>
+                                Não há nenhum Colaborador cadastrado
+                            </option>
+                        )}
                     </Select>
 
                     <Button display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='black' colorScheme="#58595B" width='100%' type="submit">Confirmar</Button>

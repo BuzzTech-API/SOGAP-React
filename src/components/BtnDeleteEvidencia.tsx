@@ -1,4 +1,4 @@
-import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, useDisclosure } from "@chakra-ui/react";
+import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, ButtonGroup, FormLabel, Heading, ModalHeader, useDisclosure } from "@chakra-ui/react";
 import { ModalGeneric } from "./Modal/Modal";
 
 import { SetStateAction, useRef, useState } from "react";
@@ -21,27 +21,27 @@ export const BtnDeleteEvidencia = ({ evidencia, step, setStep, setRequests }: De
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
-        
+
+
         try {
             const response = await deleteEvidence(evidencia.id, false)
             if (response) {
                 const newRequests = step.requests.filter((item) => item.id !== evidencia.id)
                 step.requests = newRequests
                 const updatedStep = new Step(
-                    step.id, 
-                    step.process_id, 
-                    step.name, 
-                    step.status, 
-                    step.order, 
-                    step.objective, 
-                    step.endingDate, 
-                    step.endDate, 
-                    step.priority, 
-                    step.is_active, 
-                    step.users, 
+                    step.id,
+                    step.process_id,
+                    step.name,
+                    step.status,
+                    step.order,
+                    step.objective,
+                    step.endingDate,
+                    step.endDate,
+                    step.priority,
+                    step.is_active,
+                    step.users,
                     step.requests
-                    )
+                )
                 setStep(updatedStep)
                 setRequests(updatedStep.requests)
                 setShowSuccessDialog(true)
@@ -91,13 +91,27 @@ export const BtnDeleteEvidencia = ({ evidencia, step, setStep, setRequests }: De
                 </AlertDialogOverlay>
             </AlertDialog>
 
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" >
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="auto">
                 <form onSubmit={handleSubmit}>
+                    <ModalHeader textAlign="center">
+                        <Heading
+                            as="h2"
+                            size='lg'
+                            fontFamily={'Poppins'}
+                            fontSize='1.9rem'
+                            fontStyle='normal'
+                            fontWeight='bold'
+                            mb={3}
+                            className="Titulo"
+                            color='#53C4CD'
+                            textAlign="center">
+                            Deletar requisição de evidência
+                        </Heading>
+                    </ModalHeader>
                     <FormLabel
                         textAlign="center"
                         fontSize="large"
                         color='white'
-                        mt={3}
                     >
                         <strong>Tem certeza de que quer deletar a evidencia {evidencia.requiredDocument} ?</strong>
 
@@ -116,10 +130,10 @@ export const BtnDeleteEvidencia = ({ evidencia, step, setStep, setRequests }: De
                             <Button
                                 display="flex"
                                 mb={3}
-                                bg='gray'
+                                bg='#53C4CD'
                                 variant='solid'
                                 textColor='white'
-                                colorScheme="#58595B"
+                                colorScheme="#53C4CD"
                                 width='100%'
                                 onClick={onClose}>CANCELAR
                             </Button>

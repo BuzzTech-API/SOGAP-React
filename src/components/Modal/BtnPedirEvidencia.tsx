@@ -1,5 +1,5 @@
 
-import { useDisclosure, FormLabel, Input, Textarea, Button, Select, IconButton, Center, useToast } from "@chakra-ui/react";
+import { useDisclosure, FormLabel, Input, Textarea, Button, Select, IconButton, Center, useToast, ModalHeader, Heading } from "@chakra-ui/react";
 import React, { SetStateAction, useEffect, useState } from "react";
 import User from "../../models/User";
 import { createRequestEvidence } from "../../services/requestEvidence";
@@ -20,7 +20,7 @@ interface requestEvidence {
 }
 
 
-export const ModalSolicitaEvidencia = ({ step, setStep,steps, setSteps, requests, setRequests }: requestEvidence) => {
+export const ModalSolicitaEvidencia = ({ step, setStep, steps, setSteps, requests, setRequests }: requestEvidence) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [requiredDocument, setRequiredDocument] = useState('')
     const [description, setDescription] = useState('')
@@ -55,17 +55,17 @@ export const ModalSolicitaEvidencia = ({ step, setStep,steps, setSteps, requests
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         const deliveryDate = new Date()
         e.preventDefault();
-        
-        
+
+
         const requisicao = createRequestEvidence(requiredDocument, description, step.id, Number.parseInt(responsibleName), evidenceValidationDate, deliveryDate)
         toast.promise(requisicao, {
             success: { title: 'Solicitação de Evidência Criado', description: 'Solicitação de Evidência criado com sucesso' },
             error: { title: 'Erro ao criar Solicitação de Evidência', description: 'Erro' },
             loading: { title: 'Criando Solicitação de Evidência', description: 'Por favor, espere' },
         })
-        const newRequest = await requisicao 
+        const newRequest = await requisicao
         if (newRequest) {
-            setSteps(steps.map(stepmap =>{
+            setSteps(steps.map(stepmap => {
                 if (step.id === stepmap.id) {
                     stepmap.requests.push(newRequest)
                     return stepmap
@@ -81,7 +81,7 @@ export const ModalSolicitaEvidencia = ({ step, setStep,steps, setSteps, requests
 
     useEffect(() => {
         (async () => {
-            
+
             const listOfUsers = await getAllUsers()
             if (listOfUsers) {
                 setUsersList(listOfUsers)
@@ -91,7 +91,7 @@ export const ModalSolicitaEvidencia = ({ step, setStep,steps, setSteps, requests
     }, [])
 
 
-
+    const colaboradores = usersList.filter((user: User) => user.role === "Colaborador")
     return (
 
         <>
@@ -109,14 +109,28 @@ export const ModalSolicitaEvidencia = ({ step, setStep,steps, setSteps, requests
                     onClick={onOpen}
                 ></IconButton>
             </Center>
-            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="32rem">
+            <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="auto">
                 <form onSubmit={handleSubmit}>
-                    <FormLabel textAlign="center" fontSize="large" color='white'><strong>Solicitação de evidência</strong></FormLabel>
+                    <ModalHeader textAlign="center">
+                        <Heading
+                            as="h2"
+                            size='lg'
+                            fontFamily={'Poppins'}
+                            fontSize='1.9rem'
+                            fontStyle='normal'
+                            fontWeight='bold'
+                            mb={3}
+                            className="Titulo"
+                            color='#53C4CD'
+                            textAlign="center">
+                            Solicitação de evidência
+                        </Heading>
+                    </ModalHeader>
                     <FormLabel pt={3} color='white'>Documento requerido</FormLabel>
-                    <Input  bg='white' textColor={'black'} placeholder='Digite o documento requerido' size='md' type="text" onChange={handleRequiredDocumentChange} />
+                    <Input bg='white' textColor={'black'} placeholder='Digite o documento requerido' size='md' type="text" onChange={handleRequiredDocumentChange} />
 
                     <FormLabel pt={3} color='white'>Descrição</FormLabel>
-                    <Textarea bg='white' textColor={'black'} placeholder='Descreva a solicitação' onChange={handleDescriptionChange} />
+                    <Textarea bg='white' textColor={'black'} placeholder='Descreva a solicitação' onChange={handleDescriptionChange} resize='none' />
 
                     <FormLabel pt={3} color='white'>Data de entrega</FormLabel>
                     <Input bg='white' textColor={'black'} placeholder="Selecione a data" size="md" type="date" onChange={handleEvidenceValidationDateChange} />
@@ -132,10 +146,17 @@ export const ModalSolicitaEvidencia = ({ step, setStep,steps, setSteps, requests
                         bg="#D9D9D9"
                         value={responsibleName}>
                         <option value=""></option>
-                        {usersList.map((user: User) => {
-
-                            return <option value={user.id} key={user.id}>{user.name + ": " + user.team}</option>
-                        })}
+                        {colaboradores.length > 0 ? (
+                            colaboradores.map((user: User) => (
+                                <option value={user.id + ": " + user.name} key={user.id}>
+                                    {user.id + ": " + user.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option value="Não há nenhum Colaborador cadastrado" disabled>
+                                Não há nenhum Colaborador cadastrado
+                            </option>
+                        )}
                     </Select>
 
                     <Button display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='black' colorScheme="#58595B" width='100%' type="submit">Enviar</Button>
