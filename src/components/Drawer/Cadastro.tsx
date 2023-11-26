@@ -61,15 +61,23 @@ export function DrawerCadastro() {
                 const photoLink = await promise
                 setLink(photoLink)
 
+                const requisicao = createUser(name, email, role, team, senha, photoLink)
+                toast.promise(requisicao, {
+                    success: { title: 'Usuário Criado', description: 'Usuário criado com sucesso' },
+                    error: { title: 'Erro ao criar Usuário', description: 'Erro' },
+                    loading: { title: 'Criando Usuário', description: 'Por favor, espere' },
+                })
+                await requisicao
 
+            }else{
+                const requisicao = createUser(name, email, role, team, senha, link)
+                toast.promise(requisicao, {
+                    success: { title: 'Usuário Criado', description: 'Usuário criado com sucesso' },
+                    error: { title: 'Erro ao criar Usuário', description: 'Erro' },
+                    loading: { title: 'Criando Usuário', description: 'Por favor, espere' },
+                })
+                await requisicao
             }
-            const requisicao = createUser(name, email, role, team, senha, link)
-            toast.promise(requisicao, {
-                success: { title: 'Usuário Criado', description: 'Usuário criado com sucesso' },
-                error: { title: 'Erro ao criar Usuário', description: 'Erro' },
-                loading: { title: 'Criando Usuário', description: 'Por favor, espere' },
-            })
-            await requisicao
             
 
         } catch (error) {
@@ -143,7 +151,9 @@ export function DrawerCadastro() {
                                                 onChange={e => setSenha(e.target.value)}
                                             />
                                             <InputRightElement width='5.5rem'>
-                                                <Button textColor={'white'} backgroundColor={'#53C4CD'} h='1.75rem' size='sm' onClick={handleClick}>
+                                                <Button textColor={'white'}
+                                                 _hover={{ background: '#FFF', color: '#58595B' }}
+                                                 backgroundColor={'#53C4CD'} h='1.75rem' size='sm' onClick={handleClick}>
                                                     {show ? 'Hide' : 'Show'}
                                                 </Button>
 
@@ -184,10 +194,13 @@ export function DrawerCadastro() {
                         </DrawerBody>
 
                         <DrawerFooter borderTopWidth='1px' display={'flex'} justifyContent={'center'}>
-                            <Button bg={'red'} textColor={'white'} mr={3} onClick={onClose}>
+                            <Button bg={'red'} 
+                            _hover={{ background: '#FFF', color: '#58595B' }}
+                            textColor={'white'} mr={3} onClick={onClose}>
                                 Cancelar
                             </Button>
-                            <Button bg={'#53C4CD'} textColor={'white'} type='submit'>Cadastrar</Button>
+                            <Button bg={'#53C4CD'}
+                            _hover={{ background: '#FFF', color: '#58595B' }} textColor={'white'} type='submit'>Cadastrar</Button>
                         </DrawerFooter>
                     </form>
                 </DrawerContent>
@@ -276,7 +289,7 @@ export const Cadastro = () => {
                             onChange={e => setSenha(e.target.value)}
                         />
                         <InputRightElement width='5.5rem'>
-                            <Button textColor={'white'} backgroundColor={'#4fb3bb'} h='1.75rem' size='sm' onClick={handleClick}>
+                            <Button textColor={'white'} _hover={{ background: '#FFF', color: '#58595B' }} backgroundColor={'#4fb3bb'} h='1.75rem' size='sm' onClick={handleClick}>
                                 {show ? 'Hide' : 'Show'}
                             </Button>
                         </InputRightElement>
@@ -309,7 +322,7 @@ export const Cadastro = () => {
                     />
                 </FormControl>
                 <Center>
-                    <Button type='submit' textColor={'white'} backgroundColor={'#4fb3bb'}>Cadastrar</Button>
+                    <Button type='submit' _hover={{ background: '#FFF', color: '#58595B' }} textColor={'white'} backgroundColor={'#4fb3bb'}>Cadastrar</Button>
                 </Center>
             </Box>
         </form>

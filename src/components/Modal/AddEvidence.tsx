@@ -46,7 +46,7 @@ export const AddEvidence: React.FC<AddEvidenceI> = ({
                 header={'Adicionar Evidência'}
 
                 footer={
-                    <Button textColor={'white'} bg={'#53C4CD'} onClick={onClose}>
+                    <Button textColor={'white'} bg={'#53C4CD'} _hover={{ background: '#FFF', color: '#58595B' }} onClick={onClose}>
                         Fechar
                     </Button>}
             >

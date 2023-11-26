@@ -101,7 +101,7 @@ const TwoAuthModal = ({ isOpen, onClose, setIs_enable2fa }: props) => {
 
               <Grid templateColumns="1fr 1fr" gap={4}>
                 <Input color="white" style={{ width: '100%' }} type="text" value={verificationCode} onChange={(e) => setVerificationCode(e.target.value)} />
-                <Button bg="#53C4CD" onClick={handleVerification} ml="auto" color={'white'}>
+                <Button bg="#53C4CD" _hover={{ background: '#FFF', color: '#58595B' }} onClick={handleVerification} ml="auto" color={'white'}>
                   Verificar e Ativar
                 </Button>
               </Grid>

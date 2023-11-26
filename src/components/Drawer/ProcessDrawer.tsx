@@ -77,10 +77,21 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
         obterInformacoesUsuario();
     }, []);
 
+    let bgstatus: string;
+    if (process.status === 'Concluído') {
+        bgstatus = '#159900'
+    } else if (process.status === 'Iniciado') {
+        bgstatus = '#e2ce14'
+    } else {
+        bgstatus = '#00afff'
+    }
+
+
     return (
         <>
             <Box display={displayOpen} height={'100%'} padding={'0.5rem 0.1rem'}>
                 <Button
+                    _hover={{ background: '#FFF', color: '#58595B' }}
                     padding={'0rem'}
                     onClick={() => {
                         setDisplayOpen('none')
@@ -98,7 +109,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                 </Button>
 
             </Box>
-            <Box width={widthBox} minH={'100%'} h={'100%'} display={displayTabs} flexDir={'column'}  boxShadow={'4px 0 4px 0 rgba(0,0,0,0.25)'}>
+            <Box width={widthBox} minH={'100%'} h={'100%'} display={displayTabs} flexDir={'column'} boxShadow={'4px 0 4px 0 rgba(0,0,0,0.25)'}>
                 <CloseButton
                     m={'0.5rem 0.1rem'}
                     bg={'#292A2D'}
@@ -135,7 +146,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                                         lineHeight="1.43"
                                         fontWeight="medium"
                                         fontSize="0.9rem"
-                                        color="#65FFF1"
+                                        color="#FFF"
                                         textAlign="center"
                                     >
                                         Titulo
@@ -158,7 +169,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                                             lineHeight="1.43"
                                             fontWeight="medium"
                                             fontSize="0.9rem"
-                                            color="#65FFF1"
+                                            color="#FFF"
                                             textAlign="center"
                                         >
                                             {process.title}
@@ -178,7 +189,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                                         lineHeight="1.43"
                                         fontWeight="medium"
                                         fontSize="0.9rem"
-                                        color="#65FFF1"
+                                        color="#FFF"
                                         textAlign="center"
                                     >
                                         Descrição
@@ -204,7 +215,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                                             lineHeight="1.43"
                                             fontWeight="medium"
                                             fontSize="0.9rem"
-                                            color="#65FFF1"
+                                            color="#FFF"
                                             width="19rem"
                                             maxWidth="100%"
                                             textAlign="center"
@@ -226,7 +237,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                                         lineHeight="1.43"
                                         fontWeight="medium"
                                         fontSize="0.9rem"
-                                        color="#65FFF1"
+                                        color="#FFF"
                                         textAlign="center"
                                     >
                                         Objetivo
@@ -248,7 +259,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                                             lineHeight="1.43"
                                             fontWeight="medium"
                                             fontSize="0.9rem"
-                                            color="#65FFF1"
+                                            color="#FFF"
                                             flex="1"
                                             textAlign="center"
                                         >
@@ -269,7 +280,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                                         lineHeight="1.43"
                                         fontWeight="medium"
                                         fontSize="0.9rem"
-                                        color="#65FFF1"
+                                        color="#FFF"
                                         textAlign="center"
                                     >
                                         Status
@@ -285,14 +296,14 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                                         overflow="hidden"
                                         width="20rem"
                                         height={'3rem'}
-                                        background="#444444"
+                                        background={bgstatus}
                                     >
                                         <Text
                                             fontFamily="Poppins"
                                             lineHeight="1.43"
                                             fontWeight="medium"
                                             fontSize="0.9rem"
-                                            color="#65FFF1"
+                                            color="#FFF"
                                             flex="1"
                                             textAlign="center"
                                         >
@@ -313,10 +324,10 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                                         lineHeight="1.43"
                                         fontWeight="medium"
                                         fontSize="0.9rem"
-                                        color="#65FFF1"
+                                        color="#FFF"
                                         textAlign="center"
                                     >
-                                        Data de Criação
+                                        Prazo
                                     </Text>
                                     <Stack
                                         paddingX="20px"
@@ -336,11 +347,11 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                                             lineHeight="1.43"
                                             fontWeight="medium"
                                             fontSize="0.9rem"
-                                            color="#65FFF1"
+                                            color="#FFF"
                                             flex="1"
                                             textAlign="center"
                                         >
-                                            {process.createDate === undefined ? <></> : <>{formatDateToBrasil(process.createDate.toString())}</>}
+                                            {process.endingDate === undefined ? <></> : <>{formatDateToBrasil(process.endingDate.toString())}</>}
                                         </Text>
                                     </Stack>
                                 </Stack>
@@ -357,7 +368,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                                         lineHeight="1.43"
                                         fontWeight="medium"
                                         fontSize="0.9rem"
-                                        color="#65FFF1"
+                                        color="#FFF"
                                         textAlign="center"
                                     >
                                         Prioridade

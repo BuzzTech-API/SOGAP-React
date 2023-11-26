@@ -155,7 +155,7 @@ const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: 
       aria-label="Btn Add Processo"
       bg="#29784E"
       color="white"
-      _hover={{ color: "#29784E", bg: "white" }}
+      _hover={{ background: '#FFF', color: '#58595B' }}
       onClick={onOpen}
     >Novo Processo
     </Button>
@@ -168,7 +168,7 @@ const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: 
           <Box>
             <ModalHeader textAlign="center">
               <CardHeader>
-                <Heading fontSize="1.9rem" fontFamily='Poppins' fontWeight="bold" color="#53C4CD" size='lg'>
+                <Heading fontSize="1.9rem" fontWeight="bold" color="#53C4CD" size={['md', 'md']}>
                   Novo Processo
                 </Heading>
               </CardHeader>
@@ -301,6 +301,8 @@ const FormP = ({ width, setProcesses, processes, setSortProcess, sortProcess }: 
                     </FormControl>
                     <Button id="CreateButton"
                       style={{ width: "90px", height: "35px" }}
+                      _hover={{ background: '#FFF', color: '#58595B' }}
+
                       fontWeight="bold"
                       rounded="100px"
                       bg="#53C4CD"

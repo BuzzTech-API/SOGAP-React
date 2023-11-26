@@ -60,7 +60,7 @@ export const CLevel = () => {
 
                 <TabPanels w={'100vw'}>
                     <TabPanel w={'100vw'} h={'20rem'}>
-                        <ManagerList AllUsers={users} />
+                        <ManagerList setManager={setManager} AllUsers={users} />
                     </TabPanel>
                     <TabPanel w={'100vw'}>
                         <InformProcesso process={process} />
@@ -76,7 +76,7 @@ export const CLevel = () => {
                 </TabPanels>
             </Tabs>
             <Flex flexDir={'row'} gap={'1rem'} alignSelf={'center'} display={displayBox} w={'100%'} overflowX={'auto'}>
-                <ManagerList AllUsers={users} />
+                <ManagerList setManager={setManager} AllUsers={users} />
                 <InformProcesso process={process} />
                 <Box
                     width={'30rem'}
@@ -96,6 +96,8 @@ export const CLevel = () => {
                     sortProcess={sortProcess}
                     setSortProcess={setSortProcess}
                     setProcess={setProcess}
+                    setManager={setManager}
+                    manager={manager}
                     role={role} />
 
             }

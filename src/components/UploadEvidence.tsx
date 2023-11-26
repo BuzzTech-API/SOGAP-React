@@ -14,7 +14,7 @@ interface ModalUploadEvidenceI {
     setStep: React.Dispatch<SetStateAction<Step>>,
     requestForEvidence: RequestForEvidence,
     setRequestForEvidence: React.Dispatch<React.SetStateAction<RequestForEvidence>>
-    onClose: ()=>void
+    onClose: () => void
     evidences: Evidence[]
     setEvidences: React.Dispatch<SetStateAction<Evidence[]>>
 }
@@ -26,7 +26,7 @@ export const ModalUploadEvidence = ({ requestForEvidence, step, setStep, setRequ
     const submit = async (e: any) => {
         e.preventDefault()
         try {
-            
+
             const uploadInput = document.getElementById('uploadInput') as HTMLInputElement //pega o arquivo enviado atraves de <input...>
 
 
@@ -38,7 +38,7 @@ export const ModalUploadEvidence = ({ requestForEvidence, step, setStep, setRequ
                     'Authorization': `Bearer ${token}`,
                 }
             }) //pega o processo pelo id
-            
+
             const response = await requisicao
 
             const content: Array<ProcessUser> = await response.json() //pega a lista de processos e separa os usuários responsáveis
@@ -97,16 +97,16 @@ export const ModalUploadEvidence = ({ requestForEvidence, step, setStep, setRequ
 
                     requisicao = fetch(
                         `http://${window.location.hostname}:8000/evidences/`, {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json',
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
                             'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(jsonBody) // transforma o corpo do json para json
                     })
 
-                    
+
 
                     const evidenciaResponse = await requisicao
                     const evidenciaData: Evidence = await evidenciaResponse.json()
@@ -137,7 +137,7 @@ export const ModalUploadEvidence = ({ requestForEvidence, step, setStep, setRequ
         }
         catch (error) {
             console.error("Erro: ", error); //bloco para tratar caso algum erro ocorra
-        }finally{
+        } finally {
             onClose()
         }
     }
@@ -148,7 +148,17 @@ export const ModalUploadEvidence = ({ requestForEvidence, step, setStep, setRequ
             <form onSubmit={submit}>
                 <FormLabel htmlFor="uploadInput" pt={3} color='white'><strong>Insira documento requerido</strong></FormLabel>
                 <Input id='uploadInput' type="file" />
-                <Button type="submit" display="flex" mb={3} bg='#53C4CD' variant='solid' textColor='white' colorScheme="#58595B" width='100%'>Enviar</Button>
+                <Button
+                    type="submit"
+                    display="flex"
+                    mb={3}
+                    bg='#53C4CD'
+                    variant='solid'
+                    textColor='white'
+                    colorScheme="#58595B"
+                    width='100%'
+                    _hover={{ background: '#FFF', color: '#58595B' }}
+                >Enviar</Button>
             </form>
         </>
     )

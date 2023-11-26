@@ -135,6 +135,7 @@ export const BtnDeleteEvidencia = ({ evidencia, step, setStep, setRequests }: De
                                 textColor='white'
                                 colorScheme="#53C4CD"
                                 width='100%'
+                                _hover={{ background: '#FFF', color: '#58595B' }}
                                 onClick={onClose}>CANCELAR
                             </Button>
                         </ButtonGroup>

@@ -150,8 +150,8 @@ export default function InformProcesso({ process }: processCardInterface) {
                     </Flex>
                 </Flex>
             </Flex>
-
             <BtnExpPDF process={process} userName={usuarioLogado?.name} />
+
         </Flex>
     )
 }

@@ -212,6 +212,7 @@ function EtapaForm({ steps, setSteps, processId, onClose }: EtapaFormI) {
         color="#333"
         width="100%" // Faz o botão ocupar todo o espaço lateralmente
         onClick={onClose}
+        _hover={{ background: '#FFF', color: '#58595B' }}
       >
         Enviar
       </Button>

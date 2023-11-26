@@ -4,9 +4,10 @@ import User from "../models/User";
 
 interface ManagerListInterface {
     AllUsers: Array<User>
+    setManager: React.Dispatch<React.SetStateAction<User | undefined>>
 }
 
-export const ManagerList = ({AllUsers}: ManagerListInterface) => {
+export const ManagerList = ({AllUsers, setManager}: ManagerListInterface) => {
     const [managers, setManagers] = useState(new Array<User>());
 
     useEffect(() => {
@@ -24,7 +25,7 @@ export const ManagerList = ({AllUsers}: ManagerListInterface) => {
         <Stack
             spacing={4}
             align="start"
-            bg="#58595B"
+            bg='linear-gradient(109deg, #58595B 0%, rgba(88, 89, 91, 0.00) 100%)'
             color="white"
             padding="6"
             borderRadius="md"
@@ -82,6 +83,9 @@ export const ManagerList = ({AllUsers}: ManagerListInterface) => {
                     borderRadius='10px'
                     padding={'8px'}
                     overflowX={'clip'}
+                    onClick={()=>{
+                        setManager(manager)                        
+                    }}
                 >
                     <Avatar
                         name={manager.name}

@@ -93,11 +93,23 @@ export const Home = () => {
             overflowY={'auto'} >
 
             {filteredProcesses.filter(process => selectedType.length === 0 || selectedType.includes('Processos')).map((process: Process) => {
+                if (process.status === 'Concluído') {
+                    return
+                }
+                if (checkDeadline(process.endingDate)>45) {
+                    return
+                }
                 return <Link to={`/process/${process.id}`} key={'Link to Process Card:' + process.id}><CardProcessoPrazo key={"process:" + process.id}
                     process={process}
                 /></Link>
             })}
             {filteredSteps.filter(step => selectedType.length === 0 || selectedType.includes('Etapas')).map((step: Step) => {
+                if (step.status === 'Concluído') {
+                    return
+                }
+                if (checkDeadline(step.endingDate)>30) {
+                    return
+                }
                 return <Link to={`/process/${step.process_id}`} key={'Link to Process Card Step:' + step.id}><CardShowStepHome key={"Etapa:" + step.id} onClick={handleClick}
                     step={step}
                 /></Link>

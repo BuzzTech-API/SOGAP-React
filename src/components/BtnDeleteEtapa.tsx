@@ -44,9 +44,10 @@ export const BtnDeleteEtapa = ({ etapa, setSteps, steps, onCloseD }: DeleteEtapa
 
     return (
         <>
-            <Button bg='#ff1a1a' variant='solid'
-                textColor='white' width='10rem'
-                type="submit" onClick={onOpen}
+        <Button bg='#ff1a1a' variant='solid' 
+            textColor='white' width='10rem' 
+            _hover={{ background: '#FFF', color: '#58595B' }}
+            type="submit" onClick={onOpen}
             >Deletar</Button>
 
             <AlertDialog
@@ -60,14 +61,14 @@ export const BtnDeleteEtapa = ({ etapa, setSteps, steps, onCloseD }: DeleteEtapa
                             Etapa apagada com sucesso!
                         </AlertDialogHeader>
 
-                        <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={() => setShowSuccessDialog(false)}>
-                                OK
-                            </Button>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialogOverlay>
-            </AlertDialog>
+              <AlertDialogFooter>
+                <Button _hover={{ background: '#FFF', color: '#58595B' }} ref={cancelRef} onClick={() => setShowSuccessDialog(false)}>
+                  OK
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
 
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="auto">
                 <form onSubmit={handleSubmit}>
@@ -93,31 +94,32 @@ export const BtnDeleteEtapa = ({ etapa, setSteps, steps, onCloseD }: DeleteEtapa
                         mb={'1rem'}
                     >
                         <strong>Tem certeza de que quer deletar a etapa: {etapa.name} ?</strong></FormLabel>
-
-                    <ButtonGroup display={'flex'} alignSelf={'center'} gap="240" mt={5}>
-                        <Button
-                            display="flex"
-                            mb={3}
-                            bg='#ff1a1a'
-                            variant='solid'
-                            textColor='white'
-                            colorScheme="#58595B"
-                            width='100%'
-                            type="submit">DELETAR
-                        </Button>
-
-                        <Button
-                            display="flex"
-                            mb={3}
-                            bg='#53C4CD'
-                            variant='solid'
-                            textColor='white'
-                            colorScheme="#53C4CD"
-                            width='100%'
-                            onClick={onClose}>CANCELAR
-                        </Button>
-                    </ButtonGroup>
-
+                        
+                        <ButtonGroup display={'flex'} alignSelf={'center'} gap="240" mt={5}>
+                            <Button 
+                                display="flex" 
+                                mb={3} 
+                                bg='#ff1a1a' 
+                                _hover={{ background: '#FFF', color: '#58595B' }}
+                                variant='solid' 
+                                textColor='white' 
+                                colorScheme="#58595B" 
+                                width='100%' 
+                                type="submit">DELETAR
+                            </Button>
+                            
+                            <Button 
+                                display="flex" 
+                                mb={3} 
+                                bg='gray' 
+                                variant='solid' 
+                                textColor='white' 
+                                colorScheme="#58595B" 
+                                width='100%' 
+                                onClick={onClose}>CANCELAR
+                            </Button>
+                        </ButtonGroup>
+                    
                 </form>
             </ModalGeneric>
 

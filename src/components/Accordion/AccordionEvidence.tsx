@@ -11,6 +11,7 @@ import { AttachmentIcon } from "@chakra-ui/icons"
 import { useSocket } from "../../layout/DefaultLayout"
 import Validation from "../../models/Validation"
 import Step from "../../models/Steps"
+import NotificationClass from "../../models/Notification"
 
 interface propsAE {
     role: String
@@ -30,35 +31,45 @@ export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequest
     const toast = useToast()
     const { isOpen, onClose, onOpen } = useDisclosure()
 
-    const { socket } = useSocket()
+    const { socket, notifications, setNotifications } = useSocket()
 
-    useEffect(() => {
-        if (socket) {
-            socket.onmessage = (event) => {
-                const data = JSON.parse(event.data)
-                const validation = new Validation(
-                    data.validation.id,
-                    data.validation.evidence_id,
-                    data.validation.reason,
-                    data.validation.user_id,
-                    data.validation.is_validated
-                )
-                setEvidences(evidences.map(evidenceMap => {
-                    if (evidenceMap.id === validation.evidence_id) {
-                        evidenceMap.validation.push(validation)
-                        return evidenceMap
-                    }
+    if (socket) {
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data)
+            console.log(data);
+            
+            const validation = new Validation(
+                data.validation.id,
+                data.validation.evidence_id,
+                data.validation.reason,
+                data.validation.user_id,
+                data.validation.is_validated
+            )
+
+            const notification = new NotificationClass(
+                data.notification.id,
+                data.notification.typeOfEvent,
+                data.notification.title,
+                data.notification.mensage,
+                data.notification.addressed,
+                data.notification.sender,
+                data.notification.is_visualized
+            )
+
+            notifications.push(notification)
+            setNotifications(notifications)
+            
+                
+            setEvidences(evidences.map(evidenceMap => {
+                if (evidenceMap.id === validation.evidence_id) {
+                    evidenceMap.validation.push(validation)
                     return evidenceMap
-                }))
-            }
-
+                }
+                return evidenceMap
+            }))
         }
 
-
-        return () => {
-
-        }
-    }, [])
+    }
 
     const valitadeEvidenceAction = async () => {
         toast.promise(validateEvidence(requestForEvidence.id), {
@@ -94,7 +105,7 @@ export const AccordionEvidence = ({ evidences, role, setIs_validated, setRequest
         <Accordion allowToggle w={'70%'}>
             {evidences.map((evidence, index)=> {
                 return (
-                    <AccordionItem key={index}>
+                    <AccordionItem key={'Accordion Evidence:' + evidence.id}>
                         <h2>
                             <AccordionButton>
                                 <Box as="span" flex='1' textAlign='left'>
