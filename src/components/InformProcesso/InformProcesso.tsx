@@ -1,14 +1,29 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import Process from "../../models/Process";
 import { formatDateToBrasil } from "../../services/formatDate";
+import { BtnExpPDF } from "../BtnExpPDF";
+import { useEffect, useState } from "react";
+import { getUser } from "../../services/users";
+import User from "../../models/User";
 
 interface processCardInterface {
     process: Process
 }
 
-
 export default function InformProcesso({ process }: processCardInterface) {
-
+    
+    const [usuarioLogado, setUsuarioLogado] = useState<User | null>(null);
+    useEffect(() => {
+    const obterInformacoesUsuario = async () => {
+        try {
+        const informacoesUsuario = await getUser();
+        setUsuarioLogado(informacoesUsuario);
+        } catch (error) {
+        console.error("Erro ao obter informações do usuário:", error);
+        }
+    };
+    obterInformacoesUsuario();
+}, []);
     return (
         <Flex
             w='65rem'
@@ -135,23 +150,8 @@ export default function InformProcesso({ process }: processCardInterface) {
                     </Flex>
                 </Flex>
             </Flex>
+            <BtnExpPDF process={process} userName={usuarioLogado?.name} />
 
-            <Button
-                w='10rem'
-                h='3rem'
-                _hover={{ background: '#FFF', color: '#58595B' }}
-                background='linear-gradient(270deg, #54C5CE -6.12%, rgba(84, 197, 206, 0.00) 150.36%)'
-                borderRadius='10px'>
-                <Text
-                    color='white'
-                    fontFamily='Poppins'
-                    fontSize='1.3rem'
-                    fontWeight='400'
-                    lineHeight='normal'
-                    fontStyle='normal'>
-                    Exportar
-                </Text>
-            </Button>
         </Flex>
     )
 }
