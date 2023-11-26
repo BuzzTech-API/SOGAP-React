@@ -61,15 +61,23 @@ export function DrawerCadastro() {
                 const photoLink = await promise
                 setLink(photoLink)
 
+                const requisicao = createUser(name, email, role, team, senha, photoLink)
+                toast.promise(requisicao, {
+                    success: { title: 'Usuário Criado', description: 'Usuário criado com sucesso' },
+                    error: { title: 'Erro ao criar Usuário', description: 'Erro' },
+                    loading: { title: 'Criando Usuário', description: 'Por favor, espere' },
+                })
+                await requisicao
 
+            }else{
+                const requisicao = createUser(name, email, role, team, senha, link)
+                toast.promise(requisicao, {
+                    success: { title: 'Usuário Criado', description: 'Usuário criado com sucesso' },
+                    error: { title: 'Erro ao criar Usuário', description: 'Erro' },
+                    loading: { title: 'Criando Usuário', description: 'Por favor, espere' },
+                })
+                await requisicao
             }
-            const requisicao = createUser(name, email, role, team, senha, link)
-            toast.promise(requisicao, {
-                success: { title: 'Usuário Criado', description: 'Usuário criado com sucesso' },
-                error: { title: 'Erro ao criar Usuário', description: 'Erro' },
-                loading: { title: 'Criando Usuário', description: 'Por favor, espere' },
-            })
-            await requisicao
             
 
         } catch (error) {

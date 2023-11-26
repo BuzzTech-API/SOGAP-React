@@ -18,22 +18,24 @@ import { Link } from 'react-router-dom'
 import { IonicLogo } from './IonicLogo'
 import { useEffect, useState } from 'react'
 import { getUser } from '../services/users'
-import { disable2FA, } from '../services/token'
+import { disable2FA, refreshTokenFetch, } from '../services/token'
 import { DrawerCadastro } from './Drawer/Cadastro'
 import TwoAuthModal from "../components/Modal/QrCodeModal"
 import { BellIcon } from '@chakra-ui/icons'
 import { useSocket } from '../layout/DefaultLayout'
 import NotificationClass from '../models/Notification'
 import { notificationVisualized } from '../services/notification'
+import Cookies from 'universal-cookie'
 
 
 interface PropsH {
     socket: WebSocket | null,
     notifications: NotificationClass[],
-    setNotifications: React.Dispatch<React.SetStateAction<NotificationClass[]>>
+    setNotifications: React.Dispatch<React.SetStateAction<NotificationClass[]>>,
+    setSocket: React.Dispatch<React.SetStateAction<WebSocket | null>>
 }
 
-export const Header = ({ socket, notifications, setNotifications }: PropsH) => {
+export const Header = ({ socket, setSocket, notifications, setNotifications }: PropsH) => {
     const [name, setName] = useState('')
     const [role, setRole] = useState('')
     const [photo_link, setPhoto_link] = useState('')
@@ -56,12 +58,27 @@ export const Header = ({ socket, notifications, setNotifications }: PropsH) => {
 
 
     }, [])
-    
-    if(socket){
+
+    useEffect(() => {
+        // Substitua 'seu_host' e 'sua_rota' pelas informações reais do seu servidor WebSocket
+
+        (async () => await refreshTokenFetch())();
+
+
+        const cookie = new Cookies()
+        cookie.remove('access_token')
+        cookie.set('access_token', localStorage.getItem('access_token'), { sameSite: 'strict' })
+
+        const socket = new WebSocket(`ws://${window.location.hostname}/notification/ws?access_token=${localStorage.getItem('access_token')}`);
+
+        socket.onopen = () => {
+            console.log('Conexão WebSocket aberta.');
+            setSocket(socket);
+        };
 
         socket.onmessage = (event) => {
             const data = JSON.parse(event.data)
-            
+
             const notification = new NotificationClass(
                 data.notification.id,
                 data.notification.typeOfEvent,
@@ -70,15 +87,33 @@ export const Header = ({ socket, notifications, setNotifications }: PropsH) => {
                 data.notification.addressed,
                 data.notification.sender,
                 data.notification.is_visualized
-                )
-                notifications.push(notification)
+            )
+
             console.log(notification);
-                
-                setNotifications(notifications)
-            }
+            notifications.push(notification)
+            setNotifications(notifications)
 
 
-    }
+        }
+
+
+        socket.onclose = (event) => {
+            console.log('Conexão WebSocket fechada:', event);
+
+        };
+
+
+        // Certifique-se de fechar a conexão ao desmontar o componente ou quando não for mais necessário.
+        return () => {
+            socket.close();
+        };
+
+    }, []);
+
+    useEffect(() => {
+        setNotifications(notifications)
+    }, [setNotifications])
+        
 
 
 
@@ -96,10 +131,10 @@ export const Header = ({ socket, notifications, setNotifications }: PropsH) => {
 
     async function handleCheckboxChange(event: any) {
         // Evitar o fechamento do MenuList quando o Checkbox é clicado.
-        if(event.target.checked){
+        if (event.target.checked) {
             console.log(notifications);
-            
-            setNotifications(notifications.filter(notification =>notification.id !== Number.parseInt(event.target.value)))
+
+            setNotifications(notifications.filter(notification => notification.id !== Number.parseInt(event.target.value)))
             await notificationVisualized(event.target.value)
         }
 

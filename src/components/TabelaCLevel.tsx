@@ -8,6 +8,7 @@ import { ModalUpdateProcess } from "./Modal/ModalEditarProcesso"
 import ProgressBar from "./ProgressBar"
 import { useEffect, useState } from "react"
 import { getProcessById } from "../services/process"
+import User from "../models/User"
 
 interface propsTabela {
     role: string,
@@ -16,9 +17,11 @@ interface propsTabela {
     processes: Process[],
     setProcesses: React.Dispatch<React.SetStateAction<Process[]>>,
     setProcess?: React.Dispatch<React.SetStateAction<Process>>,
+    setManager?: React.Dispatch<React.SetStateAction<User | undefined>>
+    manager?: User | undefined
 }
 
-export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, setProcesses, setProcess }: propsTabela) => {
+export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, setProcesses, setProcess,setManager, manager }: propsTabela) => {
     const [sortTitle, setSortTitle] = useState(false)
     const [sortEndingDate, setSortEndingDate] = useState(false)
     const [sortProgress, setSortProgress] = useState(false)
@@ -32,10 +35,22 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
             }))
             const filteredProcessList = processList.filter(process => process !== null) as Process[]
             setListProcess(filteredProcessList)
+            if (manager !== undefined) {
+                const filteredProcessesByManager = filteredProcessList.filter(process => {
+                    const managerProcess = process.users.filter(user=> user.id ===manager.id)
+                    if (managerProcess.length !== 0) {
+                        return process
+                    }
+                    
+                })
+                 
+                setListProcess(filteredProcessesByManager)
+                setSortProcess(filteredProcessesByManager)
+            }
 
 
         })()
-    }, [processes])
+    }, [processes, manager])
 
     const sortByCompletedSteps = () => {
         const sortedProcesses = [...listProcess].sort((a, b) => {
@@ -149,6 +164,7 @@ export const TabelaCLevel = ({ role, sortProcess, setSortProcess, processes, set
                             } else {
                                 bgColorStatus = '#00afff'
                             }
+                            
                             return (
                                 <Tr key={'Process Table Key: ' + process.id} onClick={() => setProcess(process)} maxHeight={'3rem'} _selection={{ backgroundColor: "#FFFFFF" }}>
 

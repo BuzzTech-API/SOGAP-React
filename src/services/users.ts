@@ -73,6 +73,8 @@ export const createUser = async (name: string, email: string, role: string, team
     is_active: true,
     password: password
   }
+
+  
   const token = localStorage.getItem('access_token');
   const response = await fetchWithRefresh(`http://${window.location.hostname}:8000/users/`, {
     method: 'POST',
