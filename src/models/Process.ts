@@ -147,12 +147,22 @@ export default class Process {
     public set objective(value: string) {
         this._objective = value;
     }
-
     public get description(): string {
         return this._description;
     }
     public set description(value: string) {
         this._description = value;
     }
-
+    public get stepsLength(): number {
+        return this._steps.length;
+    }
+    get stepsConcluidas(): number {
+        return this._steps.filter((step) => step.status === 'Concluído').length;
+    }
+    get stepsNaoIniciadas(): number {
+        return this._steps.filter((step) => step.status === 'Não Iniciado').length;
+    }
+    get stepsIniciadas(): number{
+        return this._steps.filter((step) => step.status === 'Iniciado').length;
+    }
 }

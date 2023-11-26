@@ -192,12 +192,12 @@ export const ModalUpdateProcess = (props: props) => {
     }
 
     const GL = usersList.filter((user: User) => user.role === "Gerente" || user.role === "Lider")
-
+    
     return (
 
         <>
             <Button bg='#53C4CD' variant='solid'
-                textColor='white' colorScheme="#58595B" width={['auto', '8rem']}
+                textColor='white' colorScheme="#58595B" width={['5rem']}
                 type="submit" onClick={onOpen}
             >Editar</Button>
             <ModalGeneric isOpen={isOpen} onClose={onClose} widthModal="40rem" heightModal="auto">

@@ -15,6 +15,7 @@ export default class Step {
     private _is_active!: boolean
     private _users: Array<StepUser> =[]
     private _requests: Array<RequestForEvidence> = []
+    static requests: any
     
     
     constructor(

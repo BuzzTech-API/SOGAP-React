@@ -110,23 +110,24 @@ export const CardShowStepHome = ({step, onClick}: StepCard) => {
                 color="#FFFFFF"
                 minHeight="1rem"
                 textAlign="center"
-                marginBottom='0.5'
+                marginBottom='2rem'
             >
                 {step.name}
             </Text>
-            <Box width= '8rem' bg = "#ffffff" borderRadius="6rem">
-                <Box width= '8rem' borderRadius="8rem" marginTop = "-1.7rem" display = "flex">
+            <Box width= '6rem' bg = "#ffffff" borderRadius="6rem">
+                <Box width= '6rem' borderRadius="6rem" marginTop = "-1.0rem" display = "flex">
                     <Doughnut width= '100%' height='100%' data={data} options={options}/>
                 </Box>
-                <Box paddingBottom='2rem' marginTop= '-4.1rem' alignItems='center' display="flex" flexDirection="column" zIndex='4'>
+                <Box paddingBottom='2.0rem' marginTop= '-5rem' alignItems='center' display="flex" flexDirection="column" zIndex='4'>
                     <Text
                         fontFamily="Poppins"
                         lineHeight="1.43"
                         fontWeight="Bold"
-                        fontSize="0.9rem"
+                        fontSize="0.7rem"
                         color="#000"
                         textAlign="center"
                     >
+                    <br />
                     <br />
                         Evidência
                     </Text>
@@ -134,7 +135,7 @@ export const CardShowStepHome = ({step, onClick}: StepCard) => {
                         fontFamily="Poppins"
                         lineHeight="1.43"
                         fontWeight="medium"
-                        fontSize="0.9rem"
+                        fontSize="0.7rem"
                         color="#000"
                         textAlign="center"
                     >
