@@ -192,7 +192,7 @@ export const ModalUpdateProcess = (props: props) => {
     }
 
     const GL = usersList.filter((user: User) => user.role === "Gerente" || user.role === "Lider")
-
+    
     return (
 
         <>

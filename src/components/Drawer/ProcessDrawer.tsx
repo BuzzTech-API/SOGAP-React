@@ -63,27 +63,16 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
     } else {
         bgColor = '#00750C'
     }
-
-    // Função para obter o nome do usuário.
-    const obterUsuario = async () => {
-        try {
-            const usuarioLogado = await getUser();
-            return usuarioLogado;
-        } catch (error){
-            console.error("Erro ao obter usuário:", error);
-            throw error;
-        }
-    };
-    //
+    //função para pegar o nome do Usuário para enviar ao Botão de Exportar o PDF
     const [usuarioLogado, setUsuarioLogado] = useState<User | null>(null);
-    useEffect(() => {
-    const obterInformacoesUsuario = async () => {
-        try {
-            const informacoesUsuario = await obterUsuario();
+        useEffect(() => {
+        const obterInformacoesUsuario = async () => {
+            try {
+            const informacoesUsuario = await getUser();
             setUsuarioLogado(informacoesUsuario);
-        } catch (error) {
+            } catch (error) {
             console.error("Erro ao obter informações do usuário:", error);
-        }
+            }
         };
         obterInformacoesUsuario();
     }, []);

@@ -39,7 +39,7 @@ interface propsED {
   setStep: React.Dispatch<SetStateAction<Step>>,
   steps: Step[],
   setSteps: React.Dispatch<SetStateAction<Step[]>>,
-
+  
 }
 
 export const EtapaDrawer = ({ step, setStep, isOpen, onClose, steps, setSteps }: propsED) => {

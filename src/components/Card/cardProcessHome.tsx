@@ -110,15 +110,15 @@ export const CardProcessoPrazo = ({process}: processCardInterface) => {
                     color="#FFFFFF"
                     minHeight="1rem"
                     textAlign="center"
-                    marginBottom='0.5'
+                    marginBottom='2rem'
                 >
                     {process.title}
                 </Text>
-                <Box width= '8rem' bg = "#ffffff" borderRadius="6rem">
-                    <Box width= '8rem' borderRadius="8rem" marginTop = "-1.7rem" display = "flex">
+                <Box width= '6rem' bg = "#ffffff" borderRadius="6rem">
+                    <Box width= '6rem' borderRadius="6rem" marginTop = "-1.2rem" display = "flex">
                         <Doughnut width= '100%' height='100%' data={data} options={options}/>
                     </Box>
-                    <Box paddingBottom='2rem' marginTop= '-4.1rem' alignItems='center' display="flex" flexDirection="column" zIndex='4'>
+                    <Box paddingBottom='2rem' marginTop= '-4.5rem' alignItems='center' display="flex" flexDirection="column" zIndex='4'>
                         <Text
                             fontFamily="Poppins"
                             lineHeight="1.43"

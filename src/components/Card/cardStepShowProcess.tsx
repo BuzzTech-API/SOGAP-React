@@ -15,7 +15,6 @@ interface StepCard {
 }
 
 
-
 export const CardStepShowProcess = ({ step, steps, onClick }: StepCard) => {
     const [validado, setValidado] = useState(0)
     const [naoValidado, setNaoValidado] = useState(0)
