@@ -24,6 +24,7 @@ import { ModalUpdateProcess } from "../Modal/ModalEditarProcesso";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import useBreakpoint from "../../hooks/useBreakpoint";
 import { BtnExpPDF } from "../BtnExpPDF";
+import { getUser } from "../../services/users";
 
 interface ProcessTabsI {
     process: Process,
@@ -63,6 +64,29 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
         bgColor = '#00750C'
     }
 
+    // Função para obter o nome do usuário.
+    const obterUsuario = async () => {
+        try {
+            const usuarioLogado = await getUser();
+            return usuarioLogado;
+        } catch (error){
+            console.error("Erro ao obter usuário:", error);
+            throw error;
+        }
+    };
+    //
+    const [usuarioLogado, setUsuarioLogado] = useState<User | null>(null);
+    useEffect(() => {
+    const obterInformacoesUsuario = async () => {
+        try {
+            const informacoesUsuario = await obterUsuario();
+            setUsuarioLogado(informacoesUsuario);
+        } catch (error) {
+            console.error("Erro ao obter informações do usuário:", error);
+        }
+        };
+        obterInformacoesUsuario();
+    }, []);
 
     return (
         <>
@@ -433,15 +457,14 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                         </TabPanel>
 
                         <TabPanel maxWidth={['100%', '25rem']} width={widthPanel}>
-                            <Box maxWidth={['100%', '25rem']} width={widthPanel} height={'47.6rem'} padding={0}>
+                            <Box maxWidth={['100%', '25rem']} width={widthPanel} height={'46.0rem'} padding={0}>
                                 <Stack direction="row" flexWrap={'wrap'} justify="center" align="center" spacing="0.5rem" w={['100%', '23rem']}>
                                     {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
                                         <ModalUpdateProcess process={process} setProcess={setProcess} />}
                                     {role !== null && (role === 'Gerente' || role === 'Administrador') &&
                                         <BtnDeleteProcess process={process} />}
                                     {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
-                                        <BtnExpPDF process={process} />}
-                                        {/* Aqui vem o botão para exportar o pdf */}
+                                        <BtnExpPDF process={process} userName={usuarioLogado?.name} />}
                                 </Stack>
                             </Box>
                         </TabPanel>
