@@ -2,6 +2,7 @@ import { Button } from "@chakra-ui/react";
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import Process from "../models/Process";
+import { convertImageToDataURL } from "../services/imageConverter";
 
 // Carregando os plugins de fonte para o PDFmake
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
@@ -12,17 +13,29 @@ interface PDFProcessInterface {
 
 export const BtnExpPDF = ({ process }: PDFProcessInterface) => {
     const handleExportPDF = () => {
-        // Crie um documento PDFmake com o conteúdo do seu processo
+        
+        // Criando o PDF com o conteudo do processo selecionado
         const docDefinition = {
             content: [
+            
+                {
+                    columns: [
+                        {
+                            text: 'lista 1'
+                        },
+                        {
+                            text: 'lista 2'
+                        }
+                    ]
+                },
                 { 
                     text: `Detalhes do Processo: ${process.title}`, fontSize: 14 
                 },
-                // Adicione mais conteúdo conforme necessário
             ],
+            
         };
 
-        // Gere o PDF
+        // Gerando o PDF
         pdfMake.createPdf(docDefinition).open(); // Abre o PDF no navegador
     };
 
