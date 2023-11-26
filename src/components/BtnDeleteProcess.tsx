@@ -50,7 +50,7 @@ export const BtnDeleteProcess = ({ process, processes = undefined, setProcess = 
     return (
         <>
             <Button bg='#ff1a1a' variant='solid'
-                textColor='white' colorScheme="#58595B" width={['auto', '8rem']}
+                textColor='white' colorScheme="#58595B" width={['5rem']}
                 type="submit" onClick={onOpen}
             >Deletar</Button>
 

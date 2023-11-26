@@ -23,6 +23,7 @@ import { BtnDeleteProcess } from "../BtnDeleteProcess";
 import { ModalUpdateProcess } from "../Modal/ModalEditarProcesso";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 import useBreakpoint from "../../hooks/useBreakpoint";
+import { BtnExpPDF } from "../BtnExpPDF";
 
 interface ProcessTabsI {
     process: Process,
@@ -101,7 +102,7 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
                         <Tab>Dados</Tab>
                         <Tab>Responsável</Tab>
                         {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
-                            <Tab>Ações</Tab>}
+                        <Tab>Ações</Tab>}
                     </TabList>
                     <TabPanels maxWidth={['100%', '25rem']} width={widthPanel} minWidth={widthPanel} >
                         <TabPanel width={widthPanel}>
@@ -433,11 +434,14 @@ export const ProcessDrawer = ({ process, setProcess, displayOpen, displayTabs, s
 
                         <TabPanel maxWidth={['100%', '25rem']} width={widthPanel}>
                             <Box maxWidth={['100%', '25rem']} width={widthPanel} height={'47.6rem'} padding={0}>
-                                <Stack direction="row" flexWrap={'wrap'} justify="center" align="center" spacing="0.8rem" w={['100%', '23rem']}>
+                                <Stack direction="row" flexWrap={'wrap'} justify="center" align="center" spacing="0.5rem" w={['100%', '23rem']}>
                                     {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
                                         <ModalUpdateProcess process={process} setProcess={setProcess} />}
                                     {role !== null && (role === 'Gerente' || role === 'Administrador') &&
                                         <BtnDeleteProcess process={process} />}
+                                    {role !== null && (role === 'Gerente' || role === 'Lider' || role === 'Administrador') &&
+                                        <BtnExpPDF process={process} />}
+                                        {/* Aqui vem o botão para exportar o pdf */}
                                 </Stack>
                             </Box>
                         </TabPanel>
